@@ -1,4 +1,12 @@
 .sign-in-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
 }
 
 /* Logo styling */
