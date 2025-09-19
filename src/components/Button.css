@@ -1,0 +1,9 @@
+.custom-button{
+    background-color: transparent;
+    border: 2px solid #2C2C2C;
+    color: #2C2C2C;
+    border-radius: 99px;
+    font-size: 25px;
+    font-weight: 560;
+    padding: 15px 0;
+}
