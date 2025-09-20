@@ -1,11 +1,79 @@
 .container {
-    height: 100%;
+    height: 100vh;
     display: flex;
-    border: blue 2px solid;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 30px;
+    gap: 20px;
+}
+
+.back-arrow {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+h1 {
+    margin-top: 120px; /* Space between heading and logo */
+    color: #2c2c2c;
+}
+
+.name-container{
+    display: flex;
+    gap: 10px;
+}
+
+.personal-info {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+input {
+    padding: 5px 0;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #D1C7B7; /* Underline */
+    outline: none; 
+    color: #2c2c2c;
+    font-size: 15px;
+}
+
+.date-container {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.date-input {
+  width: 50px;
+  padding: 5px 0;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid #D1C7B7;
+  outline: none;
+  color: #2c2c2c;
+  font-size: 15px;
+  text-align: center;
+}
+
+.date-input:first-child {
+  width: 60px; /* Wider for year */
+}
+
+.date-separator {
+  font-size: 18px;
+  color: #D1C7B7;
+  padding: 0 2px;
 }
 
 .logo {
-    width: 69px;
-    height: 69px;
-    margin-bottom: 0px;
+    width: 75px;
+    height: 75px;
+    margin-top: auto;      /* Pushes logo to the bottom */
+    margin-bottom: 25px;   /* Set your desired bottom margin */
+}
+
+p{
+    color: #6B5E4A;
 }

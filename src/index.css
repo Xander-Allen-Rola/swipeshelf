@@ -13,15 +13,14 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  border: green 2px solid;
 }
 
 body {
+  color: #2c2c2c;
   font-family: inherit;
   margin: 0;
   display: flex;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  border: yellow 2px solid;
 }
