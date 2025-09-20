@@ -8,9 +8,9 @@ function LandingPage() {
         <div className="container">
             <img src={swipeShelfLogo} className="logo" alt="SwipeShelf logo" />
             <div className="buttons">
-              <Button text="SIGN IN" />
-              <Button text="REGISTER" />
-              <Button text="CONTINUE AS GUEST" />
+              <Button text="SIGN IN" variant="secondary" />
+              <Button text="REGISTER" variant="secondary" />
+              <Button text="CONTINUE AS GUEST" variant="secondary" />
             </div>
         </div>
     </>
