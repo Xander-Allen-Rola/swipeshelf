@@ -7,7 +7,7 @@ function RegistrationPage() {
   return (
     <>
       <BackArrow className="back-arrow" />
-        <div className="container">
+        <div className="registration-container">
           <h1>REGISTRATION</h1>
           <div className="personal-info">
             <div className="name-container">

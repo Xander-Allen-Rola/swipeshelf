@@ -1,4 +1,4 @@
-.container {
+.registration-container {
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -8,7 +8,6 @@
 }
 
 h1 {
-    margin-top: 0px; /* Space between heading and logo */
     color: #2c2c2c;
 }
 
