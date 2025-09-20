@@ -1,7 +1,7 @@
 import './RegistrationPage.css'
-import swipeShelfLogo from '../assets/SwipeShelf.png'
 import Button from '../components/Button'
 import BackArrow from '../components/BackArrow'
+import Logo from '../components/Logo'
 
 function RegistrationPage() {
   return (
@@ -50,8 +50,8 @@ function RegistrationPage() {
           </div>
           <p>We will send an email with a verification code.</p>
           <Button text="CONTINUE" variant="primary" />
-          <img src={swipeShelfLogo} className="logo" alt="SwipeShelf logo" />
         </div>
+      <Logo position="bottom" />
     </>
   )
 }

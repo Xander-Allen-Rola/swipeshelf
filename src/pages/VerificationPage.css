@@ -29,15 +29,6 @@ h1 {
     color: #2c2c2c;
 }
 
-.logo {
-    position: absolute;
-    width: 75px;
-    height: 75px;
-    bottom: 0px;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
 p{
     color: #6B5E4A;
 }

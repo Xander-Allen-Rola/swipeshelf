@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
 import './VerificationPage.css'
-import swipeShelfLogo from '../assets/SwipeShelf.png'
 import Button from '../components/Button'
 import BackArrow from '../components/BackArrow'
+import Logo from '../components/Logo'
 
 function VerificationPage() {
   const [code, setCode] = useState(Array(6).fill(''));
@@ -49,7 +49,7 @@ function VerificationPage() {
         <p>Please check your email for the verification code we sent.</p>
         <Button text="CONTINUE" variant="primary" />
       </div>
-      <img src={swipeShelfLogo} className="logo" alt="SwipeShelf logo" />
+      <Logo position="bottom" />
     </>
   )
 }
