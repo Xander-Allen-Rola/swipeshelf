@@ -5,3 +5,7 @@
   text-align: center;
   border: red 2px solid;
 }
+
+html, body, #root {
+  height: 100%;
+}

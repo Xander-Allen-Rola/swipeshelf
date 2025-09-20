@@ -1,0 +1,11 @@
+.container {
+    height: 100%;
+    display: flex;
+    border: blue 2px solid;
+}
+
+.logo {
+    width: 69px;
+    height: 69px;
+    margin-bottom: 0px;
+}
