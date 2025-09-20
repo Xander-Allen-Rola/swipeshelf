@@ -1,9 +1,9 @@
-import './SignIn.css'
+import './RegistrationPage.css'
 import swipeShelfLogo from '../assets/SwipeShelf.png'
 import Button from '../components/Button'
 import BackArrow from '../components/BackArrow'
 
-function SignIn() {
+function RegistrationPage() {
   return (
     <>
       <BackArrow className="back-arrow" />
@@ -56,4 +56,4 @@ function SignIn() {
   )
 }
 
-export default SignIn;
+export default RegistrationPage;
