@@ -1,0 +1,43 @@
+.container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;  
+    justify-content: center;;
+    padding: 0 30px;
+    gap: 20px; /* For debugging layout issues */
+}
+ 
+.code-inputs {
+    display: flex;
+    gap: 3px;
+}
+
+input {
+    width: 100%;
+    padding: 5px 0;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #D1C7B7;
+    outline: none;
+    color: #2c2c2c;
+    font-size: 15px;
+    text-align: center;
+}
+
+h1 {
+    color: #2c2c2c;
+}
+
+.logo {
+    position: absolute;
+    width: 75px;
+    height: 75px;
+    bottom: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+p{
+    color: #6B5E4A;
+}

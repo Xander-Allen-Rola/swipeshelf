@@ -1,11 +1,11 @@
 // App.jsx
 import './App.css';
-import RegistrationPage from './pages/RegistrationPage';
+import VerificationPage from './pages/VerificationPage';
 
 function App() {
   return (
     <>
-      <RegistrationPage />
+      <VerificationPage />
     </>
   );
 }
