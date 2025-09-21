@@ -7,6 +7,7 @@ function RegistrationPage() {
   return (
     <>
       <BackArrow className="back-arrow" />
+      <Logo position="top" />
         <div className="registration-container">
           <h1>REGISTRATION</h1>
           <div className="personal-info">
@@ -51,7 +52,6 @@ function RegistrationPage() {
           <p>We will send an email with a verification code.</p>
           <Button text="CONTINUE" variant="primary" />
         </div>
-      <Logo position="bottom" />
     </>
   )
 }

@@ -28,6 +28,7 @@ function VerificationPage() {
   return (
     <>
       <BackArrow className="back-arrow" />
+      <Logo position="top" />
       <div className="container">
         <h1>My Code is</h1>
         <div className="code-inputs">
@@ -49,7 +50,6 @@ function VerificationPage() {
         <p>Please check your email for the verification code we sent.</p>
         <Button text="CONTINUE" variant="primary" />
       </div>
-      <Logo position="bottom" />
     </>
   )
 }

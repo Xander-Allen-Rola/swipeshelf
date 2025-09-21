@@ -1,18 +1,19 @@
-.container {
+.landing-page-container {
   display: flex;
   flex-direction: column;
   justify-content: center;   /* vertical centering */
 }
 
-.buttons {
+.landing-page-buttons {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 11px;
   width: 100%;
 }
 
 /* Logo styling */
-.logo {
+.landing-page-logo {
   width: 346px;
   height: 346px;
 }

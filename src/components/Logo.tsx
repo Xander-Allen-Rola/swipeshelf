@@ -9,7 +9,7 @@ const Logo = ({ position = 'bottom' }: LogoProps) => {
   const style =
     position === 'top'
       ? { top: 30, bottom: 'auto' }
-      : { bottom: 10, top: 'auto' };
+      : { bottom: 0, top: 'auto' };
 
   return (
     <img
