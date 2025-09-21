@@ -23,4 +23,10 @@ input {
 
 p{
   color: #6B5E4A;
+  margin: 0;
+}
+
+h2 {
+  margin: 0;
+  font-size: 40px;
 }

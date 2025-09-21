@@ -1,0 +1,172 @@
+.flip-card {
+  width: 90%;
+  height: 70%;
+  perspective: 1000px;
+  position: relative;
+}
+
+.flip-card-front,
+.flip-card-back {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  backface-visibility: hidden;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.20); /* Drop shadow */
+}
+
+.flip-card-front .card-content.regular {
+  background: white;
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* Add this line */
+  align-items: center; /* Center align text */
+}
+
+.flip-card-back .card-content.flipped {
+  background: #D1C7B7;
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flip-card-front {
+  z-index: 2;
+  transform: rotateY(0deg);
+  transition: transform 0.5s;
+}
+
+.flip-card-back {
+  z-index: 1;
+  transform: rotateY(180deg);
+  transition: transform 0.5s;
+}
+
+.flip-card.flipped .flip-card-front {
+  transform: rotateY(180deg);
+}
+
+.flip-card.flipped .flip-card-back {
+  transform: rotateY(360deg);
+}
+
+.book-title, .book-author, .book-release {
+  color: #F5E6D3;
+  z-index: 1;
+}
+
+.card-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  border-radius: 16px;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    rgb(0, 0, 0) 110%
+  );
+  z-index: 0;
+}
+
+.sub-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.sub-container {
+    display: flex;
+    gap: 8px;
+    z-index: 1;
+}
+
+.card-buttons {
+    display: flex;
+    z-index: 1;
+    justify-content: space-between;
+    width: 90%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.dislike-button, .like-button {
+    width: 50px;
+    height: 50px;
+    padding: 10px;
+    overflow: visible;
+}
+
+.like-button {
+    border: #666532 solid 2px;
+    border-radius: 50%;
+}
+
+.dislike-button {
+    border: #A33434 solid 2px;
+    border-radius: 50%;
+}
+
+.undo-button {
+    width: 40px;
+    height: 40px;
+    border: #A15C34 solid 2px;
+    border-radius: 50%;
+    padding: 10px;
+}
+
+.card-content.flipped {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 30px;
+    text-align: justify;
+    gap: 15px;
+}
+
+.book-description {
+    color: #2c2c2c;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.book-genre {
+    border: #6B5E4A solid 3px;
+    border-radius: 99px;
+    padding: 4px 15px;
+    color: #6B5E4A;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.book-genres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+}
+
+.horizontal-line {
+    height: 2px;
+    border-radius: 99px;
+    background-color: rgba(44, 44, 44, 0.25); /* 25% opacity */
+}
+
+.book-review {
+    display: flex;
+    width: 110%;
+    align-items: center;
+    font-size: 10px;
+    color: rgba(44, 44, 44, 0.5);
+    gap: 8px;
+}
