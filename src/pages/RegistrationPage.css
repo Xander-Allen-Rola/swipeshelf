@@ -8,10 +8,6 @@
     gap: 20px;
 }
 
-h1 {
-    color: #2c2c2c;
-}
-
 .name-container{
     display: flex;
     gap: 10px;
@@ -21,17 +17,6 @@ h1 {
     display: flex;
     flex-direction: column;
     gap: 30px;
-}
-
-input {
-    padding: 5px 0;
-    background: transparent;
-    border: none;
-    border-bottom: 2px solid #D1C7B7; /* Underline */
-    outline: none; 
-    color: #2c2c2c;
-    font-size: 15px;
-    text-align: left;
 }
 
 .date-container {
@@ -60,8 +45,4 @@ input {
   font-size: 18px;
   color: #D1C7B7;
   padding: 0 2px;
-}
-
-p{
-    color: #6B5E4A;
 }

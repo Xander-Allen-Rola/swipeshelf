@@ -6,4 +6,21 @@
 
 h1{
     margin-bottom: 0px;
+    color: #2c2c2c;
+}
+
+input {
+  width: 100%;
+  padding: 5px 0;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid #D1C7B7; /* Underline */
+  outline: none; 
+  color: #2c2c2c;
+  font-size: 15px;
+  text-align: left;
+}
+
+p{
+  color: #6B5E4A;
 }
