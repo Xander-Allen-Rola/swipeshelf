@@ -1,0 +1,14 @@
+.genre-name {
+    border: #D1C7B7 3px solid;
+    padding: 5px 10px;
+    border-radius: 99px;
+    color: #D1C7B7;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border 0.2s, color 0.2s;
+}
+
+.genre-name.selected {
+    border: #556B2F 3px solid;
+    color: #556B2F;
+}

@@ -6,6 +6,7 @@
     padding: 18px 0;
     cursor: pointer;
     width: 90%;
+    transition: background-color 0.3s, color 0.3s, border 0.3s;
 }
 
 .custom-button.secondary {
