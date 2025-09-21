@@ -14,6 +14,7 @@ function SignIn() {
             <input type="email_username" placeholder="Email/Username" required />
             <input type="password" placeholder="Password" required />
         </div>
+        <div className="forgot-password">Forgot password?</div>
         <Button text="SIGN IN" variant="primary" />
     </div>
     </>
