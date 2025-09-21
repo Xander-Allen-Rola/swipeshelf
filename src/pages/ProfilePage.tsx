@@ -45,7 +45,7 @@ function ProfilePage() {
         style={{ display: 'none' }}
         onChange={handleFileChange}
       />
-      <Button text="CONTINUE" variant="primary" />
+      <Button text="CONTINUE" variant="invalid-primary" />
     </div>
     </>
   )

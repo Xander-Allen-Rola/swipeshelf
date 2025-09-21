@@ -2,7 +2,7 @@ import './Button.css'
 
 interface ButtonProps {
   text: string;
-  variant?: "primary" | "secondary"; // optional prop
+  variant?: "primary" | "secondary" | "invalid-primary"; // optional prop
 }
 
 function Button({ text, variant = "primary" }: ButtonProps) {

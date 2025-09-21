@@ -18,4 +18,11 @@
     background-color: #8B5E3C;
     color: white;
     border: none;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12); /* Drop shadow */
+}
+
+.custom-button.invalid-primary {
+    background-color: #EBECEF;
+    color: #828491;
+    border: none;
 }
