@@ -1,7 +1,9 @@
 #root {
-  max-width: 1280px;
+  max-width: 454px;
+  width: 100%;
   margin: 0 auto;
   text-align: center;
+  border: red 1px solid;
 }
 
 h1{

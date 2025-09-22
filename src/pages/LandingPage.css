@@ -2,6 +2,8 @@
   display: flex;
   flex-direction: column;
   justify-content: center;   /* vertical centering */
+  align-items: center;       /* horizontal centering */
+  height: 100vh;             /* full viewport height */
 }
 
 .landing-page-buttons {
