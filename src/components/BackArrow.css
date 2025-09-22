@@ -1,7 +1,5 @@
-.back-arrow {
-    cursor: pointer;
+.back-arrow-container {
     position: absolute;
     top: 50px;
-    left: 35px;
     z-index: 10;
 }
