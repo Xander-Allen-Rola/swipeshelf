@@ -5,9 +5,8 @@ function RecommendationsFilter() {
         color: '#8B5E3C', 
         fontWeight: '600',
         fontSize: '14px',
-        position: 'absolute',
-        left: '34px',
-        top: '100px',
+        alignSelf: 'flex-start',
+        marginLeft: '30px',
     }}>Filter ▼</p>
   );
 }

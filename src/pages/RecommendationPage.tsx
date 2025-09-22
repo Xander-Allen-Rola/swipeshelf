@@ -8,8 +8,8 @@ function RecommendationPage() {
   return (
     <>
       <Logo position="top" />
-      <Filter />
       <div className="recommendation-page">
+        <Filter />
         <BookCard 
           title="Fahrenheit 451" 
           author="Ray Bradbury" 
@@ -29,8 +29,8 @@ function RecommendationPage() {
           to preserve them, all while the city he left is 
           destroyed by war."
           genres={['Dystopian', 'Sci-Fi', 'Classic', 'Literature']} />
+          <NavigationPane />
       </div>
-    <NavigationPane />
     </>
   );
 }

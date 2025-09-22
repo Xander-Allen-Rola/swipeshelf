@@ -1,5 +1,5 @@
 .navigation-pane {
-    position: fixed;
+    position: relative;
     bottom: 0;
     left: 0;
     width: 100%; /* Fill the page width */

@@ -3,6 +3,7 @@
   height: 70%;
   perspective: 1000px;
   position: relative;
+  margin-bottom: 25px;
 }
 
 .flip-card-front,
