@@ -11,7 +11,7 @@ import RecommendationPage from './pages/RecommendationPage';
 function App() {
   return (
     <>
-      <RecommendationPage />
+      <LandingPage />
     </>
   );
 }
