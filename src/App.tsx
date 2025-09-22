@@ -10,7 +10,7 @@ import GenresPage from './pages/GenresPage';
 function App() {
   return (
     <>
-      <SignIn />
+      <GenresPage />
     </>
   );
 }
