@@ -66,8 +66,8 @@ function RegistrationPage() {
         setPassword("");
         setConfirmPassword("");
 
-        // Navigate to verification page
-        navigate("/verify", { state: { email } });
+        // Navigate to recommendations page
+        navigate("/recommendations");
       }
     } catch (err) {
       setError("Unable to reach server");
