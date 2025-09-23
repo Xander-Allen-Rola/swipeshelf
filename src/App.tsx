@@ -20,7 +20,7 @@ function App() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/register" element={<RegistrationPage />} />
         <Route path="/verify" element={<VerificationPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/pfp" element={<ProfilePage />} />
         <Route path="/genres" element={<GenresPage />} />
         <Route path="/recommendations" element={<RecommendationPage />} />
       </Routes>

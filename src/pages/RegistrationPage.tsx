@@ -67,7 +67,7 @@ function RegistrationPage() {
         setConfirmPassword("");
 
         // Navigate to recommendations page
-        navigate("/recommendations");
+        navigate("/pfp");
       }
     } catch (err) {
       setError("Unable to reach server");
