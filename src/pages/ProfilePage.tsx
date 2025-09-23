@@ -5,9 +5,13 @@ import { faCircleUser } from '@fortawesome/free-solid-svg-icons'
 import Button from '../components/Button'
 import BackArrow from '../components/BackArrow'
 import Logo from '../components/Logo'
+import { useLocation } from "react-router-dom"
 
 function ProfilePage() {
+  const location = useLocation()
+  const token = location.state?.token || localStorage.getItem("token") // fallback if you stored it
   const [image, setImage] = useState<string | null>(null)
+  const [file, setFile] = useState<File | null>(null) // store selected file
   const fileInputRef = useRef<HTMLInputElement | null>(null)
 
   const handleIconClick = () => {
@@ -15,40 +19,109 @@ function ProfilePage() {
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
+    const selectedFile = e.target.files?.[0]
+    if (selectedFile) {
+      setFile(selectedFile) // save file for later upload
+
+      // Preview locally
       const reader = new FileReader()
       reader.onload = (event) => {
         setImage(event.target?.result as string)
       }
-      reader.readAsDataURL(file)
+      reader.readAsDataURL(selectedFile)
+      console.log("📌 Selected file ready for upload:", selectedFile.name)
     }
   }
 
+  const handleContinue = async () => {
+    if (!file) {
+      console.log("⚠️ No file selected, skipping profile picture upload")
+      return
+    }
+
+    if (!token) { // use the token from location.state or localStorage
+      console.error("❌ No JWT token found. Cannot update profile picture.")
+      return
+    }
+    console.log("JWT token:", token)
+
+    const formData = new FormData()
+    formData.append("file", file)
+
+    try {
+      console.log("⬆️ Uploading image to backend/Cloudinary...")
+      const uploadRes = await fetch("http://localhost:5000/api/upload", {
+        method: "POST",
+        body: formData,
+      })
+
+      if (!uploadRes.ok) {
+        const text = await uploadRes.text()
+        throw new Error(`Upload failed: ${text}`)
+      }
+
+      const data = await uploadRes.json()
+      const cloudinaryUrl = data.url
+      console.log("✅ Uploaded image URL from Cloudinary:", cloudinaryUrl)
+
+      console.log("⬆️ Sending URL to backend to update user profile...")
+      const updateRes = await fetch("http://localhost:5000/api/users/profile-picture", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({ url: cloudinaryUrl }),
+      })
+
+      if (!updateRes.ok) {
+        const text = await updateRes.text()
+        throw new Error(`Failed to update user profile: ${text}`)
+      }
+
+      console.log("✅ Profile picture successfully saved to database")
+    } catch (err) {
+      console.error("❌ Error during profile picture update:", err)
+    }
+  }
+
+
   return (
     <>
-    <BackArrow />
-    <Logo position="top" />
-    <div className="profile-page-container">
-      <h1>Add your Profile Picture</h1>
-      <div className="profile-picture-placeholder" onClick={handleIconClick} style={{ cursor: 'pointer' }}>
-        {image ? (
-          <img src={image} alt="Profile" className="profile-picture-img" />
-        ) : (
-          <FontAwesomeIcon icon={faCircleUser} size="2xl" style={{ color: "#8b5e3c", width: '300px', height: '300px' }} />
-        )}
+      <BackArrow />
+      <Logo position="top" />
+      <div className="profile-page-container">
+        <h1>Add your Profile Picture</h1>
+        <div
+          className="profile-picture-placeholder"
+          onClick={handleIconClick}
+          style={{ cursor: 'pointer' }}
+        >
+          {image ? (
+            <img src={image} alt="Profile" className="profile-picture-img" />
+          ) : (
+            <FontAwesomeIcon
+              icon={faCircleUser}
+              size="2xl"
+              style={{ color: "#8b5e3c", width: '300px', height: '300px' }}
+            />
+          )}
+        </div>
+        <input
+          type="file"
+          accept="image/*"
+          ref={fileInputRef}
+          style={{ display: 'none' }}
+          onChange={handleFileChange}
+        />
+        <Button
+          text="CONTINUE"
+          variant="invalid-primary"
+          onClick={handleContinue}
+        />
       </div>
-      <input
-        type="file"
-        accept="image/*"
-        ref={fileInputRef}
-        style={{ display: 'none' }}
-        onChange={handleFileChange}
-      />
-      <Button text="CONTINUE" variant="invalid-primary" />
-    </div>
     </>
   )
 }
 
-export default ProfilePage;
+export default ProfilePage

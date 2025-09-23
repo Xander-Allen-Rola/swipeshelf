@@ -38,7 +38,7 @@ function RegistrationPage() {
     const dobString = `${dob.year}-${dob.month.padStart(2, "0")}-${dob.day.padStart(2, "0")}`;
 
     try {
-      const res = await fetch("http://localhost:5000/auth/register", {
+      const res = await fetch("http://localhost:5000/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -56,7 +56,17 @@ function RegistrationPage() {
       if (!res.ok) {
         setError(data.error || "Registration failed");
       } else {
-        setSuccess(`Registered successfully! User ID: ${data.id}`);
+        console.log("✅ Registration successful:", data);
+        setSuccess(`Registered successfully! User ID: ${data.user.id}`);
+
+        // Save JWT token in localStorage as fallback
+        if (data.token) {
+          localStorage.setItem("token", data.token);
+        }
+
+        // Navigate to ProfilePage and pass token via state
+        navigate("/pfp", { state: { token: data.token } });
+
         // Optional: clear form
         setFirstName("");
         setLastName("");
@@ -65,11 +75,9 @@ function RegistrationPage() {
         setEmail("");
         setPassword("");
         setConfirmPassword("");
-
-        // Navigate to recommendations page
-        navigate("/pfp");
       }
     } catch (err) {
+      console.error(err);
       setError("Unable to reach server");
     }
   };
