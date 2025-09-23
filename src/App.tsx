@@ -1,5 +1,6 @@
-// App.jsx
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './App.css';
+
 import VerificationPage from './pages/VerificationPage';
 import RegistrationPage from './pages/RegistrationPage';
 import SignIn from './pages/SignIn';
@@ -10,9 +11,20 @@ import RecommendationPage from './pages/RecommendationPage';
 
 function App() {
   return (
-    <>
-      <LandingPage />
-    </>
+    <Router>
+      <Routes>
+        {/* Always start here */}
+        <Route path="/" element={<LandingPage />} />
+
+        {/* Other routes */}
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/register" element={<RegistrationPage />} />
+        <Route path="/verify" element={<VerificationPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/genres" element={<GenresPage />} />
+        <Route path="/recommendations" element={<RecommendationPage />} />
+      </Routes>
+    </Router>
   );
 }
 
