@@ -11,7 +11,7 @@ function SignIn() {
     <div className="sign-in-container">
       <h1>SIGN IN</h1>
         <div className="sign-in-field-container">
-            <input type="email_username" placeholder="Email/Username" required />
+            <input type="email" placeholder="Email" required />
             <input type="password" placeholder="Password" required />
         </div>
         <div className="forgot-password">Forgot password?</div>
