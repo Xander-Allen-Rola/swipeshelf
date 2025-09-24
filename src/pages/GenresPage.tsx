@@ -1,45 +1,75 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './GenresPage.css';
 import Genre from '../components/Genre'; 
 import Button from '../components/Button';   
 import Logo from '../components/Logo';
 import BackArrow from '../components/BackArrow';
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const genres = [
-  "Fiction",
-  "Non-Fiction",
-  "Mystery",
-  "Thriller",
-  "Horror",
-  "Romance",
-  "Fantasy",
-  "Science Fiction",
-  "Historical",
-  "Adventure",
-  "Biography / Memoir",
-  "Self-Help",
-  "Poetry",
-  "Drama / Play",
-  "Classics",
-  "Young Adult (YA)",
-  "Children’s",
-  "Religion / Spirituality",
-  "Philosophy",
-  "Science / Technology",
-  "Travel",
-  "True Crime",
-  "Essays"
-];
+type GenreType = {
+  id: number;
+  name: string;
+};
 
 function GenresPage() {
-  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
+  const location = useLocation();
+  const navigate = useNavigate(); // ✅ init navigate
+  const token = location.state?.token || localStorage.getItem("token");
 
-  const handleGenreClick = (genre: string) => {
+  const [genres, setGenres] = useState<GenreType[]>([]);
+  const [selectedGenres, setSelectedGenres] = useState<number[]>([]);
+
+  // Fetch genres from backend
+  useEffect(() => {
+    const fetchGenres = async () => {
+      try {
+        const res = await fetch('http://localhost:5000/api/genres');
+        const data = await res.json();
+        setGenres(data); // API should return [{ id: 1, name: "Fiction" }, ...]
+      } catch (err) {
+        console.error('Failed to fetch genres:', err);
+      }
+    };
+
+    fetchGenres();
+  }, []);
+
+  const handleGenreClick = (id: number) => {
     setSelectedGenres(prev =>
-      prev.includes(genre)
-        ? prev.filter(g => g !== genre)
-        : [...prev, genre]
+      prev.includes(id)
+        ? prev.filter(g => g !== id)
+        : [...prev, id]
     );
+  };
+
+  const handleContinue = async () => {
+    const userId = localStorage.getItem("userId"); // 👈 store this during login/signup
+    if (!userId) {
+      console.error("❌ No userId found.");
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost:5000/api/user-genres", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: Number(userId), genreIds: selectedGenres }),
+      });
+
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`Failed to save user genres: ${text}`);
+      }
+
+      console.log("✅ Genres saved successfully");
+      navigate("/recommendations"); // Navigate to recommendations page
+    } catch (err) {
+      console.error("❌ Error saving genres:", err);
+    }
+    console.log("📚 Selected:", selectedGenres);
   };
 
   return (
@@ -52,16 +82,17 @@ function GenresPage() {
         <div className="genres-list">
           {genres.map((genre) => (
             <Genre
-              key={genre}
-              name={genre}
-              selected={selectedGenres.includes(genre)}
-              onClick={() => handleGenreClick(genre)}
+              key={genre.id}
+              name={genre.name}
+              selected={selectedGenres.includes(genre.id)}
+              onClick={() => handleGenreClick(genre.id)}
             />
           ))}
         </div>
         <Button
           text="CONTINUE"
           variant={selectedGenres.length > 0 ? "primary" : "invalid-primary"}
+          onClick={handleContinue}
         />
       </div>
     </>

@@ -5,9 +5,10 @@ import { faCircleUser } from '@fortawesome/free-solid-svg-icons'
 import Button from '../components/Button'
 import BackArrow from '../components/BackArrow'
 import Logo from '../components/Logo'
-import { useLocation } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom";
 
 function ProfilePage() {
+  const navigate = useNavigate();
   const location = useLocation()
   const token = location.state?.token || localStorage.getItem("token") // fallback if you stored it
   const [image, setImage] = useState<string | null>(null)
@@ -80,6 +81,7 @@ function ProfilePage() {
       }
 
       console.log("✅ Profile picture successfully saved to database")
+      navigate("/genres", { state: { token } }) // pass token to next page
     } catch (err) {
       console.error("❌ Error during profile picture update:", err)
     }
@@ -90,6 +92,20 @@ function ProfilePage() {
     <>
       <BackArrow />
       <Logo position="top" />
+      <div
+        style={{
+          position: 'absolute',
+          top: '45px',
+          right: '20px',
+          fontWeight: 'bold',
+          fontSize: '18px',
+          color: '#2c2c2c',
+          cursor: 'pointer'
+        }}
+        onClick={() => navigate("/genres")}
+      >
+        Skip
+      </div>
       <div className="profile-page-container">
         <h1>Add your Profile Picture</h1>
         <div
@@ -116,7 +132,7 @@ function ProfilePage() {
         />
         <Button
           text="CONTINUE"
-          variant="invalid-primary"
+          variant="primary"
           onClick={handleContinue}
         />
       </div>

@@ -64,6 +64,11 @@ function RegistrationPage() {
           localStorage.setItem("token", data.token);
         }
 
+        if (data.user?.id) { 
+          localStorage.setItem("userId", data.user.id.toString()); 
+          console.log("Stored userId in localStorage:", data.user.id);
+        }
+
         // Navigate to ProfilePage and pass token via state
         navigate("/pfp", { state: { token: data.token } });
 
