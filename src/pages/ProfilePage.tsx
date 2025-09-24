@@ -6,6 +6,7 @@ import Button from '../components/Button'
 import BackArrow from '../components/BackArrow'
 import Logo from '../components/Logo'
 import { useNavigate, useLocation } from "react-router-dom";
+import LoadingOverlay from "../components/LoadingOverlay"; // ✅ import reusable overlay
 
 function ProfilePage() {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ function ProfilePage() {
   const [image, setImage] = useState<string | null>(null)
   const [file, setFile] = useState<File | null>(null) // store selected file
   const fileInputRef = useRef<HTMLInputElement | null>(null)
+  const [loading, setLoading] = useState(false);
 
   const handleIconClick = () => {
     fileInputRef.current?.click()
@@ -51,6 +53,7 @@ function ProfilePage() {
 
     try {
       console.log("⬆️ Uploading image to backend/Cloudinary...")
+      setLoading(true);
       const uploadRes = await fetch("http://localhost:5000/api/upload", {
         method: "POST",
         body: formData,
@@ -81,6 +84,7 @@ function ProfilePage() {
       }
 
       console.log("✅ Profile picture successfully saved to database")
+      setLoading(false);
       navigate("/genres", { state: { token } }) // pass token to next page
     } catch (err) {
       console.error("❌ Error during profile picture update:", err)
@@ -90,6 +94,7 @@ function ProfilePage() {
 
   return (
     <>
+      <LoadingOverlay show={loading} text="Uploading..." />
       <BackArrow />
       <Logo position="top" />
       <div

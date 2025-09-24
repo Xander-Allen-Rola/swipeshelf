@@ -4,6 +4,7 @@ import Button from '../components/Button';
 import BackArrow from '../components/BackArrow';
 import Logo from '../components/Logo';
 import { useNavigate } from "react-router-dom";
+import LoadingOverlay from "../components/LoadingOverlay"; // ✅ import reusable overlay
 
 function RegistrationPage() {
   // Form state
@@ -17,21 +18,25 @@ function RegistrationPage() {
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
   const handleRegister = async () => {
     setError("");
     setSuccess("");
+    setLoading(true);
 
     // Frontend validation
     if (!firstName || !lastName || !email || !password) {
       setError("First name, last name, email, and password are required.");
+      setLoading(false); // ✅ stop overlay on validation error
       return;
     }
 
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
+      setLoading(false); // ✅ stop overlay on validation error
       return;
     }
 
@@ -85,10 +90,14 @@ function RegistrationPage() {
       console.error(err);
       setError("Unable to reach server");
     }
+    finally {
+      setLoading(false);  // ✅ hide loading overlay
+    }
   };
 
   return (
     <>
+      <LoadingOverlay show={loading} text="Registering..." />
       <BackArrow className="back-arrow" />
       <Logo position="top" />
       <div className="registration-container">
