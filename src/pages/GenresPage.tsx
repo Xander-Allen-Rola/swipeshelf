@@ -6,6 +6,7 @@ import Logo from '../components/Logo';
 import BackArrow from '../components/BackArrow';
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import LoadingOverlay from '../components/LoadingOverlay';
 
 type GenreType = {
   id: number;
@@ -14,6 +15,7 @@ type GenreType = {
 
 function GenresPage() {
   const location = useLocation();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate(); // ✅ init navigate
   const token = location.state?.token || localStorage.getItem("token");
 
@@ -24,11 +26,14 @@ function GenresPage() {
   useEffect(() => {
     const fetchGenres = async () => {
       try {
+        setLoading(true);
         const res = await fetch('http://localhost:5000/api/genres');
         const data = await res.json();
         setGenres(data); // API should return [{ id: 1, name: "Fiction" }, ...]
       } catch (err) {
         console.error('Failed to fetch genres:', err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -74,6 +79,7 @@ function GenresPage() {
 
   return (
     <>
+      <LoadingOverlay show={loading} text="Retrieving..." />
       <BackArrow />
       <Logo position="top" />
       <div className="genres-page">
