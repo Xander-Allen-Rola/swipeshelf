@@ -8,7 +8,7 @@ function BackArrow() {
   return (
     <div 
       className="back-arrow-container" 
-      onClick={() => navigate("/")}
+      onClick={() => navigate(-1)}   // ✅ Go back in history
       style={{ cursor: "pointer" }}
     >
       <img src={backArrow} className="back-arrow" alt="Back arrow" />

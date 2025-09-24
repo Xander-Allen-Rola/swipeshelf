@@ -16,12 +16,16 @@ function App() {
         {/* Always start here */}
         <Route path="/" element={<LandingPage />} />
 
-        {/* Other routes */}
+        {/* Auth routes */}
         <Route path="/signin" element={<SignIn />} />
-        <Route path="/register" element={<RegistrationPage />} />
         <Route path="/verify" element={<VerificationPage />} />
-        <Route path="/pfp" element={<ProfilePage />} />
-        <Route path="/genres" element={<GenresPage />} />
+
+        {/* Registration flow (nested) */}
+        <Route path="/registration" element={<RegistrationPage />} />
+        <Route path="/registration/pfp" element={<ProfilePage />} />
+        <Route path="/registration/pfp/genres" element={<GenresPage />} />
+
+        {/* After onboarding */}
         <Route path="/recommendations" element={<RecommendationPage />} />
       </Routes>
     </Router>

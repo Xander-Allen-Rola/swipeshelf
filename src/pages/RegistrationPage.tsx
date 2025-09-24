@@ -75,7 +75,7 @@ function RegistrationPage() {
         }
 
         // Navigate to ProfilePage and pass token via state
-        navigate("/pfp", { state: { token: data.token } });
+        navigate("/registration/pfp", { state: { token: data.token } });
 
         // Optional: clear form
         setFirstName("");

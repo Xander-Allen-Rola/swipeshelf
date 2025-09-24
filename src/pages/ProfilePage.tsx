@@ -85,7 +85,7 @@ function ProfilePage() {
 
       console.log("✅ Profile picture successfully saved to database")
       setLoading(false);
-      navigate("/genres", { state: { token } }) // pass token to next page
+      navigate("/registration/pfp/genres", { state: { token } });
     } catch (err) {
       console.error("❌ Error during profile picture update:", err)
     }
@@ -107,7 +107,7 @@ function ProfilePage() {
           color: '#2c2c2c',
           cursor: 'pointer'
         }}
-        onClick={() => navigate("/genres")}
+        onClick={() => navigate("/registration/pfp/genres", { state: { token } })}
       >
         Skip
       </div>
