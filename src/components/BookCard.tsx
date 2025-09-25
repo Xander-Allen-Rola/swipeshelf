@@ -6,12 +6,16 @@ import likeIcon from '../assets/like.png';
 import dislikeIcon from '../assets/dislike.png';
 import undoIcon from '../assets/undo.png';
 
-const BookCard = ({ title, author, release, description, genres = [] }) => {
+const BookCard = ({ title, author, release, description, genres = [], image }) => {
   const [flipped, setFlipped] = useState(false);
 
   return (
       <div className={`flip-card${flipped ? ' flipped' : ''}`}  onClick={() => setFlipped(f => !f)}>
         <div className="flip-card-front">
+            {image && <div
+              className="card-image"
+              style={{ backgroundImage: `url(${image})` }}
+            />}
             <div className="card-gradient" />
           <div className="card-content regular">
             <h2 className="book-title">{title}</h2>

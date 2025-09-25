@@ -28,6 +28,7 @@ function RecommendationPage() {
           a community of outcasts who have memorized books 
           to preserve them, all while the city he left is 
           destroyed by war."
+          image="http://books.google.com/books/content?id=KVGd-NabpW0C&printsec=frontcover&img=1&zoom=1&source=gbs_api"
           genres={['Dystopian', 'Sci-Fi', 'Classic', 'Literature']} />
           <NavigationPane />
       </div>

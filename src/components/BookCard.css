@@ -171,3 +171,15 @@
     color: rgba(44, 44, 44, 0.5);
     gap: 8px;
 }
+
+.card-image {
+  position: absolute;  /* so the gradient can overlay it */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+  z-index: 0; /* behind content and gradient */
+  border-radius: 16px;
+}
