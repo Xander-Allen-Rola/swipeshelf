@@ -26,7 +26,7 @@ function RecommendationPage() {
 
   const didFetch = useRef(false);
 
-  const userId = 1; // hardcode for now
+  const userId = Number(localStorage.getItem("userId") || 0);
 
   const fetchRecommendations = async (append = false) => {
     try {
