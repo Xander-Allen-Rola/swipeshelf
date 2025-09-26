@@ -2,100 +2,102 @@ import './RecommendationPage.css';
 import Logo from '../components/Logo';
 import NavigationPane from '../components/NavigationPane';
 import BookCard from '../components/BookCard';
-import { useState, useEffect } from 'react';
+import LoadingOverlay from '../components/LoadingOverlay';
+import { useRef, useState, useEffect } from 'react';
+import axios from 'axios';
 
-
-const books = [
-  {
-    title: "Fahrenheit 451",
-    author: "Ray Bradbury",
-    release: "1953",
-    description: `Fahrenheit 451 is a dystopian novel by Ray Bradbury about a future society where books are banned and 'firemen' burn any that are found. The story follows Guy Montag, a fireman who becomes disillusioned with his job after a series of events—including the death of his neighbor Clarisse and witnessing a woman die with her books—leading him to secretly read books and question society's censorship and focus on superficial entertainment. Montag escapes the mechanical hound sent to capture him and flees to a community of outcasts who have memorized books to preserve them, all while the city he left is destroyed by war.`,
-    image: "http://books.google.com/books/content?id=KVGd-NabpW0C&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-    genres: ['Dystopian', 'Sci-Fi', 'Classic', 'Literature'],
-  },
-  {
-    title: "1984",
-    author: "George Orwell",
-    release: "1949",
-    description: "A dystopian social science fiction novel and cautionary tale about the dangers of totalitarianism.",
-    image: "https://covers.openlibrary.org/b/id/153541-L.jpg",
-    genres: ['Dystopian', 'Political Fiction', 'Classic'],
-  },
-  {
-    title: "Fahrenheit 451",
-    author: "Ray Bradbury",
-    release: "1953",
-    description: `Fahrenheit 451 is a dystopian novel by Ray Bradbury about a future society where books are banned and 'firemen' burn any that are found. The story follows Guy Montag, a fireman who becomes disillusioned with his job after a series of events—including the death of his neighbor Clarisse and witnessing a woman die with her books—leading him to secretly read books and question society's censorship and focus on superficial entertainment. Montag escapes the mechanical hound sent to capture him and flees to a community of outcasts who have memorized books to preserve them, all while the city he left is destroyed by war.`,
-    image: "http://books.google.com/books/content?id=KVGd-NabpW0C&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-    genres: ['Dystopian', 'Sci-Fi', 'Classic', 'Literature'],
-  },
-  {
-    title: "1984",
-    author: "George Orwell",
-    release: "1949",
-    description: "A dystopian social science fiction novel and cautionary tale about the dangers of totalitarianism.",
-    image: "https://covers.openlibrary.org/b/id/153541-L.jpg",
-    genres: ['Dystopian', 'Political Fiction', 'Classic'],
-  },
-  {
-    title: "Fahrenheit 451",
-    author: "Ray Bradbury",
-    release: "1953",
-    description: `Fahrenheit 451 is a dystopian novel by Ray Bradbury about a future society where books are banned and 'firemen' burn any that are found. The story follows Guy Montag, a fireman who becomes disillusioned with his job after a series of events—including the death of his neighbor Clarisse and witnessing a woman die with her books—leading him to secretly read books and question society's censorship and focus on superficial entertainment. Montag escapes the mechanical hound sent to capture him and flees to a community of outcasts who have memorized books to preserve them, all while the city he left is destroyed by war.`,
-    image: "http://books.google.com/books/content?id=KVGd-NabpW0C&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-    genres: ['Dystopian', 'Sci-Fi', 'Classic', 'Literature'],
-  },
-  {
-    title: "1984",
-    author: "George Orwell",
-    release: "1949",
-    description: "A dystopian social science fiction novel and cautionary tale about the dangers of totalitarianism.",
-    image: "https://covers.openlibrary.org/b/id/153541-L.jpg",
-    genres: ['Dystopian', 'Political Fiction', 'Classic'],
-  },
-  {
-    title: "Fahrenheit 451",
-    author: "Ray Bradbury",
-    release: "1953",
-    description: `Fahrenheit 451 is a dystopian novel by Ray Bradbury about a future society where books are banned and 'firemen' burn any that are found. The story follows Guy Montag, a fireman who becomes disillusioned with his job after a series of events—including the death of his neighbor Clarisse and witnessing a woman die with her books—leading him to secretly read books and question society's censorship and focus on superficial entertainment. Montag escapes the mechanical hound sent to capture him and flees to a community of outcasts who have memorized books to preserve them, all while the city he left is destroyed by war.`,
-    image: "http://books.google.com/books/content?id=KVGd-NabpW0C&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-    genres: ['Dystopian', 'Sci-Fi', 'Classic', 'Literature'],
-  },
-  {
-    title: "1984",
-    author: "George Orwell",
-    release: "1949",
-    description: "A dystopian social science fiction novel and cautionary tale about the dangers of totalitarianism.",
-    image: "https://covers.openlibrary.org/b/id/153541-L.jpg",
-    genres: ['Dystopian', 'Political Fiction', 'Classic'],
-  },
-  // add more books here
-];
+interface Book {
+  title: string;
+  authors: string;
+  publishedDate: string | null;
+  isbn: string | null;
+  coverUrl: string;
+  googleBooksId: string;
+  description: string;
+  averageRating: number;
+  categories: string[];
+}
 
 function RecommendationPage() {
+  const [books, setBooks] = useState<Book[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-const handleSwipe = (dir: string, title: string) => {
-  console.log(`Swiped ${dir} on ${title}`);
-};
+  const [loading, setLoading] = useState(true);
+  const [isPrefetching, setIsPrefetching] = useState(false); // ✅ separate state for prefetch
+
+  const didFetch = useRef(false);
+
+  const userId = 1; // hardcode for now
+
+  const fetchRecommendations = async (append = false) => {
+    try {
+      if (!append) setLoading(true);
+      else setIsPrefetching(true);
+
+      const res = await axios.get(
+        `http://localhost:5000/api/recommendations/fetch/${userId}`
+      );
+
+      if (Array.isArray(res.data)) {
+        setBooks(prev => (append ? [...prev, ...res.data] : res.data));
+      }
+    } catch (err) {
+      console.error('❌ Failed to fetch recommendations:', err);
+    } finally {
+      if (!append) setLoading(false);
+      else setIsPrefetching(false);
+    }
+  };
+
+  // initial fetch
+  useEffect(() => {
+    if (didFetch.current) return; // already fetched
+    didFetch.current = true;
+
+    console.log("🔥 useEffect triggered: fetching recommendations...");
+    fetchRecommendations(false);
+  }, []);
+
+  // prefetch when only 10 cards remain
+  useEffect(() => {
+    if (books.length === 0) return; // skip until initial load finishes
+
+    const remaining = books.length - currentIndex;
+
+    if (remaining <= 10 && !isPrefetching && currentIndex > 0) {
+      console.log('⚡ Prefetching more recommendations...');
+      fetchRecommendations(true);
+    }
+  }, [currentIndex, books.length]);
+
+  const handleSwipe = (dir: string, title: string) => {
+    console.log(`Swiped ${dir} on ${title}`);
+  };
+
   return (
     <>
+      <LoadingOverlay show={loading} text="Fetching recommendations..." />
       <Logo position="top" />
       <div className="recommendation-page">
-          {currentIndex < books.length && (
-            <BookCard
-              key={books[currentIndex].title + currentIndex}
-              title={books[currentIndex].title}
-              author={books[currentIndex].author}
-              release={books[currentIndex].release}
-              description={books[currentIndex].description}
-              image={books[currentIndex].image}
-              genres={books[currentIndex].genres}
-              onSwipe={handleSwipe} // optional logging
-              onSwipedComplete={() => setCurrentIndex(prev => prev + 1)} // increment AFTER animation
-              style={{ zIndex: 1 }}
-            />
-          )}
+        {books.length > 0 && currentIndex < books.length && (
+          <BookCard
+            key={books[currentIndex].googleBooksId}
+            title={books[currentIndex].title}
+            author={books[currentIndex].authors}
+            release={books[currentIndex].publishedDate ?? 'Unknown'}
+            description={books[currentIndex].description}
+            image={books[currentIndex].coverUrl}
+            genres={books[currentIndex].categories}
+            onSwipe={handleSwipe}
+            onSwipedComplete={() => setCurrentIndex(prev => prev + 1)}
+            style={{ zIndex: books.length - currentIndex }}
+          />
+        )}
+
+        {/* optional small overlay when prefetching */}
+        {isPrefetching && (
+          <div className="prefetch-indicator">Loading more books...</div>
+        )}
+
         <NavigationPane />
       </div>
     </>

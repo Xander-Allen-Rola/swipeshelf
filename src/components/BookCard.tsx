@@ -14,9 +14,15 @@ const BookCard = ({ title, author, release, description, genres = [], image, onS
   const [removed, setRemoved] = useState(false);
   const [likeOpacity, setLikeOpacity] = useState(0);
   const [dislikeOpacity, setDislikeOpacity] = useState(0);
+  const [fadeIn, setFadeIn] = useState(false);
 
   const startX = useRef(0);
   const startY = useRef(0);
+
+  // Trigger fade-in on mount
+  useEffect(() => {
+    setFadeIn(true);
+  }, []);
 
   const handleMouseDown = (e) => {
     setIsDragging(true);
@@ -30,7 +36,6 @@ const BookCard = ({ title, author, release, description, genres = [], image, onS
     const dy = e.clientY - startY.current;
     setPosition({ x: dx, y: dy });
 
-    // Update overlay opacity
     if (dx > 0) {
       setLikeOpacity(Math.min(dx / 150, 1));
       setDislikeOpacity(0);
@@ -47,7 +52,6 @@ const BookCard = ({ title, author, release, description, genres = [], image, onS
     if (!isDragging) return;
     setIsDragging(false);
 
-    // Reset overlays
     setLikeOpacity(0);
     setDislikeOpacity(0);
 
@@ -64,7 +68,6 @@ const BookCard = ({ title, author, release, description, genres = [], image, onS
     }
   };
 
-  // Touch equivalents
   const handleTouchMove = (e) => {
     if (!isDragging) return;
     const dx = e.touches[0].clientX - startX.current;
@@ -87,8 +90,8 @@ const BookCard = ({ title, author, release, description, genres = [], image, onS
     if (swiped) {
       const timer = setTimeout(() => {
         setRemoved(true);
-        onSwipedComplete && onSwipedComplete(); // notify parent AFTER swipe animation
-      }, 300); // match your CSS transition duration
+        onSwipedComplete && onSwipedComplete();
+      }, 300);
       return () => clearTimeout(timer);
     }
   }, [swiped]);
@@ -108,14 +111,13 @@ const BookCard = ({ title, author, release, description, genres = [], image, onS
   };
 
   return (
-     <div
+    <div
       className={`flip-card${flipped ? ' flipped' : ''}`}
       style={{
-        ...style, // apply parent styles (z-index)
+        ...style,
         transform: `translate(${position.x}px, ${position.y}px) rotate(${position.x / 20}deg)`,
         transition: isDragging ? 'none' : 'transform 0.3s ease, opacity 0.3s ease',
-        opacity: swiped ? 0 : 1,
-        
+        opacity: swiped ? 0 : fadeIn ? 1 : 0,
       }}
       onClick={() => setFlipped(f => !f)}
       onMouseDown={handleMouseDown}
@@ -130,7 +132,6 @@ const BookCard = ({ title, author, release, description, genres = [], image, onS
       onTouchMove={handleTouchMove}
       onTouchEnd={handleMouseUp}
     >
-      {/* Overlays */}
       <div className="like-overlay" style={{ opacity: likeOpacity }}>LIKE</div>
       <div className="dislike-overlay" style={{ opacity: dislikeOpacity }}>NOPE</div>
 
