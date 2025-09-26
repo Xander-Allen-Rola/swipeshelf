@@ -6,7 +6,7 @@ import likeIcon from '../assets/like.png';
 import dislikeIcon from '../assets/dislike.png';
 import undoIcon from '../assets/undo.png';
 
-const BookCard = ({ title, author, release, description, genres = [], image, onSwipe }) => {
+const BookCard = ({ title, author, release, description, genres = [], image, onSwipe, onSwipedComplete, style = {} }) => {
   const [flipped, setFlipped] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
@@ -85,7 +85,10 @@ const BookCard = ({ title, author, release, description, genres = [], image, onS
 
   useEffect(() => {
     if (swiped) {
-      const timer = setTimeout(() => setRemoved(true), 300);
+      const timer = setTimeout(() => {
+        setRemoved(true);
+        onSwipedComplete && onSwipedComplete(); // notify parent AFTER swipe animation
+      }, 300); // match your CSS transition duration
       return () => clearTimeout(timer);
     }
   }, [swiped]);
@@ -105,14 +108,14 @@ const BookCard = ({ title, author, release, description, genres = [], image, onS
   };
 
   return (
-    <div
+     <div
       className={`flip-card${flipped ? ' flipped' : ''}`}
       style={{
+        ...style, // apply parent styles (z-index)
         transform: `translate(${position.x}px, ${position.y}px) rotate(${position.x / 20}deg)`,
         transition: isDragging ? 'none' : 'transform 0.3s ease, opacity 0.3s ease',
         opacity: swiped ? 0 : 1,
-        cursor: 'grab',
-        position: 'relative',
+        
       }}
       onClick={() => setFlipped(f => !f)}
       onMouseDown={handleMouseDown}
