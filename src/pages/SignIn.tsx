@@ -37,10 +37,10 @@ function SignIn() {
 
       // Save JWT + userId
       localStorage.setItem("token", data.token);
-      localStorage.setItem("userId", data.userId);
+      localStorage.setItem("userId", data.user.id);
 
       // Update context
-      setUser({ id: data.userId, token: data.token });
+      setUser({ id: data.user.id, token: data.token });
 
       console.log("✅ Login successful:", data);
 
