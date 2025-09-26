@@ -8,26 +8,33 @@ import LandingPage from './pages/LandingPage';
 import ProfilePage from './pages/ProfilePage';
 import GenresPage from './pages/GenresPage';
 import RecommendationPage from './pages/RecommendationPage';
+import { AuthProvider } from './contexts/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
     <Router>
-      <Routes>
-        {/* Always start here */}
-        <Route path="/" element={<LandingPage />} />
+      <AuthProvider>
+        <Routes>
+          {/* Public */}
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/verify" element={<VerificationPage />} />
+          <Route path="/registration" element={<RegistrationPage />} />
+          <Route path="/registration/pfp" element={<ProfilePage />} />
+          <Route path="/registration/pfp/genres" element={<GenresPage />} />
 
-        {/* Auth routes */}
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/verify" element={<VerificationPage />} />
-
-        {/* Registration flow (nested) */}
-        <Route path="/registration" element={<RegistrationPage />} />
-        <Route path="/registration/pfp" element={<ProfilePage />} />
-        <Route path="/registration/pfp/genres" element={<GenresPage />} />
-
-        {/* After onboarding */}
-        <Route path="/recommendations" element={<RecommendationPage />} />
-      </Routes>
+          {/* Protected */}
+          <Route
+            path="/recommendations"
+            element={
+              <ProtectedRoute>
+                <RecommendationPage />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </AuthProvider>
     </Router>
   );
 }

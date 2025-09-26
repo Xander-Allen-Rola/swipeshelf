@@ -70,7 +70,7 @@ function GenresPage() {
       }
 
       console.log("✅ Genres saved successfully");
-      navigate("/recommendations"); // Navigate to recommendations page
+      navigate("/signin"); // Navigate to sign-in page
     } catch (err) {
       console.error("❌ Error saving genres:", err);
     }

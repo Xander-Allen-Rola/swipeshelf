@@ -4,12 +4,14 @@ import './SignIn.css';
 import BackArrow from '../components/BackArrow';
 import Button from '../components/Button';
 import Logo from '../components/Logo';
+import { useAuth } from "../contexts/AuthContext";
 
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { setUser } = useAuth();
 
   const handleSignIn = async () => {
     setError("");
@@ -33,12 +35,16 @@ function SignIn() {
         return;
       }
 
-      // Save JWT token for authenticated requests
+      // Save JWT + userId
       localStorage.setItem("token", data.token);
+      localStorage.setItem("userId", data.userId);
+
+      // Update context
+      setUser({ id: data.userId, token: data.token });
 
       console.log("✅ Login successful:", data);
 
-      // Route to recommendations page
+      // Redirect
       navigate("/recommendations");
     } catch (err) {
       console.error("Login error:", err);
