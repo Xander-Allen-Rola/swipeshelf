@@ -69,9 +69,20 @@ function RecommendationPage() {
     }
   }, [currentIndex, books.length]);
 
-  const handleSwipe = (dir: string, title: string) => {
-    console.log(`Swiped ${dir} on ${title}`);
+  const handleSwipe = async (dir: string, book: Book) => {
+    console.log(`Swiped ${dir} on ${book.title}`);
+
+    try {
+      await axios.post("http://localhost:5000/api/markSeen", {
+        userId,
+        googleBooksId: book.googleBooksId,
+      });
+      console.log(`✅ Book ${book.title} marked as seen`);
+    } catch (err) {
+      console.error("❌ Failed to mark book as seen:", err);
+    }
   };
+
 
   return (
     <>
@@ -87,7 +98,7 @@ function RecommendationPage() {
             description={books[currentIndex].description}
             image={books[currentIndex].coverUrl}
             genres={books[currentIndex].categories}
-            onSwipe={handleSwipe}
+            onSwipe={(dir) => handleSwipe(dir, books[currentIndex])}
             onSwipedComplete={() => setCurrentIndex(prev => prev + 1)}
             style={{ zIndex: books.length - currentIndex }}
           />
