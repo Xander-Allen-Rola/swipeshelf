@@ -71,6 +71,22 @@ function RecommendationPage() {
 
   const handleSwipe = async (dir: string, book: Book) => {
     console.log(`Swiped ${dir} on ${book.title}`);
+    if (dir === 'right') {
+      try {
+        await axios.post("http://localhost:5000/api/shelves/add-to-to-read", {
+          userId,
+          book: {
+            googleBooksId: book.googleBooksId,
+            title: book.title,
+            coverUrl: book.coverUrl,
+            description: book.description,
+          },
+        });
+        console.log(`✅ Book ${book.title} added to To Read shelf`);
+      } catch (err) {
+        console.error("❌ Failed to add book to To Read shelf:", err);
+      }
+    }
 
     try {
       await axios.post("http://localhost:5000/api/markSeen", {
