@@ -63,7 +63,7 @@ function RecommendationPage() {
 
     const remaining = books.length - currentIndex;
 
-    if (remaining <= 10 && !isPrefetching && currentIndex > 0) {
+    if (remaining <= 3 && !isPrefetching && currentIndex > 0) {
       console.log('⚡ Prefetching more recommendations...');
       fetchRecommendations(true);
     }
