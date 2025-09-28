@@ -23,6 +23,7 @@ function RecommendationPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [isPrefetching, setIsPrefetching] = useState(false); // ✅ separate state for prefetch
+  const [swipedStack, setSwipedStack] = useState<Book[]>([]);
 
   const didFetch = useRef(false);
 
@@ -71,6 +72,8 @@ function RecommendationPage() {
 
   const handleSwipe = async (dir: string, book: Book) => {
     console.log(`Swiped ${dir} on ${book.title}`);
+    // Push swiped card to stack for undo
+    setSwipedStack(prev => [book, ...prev]);
     if (dir === 'right') {
       try {
         await axios.post("http://localhost:5000/api/shelves/add-to-to-read", {
@@ -99,6 +102,15 @@ function RecommendationPage() {
     }
   };
 
+  const handleUndo = () => {
+    if (swipedStack.length === 0) return;
+
+    const [lastSwiped, ...rest] = swipedStack;
+
+    setSwipedStack(rest);
+    setCurrentIndex(prev => prev - 1); // go back to previous card
+  };
+
 
   return (
     <>
@@ -116,6 +128,7 @@ function RecommendationPage() {
             genres={books[currentIndex].categories}
             onSwipe={(dir) => handleSwipe(dir, books[currentIndex])}
             onSwipedComplete={() => setCurrentIndex(prev => prev + 1)}
+            onUndo={handleUndo}
             style={{ zIndex: books.length - currentIndex }}
           />
         )}

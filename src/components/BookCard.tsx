@@ -6,7 +6,7 @@ import likeIcon from '../assets/like.png';
 import dislikeIcon from '../assets/dislike.png';
 import undoIcon from '../assets/undo.png';
 
-const BookCard = ({ title, author, release, description, genres = [], image, onSwipe, onSwipedComplete, style = {} }) => {
+const BookCard = ({ title, author, release, description, genres = [], image, onSwipe, onSwipedComplete, onUndo, style = {} }) => {
   const [flipped, setFlipped] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
@@ -23,6 +23,15 @@ const BookCard = ({ title, author, release, description, genres = [], image, onS
   useEffect(() => {
     setFadeIn(true);
   }, []);
+
+  useEffect(() => {
+    // reset swipe state on mount or key change
+    setPosition({ x: 0, y: 0 });
+    setSwiped(false);
+    setRemoved(false);
+    setLikeOpacity(0);
+    setDislikeOpacity(0);
+  }, [title]); // or use `key` as dependency
 
   const handleMouseDown = (e) => {
     setIsDragging(true);
@@ -150,7 +159,7 @@ const BookCard = ({ title, author, release, description, genres = [], image, onS
           </div>
           <div className="card-buttons">
             <img src={dislikeIcon} alt="Dislike" className="dislike-button" onClick={handleMouseUpLeft} />
-            <img src={undoIcon} alt="Undo" className="undo-button" />
+            <img src={undoIcon} alt="Undo" className="undo-button" onClick={onUndo} />
             <img src={likeIcon} alt="Like" className="like-button" onClick={handleMouseUpRight} />
           </div>
         </div>
