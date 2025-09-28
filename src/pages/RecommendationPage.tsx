@@ -106,7 +106,7 @@ function RecommendationPage() {
 
         {/* optional small overlay when prefetching */}
         {isPrefetching && (
-          <div className="prefetch-indicator">Loading more books...</div>
+          <div className="prefetch-indicator">Loading more books</div>
         )}
 
         <NavigationPane />
