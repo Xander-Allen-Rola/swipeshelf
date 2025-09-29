@@ -7,6 +7,7 @@ import SignIn from './pages/SignIn';
 import LandingPage from './pages/LandingPage';
 import ProfilePage from './pages/ProfilePage';
 import GenresPage from './pages/GenresPage';
+import ShelfPage from './pages/ShelfPage';
 import RecommendationPage from './pages/RecommendationPage';
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -30,6 +31,15 @@ function App() {
             element={
               <ProtectedRoute>
                 <RecommendationPage />
+              </ProtectedRoute>
+            }
+          />
+          {/* Protected */}
+          <Route
+            path="/shelf"
+            element={
+              <ProtectedRoute>
+                <ShelfPage />
               </ProtectedRoute>
             }
           />

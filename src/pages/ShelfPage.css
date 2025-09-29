@@ -1,0 +1,46 @@
+.shelf {
+    top: 0;
+    height: 135px;
+    background: linear-gradient(
+        to bottom,
+        rgba(209, 199, 183, 0) 0%,
+        rgb(209, 199, 183, 1) 90%
+    );
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-end;
+}
+
+.shelves-container {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 190px;
+    padding-bottom: 110px;
+    gap: 50px;
+    overflow-y: auto; /* Add this for scrolling */
+}
+
+.shelf-label {
+    position: absolute;
+    top: 150px;
+    font-size: 12px;
+    opacity: 0.5;
+    display: flex;
+    align-items: center;
+    left: 50%;
+    transform: translateX(-50%);
+    gap: 10px;
+    width: 95%;
+    white-space: nowrap;
+    font-weight: 600;
+    
+}
+
+.shelf-label-line {
+    height: 1px;
+    background-color: #2c2c2c;
+    opacity: 0.5;
+}
