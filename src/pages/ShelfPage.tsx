@@ -2,6 +2,7 @@ import './ShelfPage.css';
 import Logo from "../components/Logo";
 import NavigationPane from '../components/NavigationPane';
 import ShelfBook from '../components/ShelfBook';
+import DeleteConfirmPopup from '../components/DeleteConfirmPopup';
 import { useState } from 'react';
 
 const shelfBooks = [
@@ -70,6 +71,7 @@ function chunkArray<T>(array: T[], size: number): T[][] {
 function ShelfPage() {
   const [isSelectMode, setIsSelectMode] = useState(false);
   const [selectedBooks, setSelectedBooks] = useState<number[]>([]);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const shelves = chunkArray(shelfBooks, 4);
 
   const handleSelectToggle = () => {
@@ -88,14 +90,37 @@ function ShelfPage() {
     );
   };
 
+  const handleFinished = () => {
+    console.log('Marked finished books:', selectedBooks.join(', '));
+    // Clear selections after marking as finished
+    setSelectedBooks([]);
+  };
+
+  const handleDelete = () => {
+    if (selectedBooks.length === 0) {
+      return;
+    }
+    setShowDeleteConfirm(true);
+  };
+
+  const confirmDelete = () => {
+    console.log('Deleted books:', selectedBooks.join(', '));
+    setSelectedBooks([]);
+    setShowDeleteConfirm(false);
+  };
+
+  const cancelDelete = () => {
+    setShowDeleteConfirm(false);
+  };
+
   return (
     <>
       <Logo position="top" />
       <div className="shelf-controls">
         {isSelectMode && (
           <div className="edit-buttons">
-            <div className="finished-button">Finished</div>
-            <div className="delete-button">Delete</div>
+            <div className="finished-button" onClick={handleFinished}>Finished</div>
+            <div className="delete-button" onClick={handleDelete}>Delete</div>
           </div>
         )}
         <div className="select-button" onClick={handleSelectToggle}>
@@ -125,6 +150,12 @@ function ShelfPage() {
           </div>
         ))}
       </div>
+      <DeleteConfirmPopup
+        isVisible={showDeleteConfirm}
+        bookCount={selectedBooks.length}
+        onConfirm={confirmDelete}
+        onCancel={cancelDelete}
+      />
       <NavigationPane />
     </>
   );
