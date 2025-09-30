@@ -18,7 +18,7 @@ function ShelfBook({ title, coverURL, description, status, isSelectMode = false,
     if (isSelectMode && onSelect) {
       onSelect();
     } else {
-      setModalOpen(true);
+      setShowCard(true); // Changed from setModalOpen to setShowCard
     }
   };
 
