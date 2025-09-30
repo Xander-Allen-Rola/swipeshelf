@@ -7,15 +7,31 @@ interface ShelfBookProps {
   coverURL: string;
   description: string;
   status?: string;
+  isSelectMode?: boolean;
+  isSelected?: boolean;
+  onSelect?: () => void;
 }
 
-function ShelfBook({ title, coverURL, description, status }: ShelfBookProps) {
+function ShelfBook({ title, coverURL, description, status, isSelectMode = false, isSelected = false, onSelect }: ShelfBookProps) {
   const [showCard, setShowCard] = useState(false);
+  const handleClick = () => {
+    if (isSelectMode && onSelect) {
+      onSelect();
+    } else {
+      setModalOpen(true);
+    }
+  };
 
   return (
     <>
-      <div className="shelf-book"
-        onClick={() => setShowCard(true)}>
+      <div 
+        className={`shelf-book ${isSelectMode ? 'select-mode' : ''} ${isSelected ? 'selected' : ''}`}
+        onClick={handleClick}>
+        {isSelectMode && (
+          <div className="selection-indicator">
+            {isSelected ? '✓' : ''}
+          </div>
+        )}
         <img src={coverURL} alt={title} className="cover" />
       </div>
 

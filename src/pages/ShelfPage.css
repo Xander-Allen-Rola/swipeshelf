@@ -44,3 +44,37 @@
     background-color: #2c2c2c;
     opacity: 0.5;
 }
+
+.shelf-controls {
+    position: absolute;
+    top: 120px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+    font-size: 14px;
+    
+}
+
+.edit-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.finished-button {
+    color: green;
+}
+
+.delete-button {
+    color: red;
+}
+
+.select-button .delete-button .finished-button {
+    cursor: pointer;
+}
+
+.select-button {
+    margin-left: auto;
+    font-weight: 600;
+}

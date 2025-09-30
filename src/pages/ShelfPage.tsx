@@ -2,6 +2,7 @@ import './ShelfPage.css';
 import Logo from "../components/Logo";
 import NavigationPane from '../components/NavigationPane';
 import ShelfBook from '../components/ShelfBook';
+import { useState } from 'react';
 
 const shelfBooks = [
   {
@@ -67,11 +68,40 @@ function chunkArray<T>(array: T[], size: number): T[][] {
 }
 
 function ShelfPage() {
+  const [isSelectMode, setIsSelectMode] = useState(false);
+  const [selectedBooks, setSelectedBooks] = useState<number[]>([]);
   const shelves = chunkArray(shelfBooks, 4);
+
+  const handleSelectToggle = () => {
+    setIsSelectMode(!isSelectMode);
+    if (isSelectMode) {
+      // Clear selections when exiting select mode
+      setSelectedBooks([]);
+    }
+  };
+
+  const handleBookSelect = (bookId: number) => {
+    setSelectedBooks(prev => 
+      prev.includes(bookId) 
+        ? prev.filter(id => id !== bookId)
+        : [...prev, bookId]
+    );
+  };
 
   return (
     <>
       <Logo position="top" />
+      <div className="shelf-controls">
+        {isSelectMode && (
+          <div className="edit-buttons">
+            <div className="finished-button">Finished</div>
+            <div className="delete-button">Delete</div>
+          </div>
+        )}
+        <div className="select-button" onClick={handleSelectToggle}>
+          {isSelectMode ? 'Done' : 'Select'}
+        </div>
+      </div>
       <div className="shelf-label">
         <div className="shelf-label-line" style={{ width: "6%" }} />
           To Read
@@ -87,6 +117,9 @@ function ShelfPage() {
                 coverURL={book.coverURL}
                 description={book.description}
                 status={book.status}
+                isSelectMode={isSelectMode}
+                isSelected={selectedBooks.includes(book.id)}
+                onSelect={() => handleBookSelect(book.id)}
               />
             ))}
           </div>

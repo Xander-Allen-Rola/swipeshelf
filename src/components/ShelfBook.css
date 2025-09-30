@@ -10,3 +10,36 @@
     height: 100%;
     object-fit: cover;
 }
+
+/* Add to ShelfBook.css */
+.shelf-book.select-mode {
+  position: relative;
+}
+
+.shelf-book.selected {
+  opacity: 0.8;
+  transform: scale(0.95);
+}
+
+.selection-indicator {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #007AFF;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  border: 2px solid white;
+  z-index: 2;
+}
+
+.shelf-book.select-mode:not(.selected) .selection-indicator {
+  background-color: transparent;
+  border: 2px solid #ccc;
+}
