@@ -16,12 +16,14 @@ const ShelfCard = ({ title, coverURL, description, onClose }: ShelfCardProps) =>
   useEffect(() => {
     // Fade in on mount
     setIsVisible(true);
+    document.body.style.overflow = 'hidden';
   }, []);
 
   const handleClose = () => {
     // Start fade out animation
     setIsVisible(false);
     // Wait for animation to complete before calling onClose
+    document.body.style.overflow = 'unset';
     setTimeout(() => {
       onClose();
     }, 300); // Match this with your CSS transition duration
@@ -29,21 +31,23 @@ const ShelfCard = ({ title, coverURL, description, onClose }: ShelfCardProps) =>
 
   return (
     <>
-    <div className={`shelf-backdrop ${isVisible ? 'visible' : ''}`}
-        onClick={handleClose} />
-    <div
-      className={`shelf-flip-card${flipped ? ' flipped' : ''} ${isVisible ? 'visible' : ''}`}
-      onClick={() => setFlipped(f => !f)}
-    >
-      <div className="shelf-flip-card-front">
-        {coverURL && <div className="shelf-card-image" style={{ backgroundImage: `url(${coverURL})` }} />}
-        <div className="shelf-card-content regular">
+    <div className="shelf-card-container">
+      <div className={`shelf-backdrop ${isVisible ? 'visible' : ''}`}
+          onClick={handleClose} />
+      <div
+        className={`shelf-flip-card${flipped ? ' flipped' : ''} ${isVisible ? 'visible' : ''}`}
+        onClick={() => setFlipped(f => !f)}
+      >
+        <div className="shelf-flip-card-front">
+          {coverURL && <div className="shelf-card-image" style={{ backgroundImage: `url(${coverURL})` }} />}
+          <div className="shelf-card-content regular">
+          </div>
         </div>
-      </div>
-      <div className="shelf-flip-card-back">
-        <div className="shelf-card-content flipped">
-          <h2>{title}</h2>
-          <p className="shelf-book-description">{description}</p>
+        <div className="shelf-flip-card-back">
+          <div className="shelf-card-content flipped">
+            <h2>{title}</h2>
+            <p className="shelf-book-description">{description}</p>
+          </div>
         </div>
       </div>
     </div>

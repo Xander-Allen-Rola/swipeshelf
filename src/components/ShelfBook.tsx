@@ -1,6 +1,7 @@
 import './ShelfBook.css';
 import ShelfCard from '../components/ShelfCard';
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 
 interface ShelfBookProps {
   title: string;
@@ -35,14 +36,15 @@ function ShelfBook({ title, coverURL, description, status, isSelectMode = false,
         <img src={coverURL} alt={title} className="cover" />
       </div>
 
-        {showCard && (
+        {showCard && createPortal(
           <ShelfCard
             title={title}
             coverURL={coverURL}
             description={description}
             status={status}
             onClose={() => setShowCard(false)}
-          />
+          />,
+          document.body
         )}
     </>
   );
