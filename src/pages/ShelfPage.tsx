@@ -80,10 +80,39 @@ function ShelfPage() {
     setShowDeleteConfirm(true);
   };
 
-  const confirmDelete = () => {
-    console.log('Deleted books:', selectedBooks.join(', '));
-    setSelectedBooks([]);
-    setShowDeleteConfirm(false);
+  const confirmDelete = async () => {
+    try {
+      console.log('🗑️ Deleting books:', selectedBooks.join(', '), 'from User ID:', userId);
+      
+      const response = await fetch('http://localhost:5000/api/shelves/delete-books', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: userId,
+          bookIds: selectedBooks
+        })
+      });
+
+      const data = await response.json();
+      
+      if (response.ok) {
+        console.log('✅ Delete successful:', data);
+        // Remove deleted books from local state
+        setToReadShelfBooks(prev => 
+          prev.filter(book => !selectedBooks.includes(book.id))
+        );
+      } else {
+        console.error('❌ Delete failed:', data);
+      }
+      
+    } catch (err) {
+      console.error('❌ Error deleting books:', err);
+    } finally {
+      setSelectedBooks([]);
+      setShowDeleteConfirm(false);
+    }
   };
 
   const cancelDelete = () => {
