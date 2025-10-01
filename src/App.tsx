@@ -25,8 +25,6 @@ function App() {
           <Route path="/registration/pfp" element={<ProfilePage />} />
           <Route path="/registration/pfp/genres" element={<GenresPage />} />
 
-          <Route path="/test-shelf" element={<ShelfPage />} />
-
           {/* Protected */}
           <Route
             path="/recommendations"
