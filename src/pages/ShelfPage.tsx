@@ -187,6 +187,9 @@ function ShelfPage() {
               <div className="delete-button" onClick={handleDelete}>Delete</div>
             </div>
           )}
+          <div className="items-selected-count">
+            {isSelectMode && `${selectedBooks.length} items selected`}
+          </div>
           <div className="select-button" onClick={handleSelectToggle}>
             {isSelectMode ? 'Done' : 'Select'}
           </div>

@@ -21,11 +21,11 @@ function NavigationPane() {
       </Link>
 
       {/* Search (placeholder → you can adjust the path later) */}
-      <Link to="/recommendations">
+      <Link to="/search">
         <img
           src={searchBook}
           alt="Search"
-          className={`nav-icon ${location.pathname === "/recommendations" ? "active" : ""}`}
+          className={`nav-icon ${location.pathname === "/search" ? "active" : ""}`}
         />
       </Link>
 
