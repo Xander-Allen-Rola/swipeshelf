@@ -17,4 +17,10 @@
 .nav-icon {
     width: 40px;
     cursor: pointer;
+    opacity: 50%;
+    transition: opacity 0.2s ease;
+}
+
+.nav-icon.active {
+  opacity: 100%;
 }
