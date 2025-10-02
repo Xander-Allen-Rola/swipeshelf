@@ -1,10 +1,13 @@
 .shelf-page {
     position: absolute;
-    top: 0;
+    top: 130px;
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
     max-width: 500px; /* Match the max-width of #root (temporary) */
+    display : flex;
+    flex-direction: column;
+    padding-bottom: 50px;
 }
 
 .shelf {
@@ -28,21 +31,23 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    margin-top: 190px;
-    padding-bottom: 110px;
+    padding-bottom: 80px;
     gap: 50px;
     overflow-y: auto; /* Add this for scrolling */
 }
 
+.shelf-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
 .shelf-label {
-    position: absolute;
-    top: 150px;
     font-size: 12px;
     opacity: 0.5;
     display: flex;
     align-items: center;
-    left: 50%;
-    transform: translateX(-50%);
     gap: 10px;
     width: 95%;
     white-space: nowrap;
@@ -57,8 +62,6 @@
 }
 
 .shelf-controls {
-    position: absolute;
-    top: 120px;
     display: flex;
     justify-content: space-between;
     width: 100%;
