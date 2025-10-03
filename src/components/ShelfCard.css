@@ -121,4 +121,22 @@
   border-radius: 16px;
 }
 
+.option-line {
+  width: 20px;
+  height: 1px;
+  background-color: #8B5E3C;
+  border-radius: 50%;
+}
+
+.shelf-options {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 3; /* above the card content */
+  cursor: pointer;
+}
+
 
