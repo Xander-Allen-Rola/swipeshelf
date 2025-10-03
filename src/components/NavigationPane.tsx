@@ -11,12 +11,13 @@ function NavigationPane() {
 
   return (
     <nav className="navigation-pane">
-      {/* Personal Shelf */}
-      <Link to="/shelf">
+
+      {/* Recommendations */}
+      <Link to="/recommendations">
         <img
-          src={personalShelf}
-          alt="Personal Shelf"
-          className={`nav-icon ${location.pathname === "/shelf" ? "active" : ""}`}
+          src={recommendation}
+          alt="Recommendations"
+          className={`nav-icon ${location.pathname === "/recommendations" ? "active" : ""}`}
         />
       </Link>
 
@@ -29,23 +30,23 @@ function NavigationPane() {
         />
       </Link>
 
-      {/* Recommendations */}
-      <Link to="/recommendations">
+      {/* Personal Shelf */}
+      <Link to="/shelf">
         <img
-          src={recommendation}
-          alt="Recommendations"
-          className={`nav-icon ${location.pathname === "/recommendations" ? "active" : ""}`}
+          src={personalShelf}
+          alt="Personal Shelf"
+          className={`nav-icon ${location.pathname === "/shelf" ? "active" : ""}`}
         />
       </Link>
 
-      {/* Friends */}
+      {/* Friends 
       <Link to="/friends">
         <img
           src={friends}
           alt="Friends"
           className={`nav-icon ${location.pathname === "/friends" ? "active" : ""}`}
         />
-      </Link>
+      </Link>*/}
 
       {/* Profile */}
       <Link to="/profile">
