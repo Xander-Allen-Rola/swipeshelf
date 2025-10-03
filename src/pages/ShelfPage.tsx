@@ -206,6 +206,7 @@ function ShelfPage() {
                 {shelf.map((book) => (
                   <ShelfBook
                     key={book.id}
+                    id={book.id}
                     title={book.title}
                     coverURL={book.coverURL}
                     description={book.description}
@@ -232,6 +233,7 @@ function ShelfPage() {
                 {shelf.map((book) => (
                   <ShelfBook
                     key={book.id}
+                    id={book.id}
                     title={book.title}
                     coverURL={book.coverURL}
                     description={book.description}

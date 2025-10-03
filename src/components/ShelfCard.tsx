@@ -5,6 +5,7 @@ import './ShelfOptions';
 import ShelfOptions from './ShelfOptions';
 
 interface ShelfCardProps {
+  id: number;
   title: string;
   coverURL: string;
   description: string;
@@ -12,7 +13,7 @@ interface ShelfCardProps {
   onClose: () => void;
 }
 
-const ShelfCard = ({ title, coverURL, description, onClose }: ShelfCardProps) => {
+const ShelfCard = ({ id, title, coverURL, description, onClose }: ShelfCardProps) => {
   const [flipped, setFlipped] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
@@ -70,7 +71,11 @@ const ShelfCard = ({ title, coverURL, description, onClose }: ShelfCardProps) =>
         </div>
       </div>
       <AnimatePresence>
-        {showOptions && <ShelfOptions key="shelf-options" onClose={() => setShowOptions(false)} />}
+        {showOptions && 
+        <ShelfOptions 
+        id={id}
+        key="shelf-options" 
+        onClose={() => setShowOptions(false)} />}
       </AnimatePresence>
     </div>
     </>

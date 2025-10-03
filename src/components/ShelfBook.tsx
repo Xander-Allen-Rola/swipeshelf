@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { createPortal } from 'react-dom';
 
 interface ShelfBookProps {
+  id: number;
   title: string;
   coverURL: string;
   description: string;
@@ -13,7 +14,7 @@ interface ShelfBookProps {
   onSelect?: () => void;
 }
 
-function ShelfBook({ title, coverURL, description, status, isSelectMode = false, isSelected = false, onSelect }: ShelfBookProps) {
+function ShelfBook({ id, title, coverURL, description, status, isSelectMode = false, isSelected = false, onSelect }: ShelfBookProps) {
   const [showCard, setShowCard] = useState(false);
   const handleClick = () => {
     if (isSelectMode && onSelect) {
@@ -38,6 +39,7 @@ function ShelfBook({ title, coverURL, description, status, isSelectMode = false,
 
         {showCard && createPortal(
           <ShelfCard
+            id={id}
             title={title}
             coverURL={coverURL}
             description={description}
