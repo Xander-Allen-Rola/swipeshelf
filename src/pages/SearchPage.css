@@ -1,0 +1,61 @@
+.search-container {
+    position: absolute;
+    top: 140px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 110px;
+}
+
+.search-input {
+    box-sizing: border-box;
+    border-radius: 99px;
+    background: #FFFFFF;
+    padding: 10px;
+}
+
+.search-book-cover {
+    width: 60px;
+    height: 85px;
+}
+
+.search-book-card {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.search-book-info {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.search-book-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2c2c2c;
+}
+
+.search-book-authors {
+    font-size: 12px;
+    color: #555555;
+}
+
+.search-results-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.divider {
+    height: 2px;
+    background-color: #2C2C2C;
+    opacity: 25%;
+    border-radius: 99px;
+    margin-left: 65px;
+}
