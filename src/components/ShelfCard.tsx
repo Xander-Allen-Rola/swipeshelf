@@ -3,6 +3,7 @@ import { AnimatePresence } from "framer-motion";
 import './ShelfCard.css';
 import './ShelfOptions';
 import ShelfOptions from './ShelfOptions';
+import SearchOptions from './SearchOptions'; 
 
 interface ShelfCardProps {
   id: number;
@@ -10,10 +11,11 @@ interface ShelfCardProps {
   coverURL: string;
   description: string;
   status?: string;
+  variation: "shelf" | "search"; // 👈 new prop
   onClose: () => void;
 }
 
-const ShelfCard = ({ id, title, coverURL, description, onClose }: ShelfCardProps) => {
+const ShelfCard = ({ id, title, coverURL, variation, description, onClose }: ShelfCardProps) => {
   const [flipped, setFlipped] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
@@ -71,11 +73,12 @@ const ShelfCard = ({ id, title, coverURL, description, onClose }: ShelfCardProps
         </div>
       </div>
       <AnimatePresence>
-        {showOptions && 
-        <ShelfOptions 
-        id={id}
-        key="shelf-options" 
-        onClose={() => setShowOptions(false)} />}
+        {showOptions &&
+          (variation === "shelf" ? (
+            <ShelfOptions id={id} key="shelf-options" onClose={() => setShowOptions(false)} />
+          ) : (
+            <SearchOptions key="search-options" />
+          ))}
       </AnimatePresence>
     </div>
     </>

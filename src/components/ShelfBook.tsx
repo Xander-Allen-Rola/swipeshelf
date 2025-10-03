@@ -44,6 +44,7 @@ function ShelfBook({ id, title, coverURL, description, status, isSelectMode = fa
             coverURL={coverURL}
             description={description}
             status={status}
+            variation="shelf" // 👈 shows ShelfOptions
             onClose={() => setShowCard(false)}
           />,
           document.body
