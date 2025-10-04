@@ -77,7 +77,12 @@ const ShelfCard = ({ id, title, coverURL, variation, description, onClose }: She
           (variation === "shelf" ? (
             <ShelfOptions id={id} key="shelf-options" onClose={() => setShowOptions(false)} />
           ) : (
-            <SearchOptions key="search-options" />
+            <SearchOptions 
+              id={id}
+              title={title}
+              coverURL={coverURL}
+              description={description}
+              key="search-options" />
           ))}
       </AnimatePresence>
     </div>
