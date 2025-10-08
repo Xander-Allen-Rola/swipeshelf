@@ -7,6 +7,7 @@ import SearchOptions from './SearchOptions';
 
 interface ShelfCardProps {
   id: number;
+  googleBooksId: string;
   title: string;
   coverURL: string;
   description: string;
@@ -15,7 +16,7 @@ interface ShelfCardProps {
   onClose: () => void;
 }
 
-const ShelfCard = ({ id, title, coverURL, variation, description, onClose }: ShelfCardProps) => {
+const ShelfCard = ({ id, googleBooksId, title, coverURL, variation, description, onClose }: ShelfCardProps) => {
   const [flipped, setFlipped] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
@@ -75,7 +76,14 @@ const ShelfCard = ({ id, title, coverURL, variation, description, onClose }: She
       <AnimatePresence>
         {showOptions &&
           (variation === "shelf" ? (
-            <ShelfOptions id={id} key="shelf-options" onClose={() => setShowOptions(false)} />
+            <ShelfOptions 
+            id={id} 
+            googleBooksId={googleBooksId}
+            title={title}
+            coverURL={coverURL}
+            description={description}
+            key="shelf-options" 
+            onClose={() => setShowOptions(false)} />
           ) : (
             <SearchOptions 
               id={id}

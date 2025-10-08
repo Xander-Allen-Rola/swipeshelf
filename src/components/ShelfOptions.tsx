@@ -5,10 +5,14 @@ import { useState } from "react";
 
 interface ShelfOptionsProps {
   id: number; // shelfBookId
+  googleBooksId: string;
+  title: string;
+  coverURL?: string;
+  description?: string;
   onClose?: () => void;
 }
 
-function ShelfOptions({ id, onClose }: ShelfOptionsProps) {
+function ShelfOptions({ id, googleBooksId, title, coverURL, description, onClose }: ShelfOptionsProps) {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   // ✅ Move to Finished
@@ -78,6 +82,40 @@ function ShelfOptions({ id, onClose }: ShelfOptionsProps) {
     setShowDeleteConfirm(false);
   };
 
+  // ✅ Add to Favorites
+  const handleAddToFavorites = async () => {
+    try {
+      console.log("⭐ Adding to favorites...");
+
+      const response = await fetch("http://localhost:5000/api/shelves/add-to-favorites", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: Number(localStorage.getItem("userId") || 0),
+          book: {
+            googleBooksId,
+            title,
+            coverUrl: coverURL ?? null,
+            description: description ?? null
+          }
+        }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        console.log("✅ Added to favorites:", data);
+        // Optional: show toast instead of reload
+        window.location.reload();
+      } else {
+        console.error("❌ Failed to add to favorites:", data);
+      }
+    } catch (err) {
+      console.error("❌ Error adding to favorites:", err);
+    }
+  };
+
+
+
   return (
     <>
       <motion.div
@@ -89,6 +127,9 @@ function ShelfOptions({ id, onClose }: ShelfOptionsProps) {
       >
         <div className="shelf-option-text" onClick={handleFinished}>
           Mark as Finished
+        </div>
+        <div className="shelf-option-text" onClick={handleAddToFavorites}>
+          Add to Favorites
         </div>
         <div className="shelf-option-text">Recommend to Friends</div>
         <div

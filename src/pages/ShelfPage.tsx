@@ -207,6 +207,7 @@ function ShelfPage() {
                   <ShelfBook
                     key={book.id}
                     id={book.id}
+                    googleBooksId={book.googleBooksId}
                     title={book.title}
                     coverURL={book.coverURL}
                     description={book.description}
@@ -234,6 +235,7 @@ function ShelfPage() {
                   <ShelfBook
                     key={book.id}
                     id={book.id}
+                    googleBooksId={book.googleBooksId}
                     title={book.title}
                     coverURL={book.coverURL}
                     description={book.description}
