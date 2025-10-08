@@ -2,7 +2,7 @@ import './ShelfPage.css';
 import Logo from "../components/Logo";
 import NavigationPane from '../components/NavigationPane';
 import ShelfBook from '../components/ShelfBook';
-import DeleteConfirmPopup from '../components/DeleteConfirmPopup';
+import DeleteConfirmPopup from '../components/ConfirmPopup';
 import { useState, useEffect } from 'react';
 
 interface ShelfBook {
@@ -250,7 +250,10 @@ function ShelfPage() {
       </div>
       <DeleteConfirmPopup
         isVisible={showDeleteConfirm}
-        bookCount={selectedBooks.length}
+        title="Delete Books"
+        content={`Are you sure you want to delete ${selectedBooks.length === 1 ? 'this book' : `these ${selectedBooks.length} books`}?`}
+        confirmText="Delete"
+        cancelText="Cancel"
         onConfirm={confirmDelete}
         onCancel={cancelDelete}
       />

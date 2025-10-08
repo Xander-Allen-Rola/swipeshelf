@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import './ShelfOptions.css';
-import DeleteConfirmPopup from '../components/DeleteConfirmPopup';
+import DeleteConfirmPopup from './ConfirmPopup';
 import { useState } from "react";
 
 interface ShelfOptionsProps {
@@ -104,7 +104,10 @@ function ShelfOptions({ id, onClose }: ShelfOptionsProps) {
       {showDeleteConfirm && (
         <DeleteConfirmPopup
           isVisible={showDeleteConfirm}
-          bookCount={1}
+          title="Delete Book"
+          content="Are you sure you want to delete this book?"
+          confirmText="Delete"
+          cancelText="Cancel"
           onConfirm={confirmDelete}
           onCancel={cancelDelete}
         />

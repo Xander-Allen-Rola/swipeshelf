@@ -6,12 +6,14 @@ import './UserProfilePage.css';
 import Button from '../components/Button';
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import ConfirmPopup from "../components/ConfirmPopup";
 
 function UserProfilePage() {
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [finishedCount, setFinishedCount] = useState<number>(0);
     const [toReadCount, setToReadCount] = useState<number>(0);
+    const [showSignOutConfirm, setShowSignOutConfirm] = useState(false)
 
   useEffect(() => {
     const userId = localStorage.getItem('userId');  // 👈 still get it
@@ -56,17 +58,6 @@ function UserProfilePage() {
       })
       .catch(err => console.error(err));
     }, []);
-
-
-    const handleSignOut = () => {
-        // Remove token from local storage
-        localStorage.removeItem('token');
-
-        localStorage.clear();
-
-        // Redirect to landing page
-        navigate('/');
-    };
   return (
     <>
         <Logo position="top" />
@@ -100,7 +91,7 @@ function UserProfilePage() {
                 height="40px" 
                 padding="0px" 
                 text="Sign Out"
-                onClick={handleSignOut} />
+                onClick={() => setShowSignOutConfirm(true)} />
             </div>
             <div className="user-stats">
                 <div className="stat">
@@ -137,7 +128,20 @@ function UserProfilePage() {
                 </div>
             </div>
         </div>
+        
         <NavigationPane />
+        <ConfirmPopup
+            isVisible={showSignOutConfirm}
+            title="Sign Out"
+            content="Are you sure you want to sign out?"
+            confirmText="Sign Out"
+            cancelText="Cancel"
+            onConfirm={() => {
+                localStorage.clear();
+                navigate('/');
+            }}
+            onCancel={() => setShowSignOutConfirm(false)}
+        />
     </>
   );
 }
