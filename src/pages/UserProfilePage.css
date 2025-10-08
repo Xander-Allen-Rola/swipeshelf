@@ -1,0 +1,52 @@
+.user-profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 70vh;
+}
+
+.user-profile-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.user-stats {
+    display: flex;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%
+}
+
+.stat-line {
+    height: 40px;
+    width: 2px;
+    background-color: #2C2C2C;
+    opacity: 25%;
+}
+
+.stat {
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.favorite-book-cover {
+    width: 70px;
+    height: 100px;
+    object-fit: cover;
+}
+
+/* ...existing code... */
+.favorite-books-entries {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    max-width: calc(5 * 70px + 4 * 15px); /* 5 items + 4 gaps */
+    gap: 15px;
+    background: #D1C7B7;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 0 auto; /* Center the grid */
+}
+/* ...existing code... */
