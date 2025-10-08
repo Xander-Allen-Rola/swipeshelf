@@ -86,7 +86,9 @@ function UserProfilePage() {
                 />
                 )}
             <h2 style={{ fontSize: '30px' }}>{user ? `${user.firstName} ${user.lastName}` : 'Loading...'}</h2>
-            <p style={{ fontSize: '15px' }}>Add your bio here</p>
+            <p style={{ fontSize: '15px' }}>
+                {user?.bio ? user.bio : "Add your bio here"}
+            </p>
             <div className="user-profile-buttons">
               <Button 
                 width="150px" 
@@ -105,11 +107,11 @@ function UserProfilePage() {
                     <p style={{fontWeight: 'bold'}}>{finishedCount}</p>
                     <p>Books Finished</p>
                 </div>
-                <div className="stat-line" />
+                {/*<div className="stat-line" />
                 <div className="stat">
                     <p style={{fontWeight: 'bold'}}>//</p>
                     <p>Recommendations</p>
-                </div>
+                </div>*/}
                 <div className="stat-line" />
                 <div className="stat">
                     <p style={{fontWeight: 'bold'}}>{toReadCount}</p>
