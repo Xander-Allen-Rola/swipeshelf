@@ -49,4 +49,8 @@
     border-radius: 10px;
     margin: 0 auto; /* Center the grid */
 }
+
+.profile-picture {
+    border: #8b5e3c 5px solid;
+}
 /* ...existing code... */
