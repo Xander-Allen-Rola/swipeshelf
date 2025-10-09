@@ -77,7 +77,7 @@ const ShelfCard = ({ id, googleBooksId, title, coverURL, variation, description,
         {showOptions &&
           (variation === "shelf" ? (
             <ShelfOptions 
-            id={id} 
+            id={id}
             googleBooksId={googleBooksId}
             title={title}
             coverURL={coverURL}
@@ -86,7 +86,7 @@ const ShelfCard = ({ id, googleBooksId, title, coverURL, variation, description,
             onClose={() => setShowOptions(false)} />
           ) : (
             <SearchOptions 
-              id={id}
+              googleBooksId={googleBooksId}
               title={title}
               coverURL={coverURL}
               description={description}

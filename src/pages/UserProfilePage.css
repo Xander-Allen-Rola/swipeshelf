@@ -78,4 +78,8 @@
     display: flex;
     gap: 10px;
 }
+
+.favorite-book-cover {
+    cursor: pointer;
+}
 /* ...existing code... */

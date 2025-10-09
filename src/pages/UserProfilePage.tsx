@@ -7,6 +7,7 @@ import Button from '../components/Button';
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import ConfirmPopup from "../components/ConfirmPopup";
+import ShelfCard from "../components/ShelfCard";
 
 function UserProfilePage() {
     const navigate = useNavigate();
@@ -16,6 +17,8 @@ function UserProfilePage() {
     const [toReadCount, setToReadCount] = useState<number>(0);
     const [showSignOutConfirm, setShowSignOutConfirm] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
+    const [favoriteBooks, setFavoriteBooks] = useState<any[]>([]);
+    const [selectedBook, setSelectedBook] = useState<any | null>(null);
 
     // 👇 new states for profile picture upload
     const [image, setImage] = useState<string | null>(null);
@@ -56,6 +59,14 @@ function UserProfilePage() {
             .then(res => res.json())
             .then(data => setToReadCount(data.count))
             .catch(err => console.error(err));
+
+        fetch(`http://localhost:5000/api/shelves/favorites/${userId}`)
+            .then(res => res.json())
+            .then(data => {
+                console.log("⭐ Favorite books fetched:", data.books);
+                setFavoriteBooks(data.books || []);
+            })
+            .catch(err => console.error("❌ Error fetching favorites:", err));
     }, []);
 
     // 👇 handle clicking the profile pic
@@ -281,12 +292,34 @@ function UserProfilePage() {
                 <div className="favorite-books">
                     <h3 style={{ margin: '5px' }}>Favorite Books</h3>
                     <div className="favorite-books-entries">
-                        <img className="favorite-book-cover" src="https://imgv2-1-f.scribdassets.com/img/document/663106463/original/5e4cc5ceca/1?v=1" />
-                        <img className="favorite-book-cover" src="https://imgv2-1-f.scribdassets.com/img/document/663106463/original/5e4cc5ceca/1?v=1" />
-                        <img className="favorite-book-cover" src="https://imgv2-1-f.scribdassets.com/img/document/663106463/original/5e4cc5ceca/1?v=1" />
+                        {favoriteBooks.length === 0 ? (
+                            <p style={{ opacity: 0.7 }}>No favorites yet</p>
+                        ) : (
+                            favoriteBooks.map((book) => (
+                                <img
+                                    key={book.id}
+                                    className="favorite-book-cover"
+                                    src={book.coverURL}
+                                    alt={book.title}
+                                    onClick={() => setSelectedBook(book)} // 👈 opens ShelfCard
+                                />
+                            ))
+                        )}
                     </div>
                 </div>
             </div>
+
+            {selectedBook && (
+                <ShelfCard
+                    id={selectedBook.googleBooksId}
+                    googleBooksId={selectedBook.googleBooksId}
+                    title={selectedBook.title}
+                    coverURL={selectedBook.coverURL}
+                    description={selectedBook.description}
+                    variation="search"
+                    onClose={() => setSelectedBook(null)} // 👈 closes ShelfCard
+                />
+            )}
 
             <NavigationPane />
 

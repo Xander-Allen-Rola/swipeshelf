@@ -80,7 +80,7 @@ function SearchPage() {
       </div>
       {selectedBook && (
         <ShelfCard
-          id={Number(selectedBook.googleBooksId)} // or generate unique id if needed
+          googleBooksId={selectedBook.googleBooksId} // or generate unique id if needed
           title={selectedBook.title}
           coverURL={selectedBook.coverUrl ?? ""}
           description={selectedBook.description}

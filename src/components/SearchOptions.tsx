@@ -5,13 +5,13 @@ import axios from "axios";
 import { useState } from "react";
 
 interface SearchOptionsProps {
-  id: number; // bookId
+  googleBooksId: string; // bookId
   title: string;
   coverURL: string;
   description: string;
 }
 
-function SearchOptions({ id, title, coverURL, description }: SearchOptionsProps) {
+function SearchOptions({ googleBooksId, title, coverURL, description }: SearchOptionsProps) {
   const userId = Number(localStorage.getItem("userId") || 0);
   const [showShelfPopup, setShowShelfPopup] = useState(false);
   const [showFinishedPopup, setShowFinishedPopup] = useState(false);
@@ -21,13 +21,13 @@ function SearchOptions({ id, title, coverURL, description }: SearchOptionsProps)
         await axios.post("http://localhost:5000/api/shelves/add-to-to-read", {
           userId,
           book: {
-            googleBooksId: String(id),
+            googleBooksId: googleBooksId,
             title: title,
             coverUrl: coverURL,
             description: description,
           },
         });
-        console.log(`✅ Book ${title} added to To Read shelf`);
+        console.log(`✅ Book ${googleBooksId} ${title} added to To Read shelf`);
 
         setShowShelfPopup(true);
         
