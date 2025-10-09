@@ -41,6 +41,27 @@ function SearchOptions({ googleBooksId, title, coverURL, description }: SearchOp
       }
   };
 
+  const handleMarkAsFinished = async () => {
+    try {
+      await axios.post("http://localhost:5000/api/shelves/add-to-finished", {
+        userId,
+        book: {
+          googleBooksId,
+          title,
+          coverUrl: coverURL,
+          description,
+        },
+      });
+
+      console.log(`✅ Book ${googleBooksId} (${title}) added to Finished shelf`);
+      setShowFinishedPopup(true);
+
+      setTimeout(() => setShowFinishedPopup(false), 3000);
+    } catch (err) {
+      console.error("❌ Failed to add book to Finished shelf:", err);
+    }
+  };
+
   return (
     <>
       <motion.div
@@ -56,6 +77,10 @@ function SearchOptions({ googleBooksId, title, coverURL, description }: SearchOp
         >
           Add to Shelf
         </div>
+        <div 
+          className="search-option-text"
+          onClick={handleMarkAsFinished}
+        >Mark as Finished</div>
         <div className="search-option-text">Recommend to Friends</div>
       </motion.div>
       <AnimatePresence>
@@ -64,6 +89,7 @@ function SearchOptions({ googleBooksId, title, coverURL, description }: SearchOp
           text={`${title} added to your To Read shelf!`}
         />
       )}
+      {showFinishedPopup && <Popup text={`${title} added to your Finished shelf!`} />}
       </AnimatePresence>
     </>
   );
