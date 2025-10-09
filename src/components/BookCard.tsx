@@ -167,15 +167,15 @@ const BookCard = ({ title, author, release, description, genres = [], image, onS
       <div className="flip-card-back">
         <div className="card-content flipped">
           <h2>{title}</h2>
-          <div className="book-genres">
+          {/*<div className="book-genres">
             {genres.map((genre, idx) => (
               <span className="book-genre" key={idx}>{genre}</span>
             ))}
-          </div>
+          </div>*/}
           <p className="book-description">{description}</p>
-          <div className="book-review">
+          {/*<div className="book-review">
             <div className="horizontal-line" style={{ width: '10%' }} />Review<div className="horizontal-line" style={{ width: '100%' }} />
-          </div>
+          </div>*/}
         </div>
       </div>
     </div>

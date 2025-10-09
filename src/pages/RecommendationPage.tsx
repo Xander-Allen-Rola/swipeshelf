@@ -5,6 +5,7 @@ import BookCard from '../components/BookCard';
 import LoadingOverlay from '../components/LoadingOverlay';
 import { useRef, useState, useEffect } from 'react';
 import axios from 'axios';
+import { motion } from 'motion/react';
 
 interface Book {
   title: string;
@@ -114,9 +115,15 @@ function RecommendationPage() {
 
   return (
     <>
-      <LoadingOverlay show={loading} text="Fetching recommendations..." />
       <Logo position="top" />
-      <div className="recommendation-page">
+      <motion.div 
+        initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{
+              duration: 0.4,
+              scale: { type: "spring", visualDuration: 0.4, bounce: 0 },
+          }}
+        className="recommendation-page">
         {books.length > 0 && currentIndex < books.length && (
           <BookCard
             key={books[currentIndex].googleBooksId}
@@ -134,12 +141,14 @@ function RecommendationPage() {
         )}
 
         {/* optional small overlay when prefetching */}
-        {isPrefetching && (
+        {/* ✅ Show message during initial load or prefetch */}
+        {(loading || isPrefetching) && (
           <div className="prefetch-indicator">Loading more books</div>
         )}
 
+        </motion.div>
+
         <NavigationPane />
-      </div>
     </>
   );
 }
