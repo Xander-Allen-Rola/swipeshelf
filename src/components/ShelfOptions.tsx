@@ -131,7 +131,7 @@ function ShelfOptions({ id, googleBooksId, title, coverURL, description, onClose
         <div className="shelf-option-text" onClick={handleAddToFavorites}>
           Add to Favorites
         </div>
-        <div className="shelf-option-text">Recommend to Friends</div>
+        {/*<div className="shelf-option-text">Recommend to Friends</div>*/}
         <div
           className="shelf-option-text"
           style={{ color: "red" }}

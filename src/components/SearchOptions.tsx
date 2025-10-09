@@ -81,7 +81,7 @@ function SearchOptions({ googleBooksId, title, coverURL, description }: SearchOp
           className="search-option-text"
           onClick={handleMarkAsFinished}
         >Mark as Finished</div>
-        <div className="search-option-text">Recommend to Friends</div>
+        {/*<div className="search-option-text">Recommend to Friends</div>*/}
       </motion.div>
       <AnimatePresence>
       {showShelfPopup && (
