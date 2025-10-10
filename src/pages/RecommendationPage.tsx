@@ -40,7 +40,20 @@ function RecommendationPage() {
       );
 
       if (Array.isArray(res.data)) {
-        setBooks(prev => (append ? [...prev, ...res.data] : res.data));
+        setBooks(prev => {
+          // 🧠 Use ALL current books (not just swiped)
+          const seen = new Set(prev.map(b => b.googleBooksId));
+
+          // 🧹 Filter out duplicates already in the list
+          const uniqueNew = res.data.filter(b => !seen.has(b.googleBooksId));
+          const filteredCount = res.data.length - uniqueNew.length;
+
+          if (filteredCount > 0) {
+            console.log(`🧹 Filtered out ${filteredCount} duplicate book(s) from prefetch`);
+          }
+
+          return append ? [...prev, ...uniqueNew] : res.data;
+        });
       }
     } catch (err) {
       console.error('❌ Failed to fetch recommendations:', err);
@@ -49,6 +62,7 @@ function RecommendationPage() {
       else setIsPrefetching(false);
     }
   };
+
 
   // initial fetch
   useEffect(() => {
@@ -59,20 +73,19 @@ function RecommendationPage() {
     fetchRecommendations(false);
   }, []);
 
-  // prefetch when only 10 cards remain
+  // prefetch when only 5 cards remain
   useEffect(() => {
     if (books.length === 0) return; // skip until initial load finishes
 
     const remaining = books.length - currentIndex;
 
-    if (remaining <= 3 && !isPrefetching && currentIndex > 0) {
+    if (remaining <= 5 && !isPrefetching && currentIndex > 0) {
       console.log('⚡ Prefetching more recommendations...');
       fetchRecommendations(true);
     }
   }, [currentIndex, books.length]);
 
   const handleSwipe = async (dir: string, book: Book) => {
-    console.log(`Swiped ${dir} on ${book.title}`);
     // Push swiped card to stack for undo
     setSwipedStack(prev => [book, ...prev]);
     if (dir === 'right') {
