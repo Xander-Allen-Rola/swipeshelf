@@ -331,6 +331,7 @@ function UserProfilePage() {
                 cancelText="Cancel"
                 onConfirm={() => {
                     localStorage.clear();
+                    sessionStorage.clear();
                     navigate('/');
                 }}
                 onCancel={() => setShowSignOutConfirm(false)}
