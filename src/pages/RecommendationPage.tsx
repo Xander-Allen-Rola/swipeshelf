@@ -2,7 +2,6 @@ import './RecommendationPage.css';
 import Logo from '../components/Logo';
 import NavigationPane from '../components/NavigationPane';
 import BookCard from '../components/BookCard';
-import LoadingOverlay from '../components/LoadingOverlay';
 import { useRef, useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion } from 'motion/react';
@@ -20,15 +19,43 @@ interface Book {
 }
 
 function RecommendationPage() {
+  const userId = Number(localStorage.getItem("userId") || 0);
+
+  // 🧠 user-specific cache keys
+  const CACHE_KEY = `recommendation_cache_${userId}`;
+  const INDEX_KEY = `recommendation_index_${userId}`;
+
   const [books, setBooks] = useState<Book[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [isPrefetching, setIsPrefetching] = useState(false); // ✅ separate state for prefetch
+  const [isPrefetching, setIsPrefetching] = useState(false);
   const [swipedStack, setSwipedStack] = useState<Book[]>([]);
-
   const didFetch = useRef(false);
 
-  const userId = Number(localStorage.getItem("userId") || 0);
+  // Save recommendations + index to cache
+  const saveCache = (bookList: Book[], index: number) => {
+    sessionStorage.setItem(CACHE_KEY, JSON.stringify(bookList));
+    sessionStorage.setItem(INDEX_KEY, index.toString());
+  };
+
+  // Load from cache (if available)
+  const loadCache = () => {
+    const cached = sessionStorage.getItem(CACHE_KEY);
+    const cachedIndex = sessionStorage.getItem(INDEX_KEY);
+    if (cached) {
+      try {
+        const parsed: Book[] = JSON.parse(cached);
+        setBooks(parsed);
+        setCurrentIndex(cachedIndex ? Number(cachedIndex) : 0);
+        setLoading(false);
+        console.log(`📦 Loaded recommendations from cache for user ${userId}`);
+        return true;
+      } catch (err) {
+        console.error("❌ Failed to parse cache:", err);
+      }
+    }
+    return false;
+  };
 
   const fetchRecommendations = async (append = false) => {
     try {
@@ -41,18 +68,11 @@ function RecommendationPage() {
 
       if (Array.isArray(res.data)) {
         setBooks(prev => {
-          // 🧠 Use ALL current books (not just swiped)
           const seen = new Set(prev.map(b => b.googleBooksId));
-
-          // 🧹 Filter out duplicates already in the list
           const uniqueNew = res.data.filter(b => !seen.has(b.googleBooksId));
-          const filteredCount = res.data.length - uniqueNew.length;
-
-          if (filteredCount > 0) {
-            console.log(`🧹 Filtered out ${filteredCount} duplicate book(s) from prefetch`);
-          }
-
-          return append ? [...prev, ...uniqueNew] : res.data;
+          const updated = append ? [...prev, ...uniqueNew] : res.data;
+          saveCache(updated, append ? currentIndex : 0);
+          return updated;
         });
       }
     } catch (err) {
@@ -63,30 +83,33 @@ function RecommendationPage() {
     }
   };
 
-
-  // initial fetch
+  // initial load
   useEffect(() => {
-    if (didFetch.current) return; // already fetched
+    if (didFetch.current) return;
     didFetch.current = true;
 
-    console.log("🔥 useEffect triggered: fetching recommendations...");
-    fetchRecommendations(false);
+    const foundCache = loadCache();
+    if (!foundCache) {
+      console.log("🔥 Fetching fresh recommendations...");
+      fetchRecommendations(false);
+    }
   }, []);
 
-  // prefetch when only 5 cards remain
+  // prefetch more when low
   useEffect(() => {
-    if (books.length === 0) return; // skip until initial load finishes
+    if (books.length === 0) return;
 
     const remaining = books.length - currentIndex;
-
     if (remaining <= 5 && !isPrefetching && currentIndex > 0) {
       console.log('⚡ Prefetching more recommendations...');
       fetchRecommendations(true);
     }
+
+    // 🧠 Save state whenever index changes
+    saveCache(books, currentIndex);
   }, [currentIndex, books.length]);
 
   const handleSwipe = async (dir: string, book: Book) => {
-    // Push swiped card to stack for undo
     setSwipedStack(prev => [book, ...prev]);
     if (dir === 'right') {
       try {
@@ -118,25 +141,23 @@ function RecommendationPage() {
 
   const handleUndo = () => {
     if (swipedStack.length === 0) return;
-
     const [lastSwiped, ...rest] = swipedStack;
-
     setSwipedStack(rest);
-    setCurrentIndex(prev => prev - 1); // go back to previous card
+    setCurrentIndex(prev => prev - 1);
   };
-
 
   return (
     <>
       <Logo position="top" />
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{
-              duration: 0.4,
-              scale: { type: "spring", visualDuration: 0.4, bounce: 0 },
-          }}
-        className="recommendation-page">
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{
+          duration: 0.4,
+          scale: { type: "spring", visualDuration: 0.4, bounce: 0 },
+        }}
+        className="recommendation-page"
+      >
         {books.length > 0 && currentIndex < books.length && (
           <BookCard
             key={books[currentIndex].googleBooksId}
@@ -153,15 +174,12 @@ function RecommendationPage() {
           />
         )}
 
-        {/* optional small overlay when prefetching */}
-        {/* ✅ Show message during initial load or prefetch */}
         {(loading || isPrefetching) && (
-          <div className="prefetch-indicator">Loading more books</div>
+          <div className="prefetch-indicator">Loading more books...</div>
         )}
+      </motion.div>
 
-        </motion.div>
-
-        <NavigationPane />
+      <NavigationPane />
     </>
   );
 }
