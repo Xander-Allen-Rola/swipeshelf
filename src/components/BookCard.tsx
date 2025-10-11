@@ -166,7 +166,7 @@ const BookCard = ({ title, author, release, description, genres = [], image, onS
       </div>
       <div className="flip-card-back">
         <div className="card-content flipped">
-          <h2>{title}</h2>
+          <h2 style={{textAlign: "center"}}>{title}</h2>
           {/*<div className="book-genres">
             {genres.map((genre, idx) => (
               <span className="book-genre" key={idx}>{genre}</span>

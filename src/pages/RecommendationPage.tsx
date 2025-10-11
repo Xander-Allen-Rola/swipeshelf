@@ -175,7 +175,7 @@ function RecommendationPage() {
         )}
 
         {(loading || isPrefetching) && (
-          <div className="prefetch-indicator">Loading more books...</div>
+          <div className="prefetch-indicator">Loading books</div>
         )}
       </motion.div>
 
