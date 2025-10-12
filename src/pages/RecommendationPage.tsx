@@ -21,7 +21,6 @@ interface Book {
 function RecommendationPage() {
   const userId = Number(localStorage.getItem("userId") || 0);
 
-  // 🧠 user-specific cache keys
   const CACHE_KEY = `recommendation_cache_${userId}`;
   const INDEX_KEY = `recommendation_index_${userId}`;
 
@@ -30,15 +29,14 @@ function RecommendationPage() {
   const [loading, setLoading] = useState(true);
   const [isPrefetching, setIsPrefetching] = useState(false);
   const [swipedStack, setSwipedStack] = useState<Book[]>([]);
+  const [loadedImage, setLoadedImage] = useState<string | null>(null);
   const didFetch = useRef(false);
 
-  // Save recommendations + index to cache
+  // Save/load cache
   const saveCache = (bookList: Book[], index: number) => {
     sessionStorage.setItem(CACHE_KEY, JSON.stringify(bookList));
     sessionStorage.setItem(INDEX_KEY, index.toString());
   };
-
-  // Load from cache (if available)
   const loadCache = () => {
     const cached = sessionStorage.getItem(CACHE_KEY);
     const cachedIndex = sessionStorage.getItem(INDEX_KEY);
@@ -105,9 +103,27 @@ function RecommendationPage() {
       fetchRecommendations(true);
     }
 
-    // 🧠 Save state whenever index changes
     saveCache(books, currentIndex);
   }, [currentIndex, books.length]);
+
+  // Preload current + next 3 book images safely
+  useEffect(() => {
+    if (books.length === 0 || !books[currentIndex]) return;
+
+    const preloadRange = 3; // number of upcoming books to preload
+    const urlsToPreload = books
+      .slice(currentIndex, currentIndex + preloadRange + 1)
+      .map(b => b.coverUrl)
+      .filter(Boolean); // ensure url exists
+
+    urlsToPreload.forEach(url => {
+      const img = new Image();
+      img.src = url;
+    });
+
+    // Also update loadedImage for current card
+    setLoadedImage(books[currentIndex].coverUrl ?? '/images/placeholder-cover.png');
+  }, [currentIndex, books]);
 
   const handleSwipe = async (dir: string, book: Book) => {
     setSwipedStack(prev => [book, ...prev]);
@@ -165,7 +181,7 @@ function RecommendationPage() {
             author={books[currentIndex].authors}
             release={books[currentIndex].publishedDate ?? 'Unknown'}
             description={books[currentIndex].description}
-            image={books[currentIndex].coverUrl}
+            image={loadedImage ?? '/images/placeholder-cover.png'} // show placeholder while loading
             genres={books[currentIndex].categories}
             onSwipe={(dir) => handleSwipe(dir, books[currentIndex])}
             onSwipedComplete={() => setCurrentIndex(prev => prev + 1)}
