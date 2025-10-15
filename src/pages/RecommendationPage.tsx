@@ -5,6 +5,7 @@ import BookCard from '../components/BookCard';
 import { useRef, useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion } from 'motion/react';
+import LoadingOverlay from '../components/LoadingOverlay';
 
 interface Book {
   title: string;
@@ -191,7 +192,7 @@ function RecommendationPage() {
         )}
 
         {(loading || isPrefetching) && (
-          <div className="prefetch-indicator">Loading books</div>
+          <LoadingOverlay show={true} />
         )}
       </motion.div>
 
