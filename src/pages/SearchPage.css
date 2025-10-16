@@ -59,3 +59,55 @@
     border-radius: 99px;
     margin-left: 65px;
 }
+
+/* ✨ Skeleton Loading Styles */
+.skeleton-cover {
+  width: 60px;
+  height: 85px;
+  border-radius: 4px;
+  background-color: #e0e0e0;
+  flex-shrink: 0;
+}
+
+.skeleton-title {
+  width: 180px;
+  height: 16px;
+  border-radius: 4px;
+  background-color: #e0e0e0;
+  margin-bottom: 6px;
+}
+
+.skeleton-author {
+  width: 120px;
+  height: 12px;
+  border-radius: 4px;
+  background-color: #e0e0e0;
+}
+
+/* 🫧 Shimmer animation */
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150px;
+  width: 100px;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    transparent 100%
+  );
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(300px);
+  }
+}

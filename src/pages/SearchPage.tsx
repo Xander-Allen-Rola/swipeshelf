@@ -3,6 +3,7 @@ import Logo from "../components/Logo";
 import NavigationPane from "../components/NavigationPane";
 import ShelfCard from "../components/ShelfCard";
 import "./SearchPage.css";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Book {
   title: string;
@@ -14,13 +15,18 @@ interface Book {
   categories: string[];
 }
 
+const accordionVariants = {
+  hidden: { opacity: 0, height: 0, overflow: "hidden" },
+  show: { opacity: 1, height: "auto", overflow: "hidden" },
+  exit: { opacity: 0, height: 0, overflow: "hidden" },
+};
+
 function SearchPage() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Book[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
 
-  // 🔍 Fetch search results when query changes
   useEffect(() => {
     if (!query.trim()) {
       setResults([]);
@@ -31,7 +37,9 @@ function SearchPage() {
       setLoading(true);
       try {
         const res = await fetch(
-          `http://localhost:5000/api/search/search?query=${encodeURIComponent(query)}`
+          `http://localhost:5000/api/search/search?query=${encodeURIComponent(
+            query
+          )}`
         );
         const data = await res.json();
         setResults(data);
@@ -42,53 +50,98 @@ function SearchPage() {
       }
     };
 
-    const delayDebounce = setTimeout(fetchBooks, 500); // ⏳ debounce: wait 500ms after typing
+    const delayDebounce = setTimeout(fetchBooks, 500);
     return () => clearTimeout(delayDebounce);
   }, [query]);
 
   return (
     <>
       <Logo position="top" />
-      
+
       <div className="search-container">
-        <input
+        <motion.div
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{
+            duration: 0.4,
+            scale: { type: "spring", visualDuration: 0.4, bounce: 0 },
+          }}
+        >
+          <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search"
             className="search-input"
-        />
-
-        {loading && <p className="loading">Loading...</p>}
+          />
+        </motion.div>
 
         <div className="search-results-container">
-            {results.map((book) => (
-            <>
-            <div key={book.googleBooksId} className="search-book-card" onClick={() => setSelectedBook(book)}>
-                {book.coverUrl && (
-                <img src={book.coverUrl} alt={book.title} className="search-book-cover" />
-                )}
-                <div className="search-book-info">
-                    <div className="search-book-title">{book.title}</div>
-                    <div className="search-book-authors">{book.authors}</div>
-                </div>
-            </div>
-            <div className="divider" />
-            </>
-            ))}
+          <AnimatePresence>
+            {loading
+              ? Array.from({ length: 5 }).map((_, idx) => (
+                  <motion.div
+                    key={`skeleton-${idx}`}
+                    variants={accordionVariants}
+                    initial="hidden"
+                    animate="show"
+                    exit="exit"
+                    transition={{ duration: 0.35, ease: "easeInOut" }}
+                    className="search-book-card"
+                  >
+                    <div className="skeleton-cover shimmer" />
+                    <div className="search-book-info">
+                      <div className="skeleton-title shimmer" />
+                      <div className="skeleton-author shimmer" />
+                    </div>
+                  </motion.div>
+                ))
+              : results.map((book) => (
+                  <motion.div
+                    key={book.googleBooksId}
+                    variants={accordionVariants}
+                    initial="hidden"
+                    animate="show"
+                    exit="exit"
+                    transition={{ duration: 0.35, ease: "easeInOut" }}
+                  >
+                    <div
+                      className="search-book-card"
+                      onClick={() => setSelectedBook(book)}
+                    >
+                      {book.coverUrl && (
+                        <img
+                          src={book.coverUrl}
+                          alt={book.title}
+                          className="search-book-cover"
+                        />
+                      )}
+                      <div className="search-book-info">
+                        <div className="search-book-title">{book.title}</div>
+                        <div className="search-book-authors">
+                          {book.authors}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="divider" />
+                  </motion.div>
+                ))}
+          </AnimatePresence>
         </div>
       </div>
+
       {selectedBook && (
         <ShelfCard
-          googleBooksId={selectedBook.googleBooksId} // or generate unique id if needed
+          googleBooksId={selectedBook.googleBooksId}
           title={selectedBook.title}
           coverURL={selectedBook.coverUrl ?? ""}
           description={selectedBook.description}
           status="reading"
-          variation="search" // 👈 shows SearchOptions
-          onClose={() => setSelectedBook(null)} // closes the card
+          variation="search"
+          onClose={() => setSelectedBook(null)}
         />
       )}
+
       <NavigationPane />
     </>
   );
