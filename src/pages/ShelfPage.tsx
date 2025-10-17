@@ -59,51 +59,35 @@ function ShelfPage() {
 
   const userId = Number(localStorage.getItem("userId") || 0);
 
-  // ✅ Fetch & Cache Books
-  const refreshBooks = async () => {
-    try {
-      // Check cache first
-      const cachedToRead = sessionStorage.getItem(`toReadBooks_${userId}`);
-      const cachedFinished = sessionStorage.getItem(`finishedBooks_${userId}`);
-
-      if (cachedToRead && cachedFinished) {
-        setToReadShelfBooks(JSON.parse(cachedToRead));
-        setFinishedShelfBooks(JSON.parse(cachedFinished));
-        console.log("📦 Loaded books from cache");
-      } else {
-        console.log("🌐 No cache found, fetching from server...");
-        await fetchAndCacheBooks();
+   useEffect(() => {
+    const fetchToReadBooks = async () => {
+      try {
+        console.log('🔄 Fetching To Read books...');
+        const response = await fetch(`http://localhost:5000/api/shelves/to-read/${userId}`);
+        const data = await response.json();
+        console.log('✅ Fetched books:', data);
+        setToReadShelfBooks(data.books || []);
+      } catch (err) {
+        console.error('❌ Error fetching books:', err);
+        setToReadShelfBooks([]);
       }
-    } catch (err) {
-      console.error("❌ Error refreshing books:", err);
-    }
-  };
+    };
 
-  // ✅ Helper to fetch from API and save to cache
-  const fetchAndCacheBooks = async () => {
-    try {
-      console.log("🔄 Fetching To Read books...");
-      const toReadRes = await fetch(`http://localhost:5000/api/shelves/to-read/${userId}`);
-      const toReadData = await toReadRes.json();
+    const fetchFinishedBooks = async () => {
+      try {
+        console.log('🔄 Fetching Finished books...');
+        const response = await fetch(`http://localhost:5000/api/shelves/finished/${userId}`);
+        const data = await response.json();
+        console.log('✅ Fetched books:', data);
+        setFinishedShelfBooks(data.books || []);
+      } catch (err) {
+        console.error('❌ Error fetching books:', err);
+        setFinishedShelfBooks([]);
+      }
+    };
 
-      console.log("🔄 Fetching Finished books...");
-      const finishedRes = await fetch(`http://localhost:5000/api/shelves/finished/${userId}`);
-      const finishedData = await finishedRes.json();
-
-      setToReadShelfBooks(toReadData.books || []);
-      setFinishedShelfBooks(finishedData.books || []);
-
-      sessionStorage.setItem(`toReadBooks_${userId}`, JSON.stringify(toReadData.books || []));
-      sessionStorage.setItem(`finishedBooks_${userId}`, JSON.stringify(finishedData.books || []));
-
-      console.log("💾 Books cached in sessionStorage");
-    } catch (err) {
-      console.error("❌ Error fetching books:", err);
-    }
-  };
-
-  useEffect(() => {
-    refreshBooks();
+    fetchToReadBooks();
+    fetchFinishedBooks();
   }, [userId]);
 
   const toReadShelves = chunkArray(toReadShelfBooks, 4);
@@ -111,12 +95,15 @@ function ShelfPage() {
 
   const handleSelectToggle = () => {
     setIsSelectMode(!isSelectMode);
-    if (isSelectMode) setSelectedBooks([]);
+    if (isSelectMode) {
+      // Clear selections when exiting select mode
+      setSelectedBooks([]);
+    }
   };
 
   const handleBookSelect = (bookId: number) => {
-    setSelectedBooks(prev =>
-      prev.includes(bookId)
+    setSelectedBooks(prev => 
+      prev.includes(bookId) 
         ? prev.filter(id => id !== bookId)
         : [...prev, bookId]
     );
@@ -126,7 +113,10 @@ function ShelfPage() {
     if (selectedBooks.length === 0) return;
 
     try {
+      console.log("📦 Moving books to Finished:", selectedBooks);
+
       const movedBooks: ShelfBook[] = [];
+
       for (const shelfBookId of selectedBooks) {
         const response = await fetch("http://localhost:5000/api/shelves/move-book", {
           method: "PUT",
@@ -139,45 +129,68 @@ function ShelfPage() {
         });
 
         const data = await response.json();
+
         if (response.ok && data.shelfBook) {
+          console.log("✅ Move success:", data);
           movedBooks.push(data.shelfBook);
+        } else {
+          console.error("❌ Move failed:", data);
         }
       }
 
-      setToReadShelfBooks(prev => prev.filter(book => !selectedBooks.includes(book.id)));
-      setFinishedShelfBooks(prev => {
-        const existingIds = new Set(prev.map(b => b.id));
-        const uniqueNew = movedBooks.filter(b => !existingIds.has(b.id));
+      // ✅ Update states once, after all moves are done
+      setToReadShelfBooks((prev) =>
+        prev.filter((book) => !selectedBooks.includes(book.id))
+      );
+      setFinishedShelfBooks((prev) => {
+        const existingIds = new Set(prev.map((b) => b.id));
+        const uniqueNew = movedBooks.filter((b) => !existingIds.has(b.id));
         return [...prev, ...uniqueNew];
       });
+
 
     } catch (err) {
       console.error("❌ Error moving books:", err);
     } finally {
+      // Clear selection
       setSelectedBooks([]);
     }
   };
 
+
   const handleDelete = () => {
-    if (selectedBooks.length === 0) return;
+    if (selectedBooks.length === 0) {
+      return;
+    }
     setShowDeleteConfirm(true);
   };
 
   const confirmDelete = async () => {
     try {
+      console.log('🗑️ Deleting books:', selectedBooks.join(', '), 'from User ID:', userId);
+      
       const response = await fetch('http://localhost:5000/api/shelves/delete-books', {
         method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, bookIds: selectedBooks })
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: userId,
+          bookIds: selectedBooks
+        })
       });
 
       const data = await response.json();
+      
       if (response.ok) {
         console.log('✅ Delete successful:', data);
-        window.location.reload();
+        // Refresh the whole page so frontend re-fetches state
+        setToReadShelfBooks(prev => prev.filter(book => !selectedBooks.includes(book.id)));
+        setFinishedShelfBooks(prev => prev.filter(book => !selectedBooks.includes(book.id)));
       } else {
         console.error('❌ Delete failed:', data);
       }
+      
     } catch (err) {
       console.error('❌ Error deleting books:', err);
     } finally {
@@ -186,7 +199,9 @@ function ShelfPage() {
     }
   };
 
-  const cancelDelete = () => setShowDeleteConfirm(false);
+  const cancelDelete = () => {
+    setShowDeleteConfirm(false);
+  };
 
   return (
     <>
