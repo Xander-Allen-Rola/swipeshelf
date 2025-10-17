@@ -33,7 +33,7 @@
     flex-direction: column;
     padding-bottom: 80px;
     gap: 50px;
-    overflow-y: auto; /* Add this for scrolling */
+    overflow-y: hidden; /* Add this for scrolling */
 }
 
 .shelf-container {
@@ -100,3 +100,4 @@
     left: 50%;
     transform: translateX(-50%);
 }
+
