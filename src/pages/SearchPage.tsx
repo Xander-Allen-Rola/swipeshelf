@@ -4,6 +4,8 @@ import NavigationPane from "../components/NavigationPane";
 import ShelfCard from "../components/ShelfCard";
 import "./SearchPage.css";
 import { motion, AnimatePresence } from "framer-motion";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faX } from "@fortawesome/free-solid-svg-icons";
 
 interface Book {
   title: string;
@@ -66,6 +68,7 @@ function SearchPage() {
             duration: 0.4,
             scale: { type: "spring", visualDuration: 0.4, bounce: 0 },
           }}
+          className="search-input-wrapper"
         >
           <input
             type="text"
@@ -74,6 +77,15 @@ function SearchPage() {
             placeholder="Search"
             className="search-input"
           />
+          {query && (
+            <button
+              className="clear-button"
+              onClick={() => setQuery("")}
+              aria-label="Clear search"
+            >
+              <FontAwesomeIcon icon={faX} />
+            </button>
+          )}
         </motion.div>
 
         <div className="search-results-container">

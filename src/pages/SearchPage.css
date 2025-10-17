@@ -15,6 +15,7 @@
     border-radius: 99px;
     background: #FFFFFF;
     padding: 10px;
+    padding-right: 40px;
 }
 
 .search-book-cover {
@@ -110,4 +111,22 @@
   100% {
     transform: translateX(300px);
   }
+}
+
+.clear-button {
+  position: absolute;
+  top: 11px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #555;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clear-button:hover {
+  color: #000;
 }

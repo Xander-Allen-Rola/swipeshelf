@@ -68,7 +68,8 @@ const ShelfCard = ({ id, googleBooksId, title, coverURL, variation, description,
               <div className="option-line" />
               <div className="option-line" />
             </div>            
-            <h2>{title}</h2>
+            <h2
+            style={{ textAlign: "center" }}>{title}</h2>
             <p className="shelf-book-description">{description}</p>
           </div>
         </div>
