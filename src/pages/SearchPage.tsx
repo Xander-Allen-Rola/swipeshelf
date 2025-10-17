@@ -35,25 +35,33 @@ function SearchPage() {
       return;
     }
 
+    const controller = new AbortController();
+    const signal = controller.signal;
+
     const fetchBooks = async () => {
       setLoading(true);
       try {
         const res = await fetch(
-          `http://localhost:5000/api/search/search?query=${encodeURIComponent(
-            query
-          )}`
+          `http://localhost:5000/api/search/search?query=${encodeURIComponent(query)}`,
+          { signal }
         );
         const data = await res.json();
         setResults(data);
-      } catch (err) {
-        console.error("❌ Error fetching search results:", err);
+      } catch (err: any) {
+        if (err.name !== "AbortError") {
+          console.error("❌ Error fetching search results:", err);
+        }
       } finally {
         setLoading(false);
       }
     };
 
     const delayDebounce = setTimeout(fetchBooks, 500);
-    return () => clearTimeout(delayDebounce);
+
+    return () => {
+      clearTimeout(delayDebounce);
+      controller.abort(); // 🛑 cancel the previous fetch when query changes
+    };
   }, [query]);
 
   return (
