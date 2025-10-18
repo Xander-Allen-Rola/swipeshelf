@@ -1,7 +1,8 @@
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import './ShelfOptions.css';
 import DeleteConfirmPopup from './ConfirmPopup';
 import { useState } from "react";
+import Popup from "./Popup";
 
 interface ShelfOptionsProps {
   id: number; // shelfBookId
@@ -14,6 +15,9 @@ interface ShelfOptionsProps {
 
 function ShelfOptions({ id, googleBooksId, title, coverURL, description, onClose }: ShelfOptionsProps) {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showFavoritesPopup, setShowFavoritesPopup] = useState(false);
+  const [showFinishedPopup, setShowFinishedPopup] = useState(false);
+  const [showDeletePopup, setShowDeletePopup] = useState(false);
 
   // ✅ Move to Finished
   const handleFinished = async () => {
@@ -39,7 +43,7 @@ function ShelfOptions({ id, googleBooksId, title, coverURL, description, onClose
     } catch (err) {
       console.error("❌ Error moving book:", err);
     } finally {
-      window.location.reload();
+      setShowFinishedPopup(true);
     }
   };
 
@@ -66,7 +70,7 @@ function ShelfOptions({ id, googleBooksId, title, coverURL, description, onClose
       const data = await response.json();
       if (response.ok) {
         console.log("✅ Delete successful:", data);
-        window.location.reload();
+        setShowDeletePopup(true);
       } else {
         console.error("❌ Delete failed:", data);
       }
@@ -105,7 +109,7 @@ function ShelfOptions({ id, googleBooksId, title, coverURL, description, onClose
       if (response.ok) {
         console.log("✅ Added to favorites:", data);
         // Optional: show toast instead of reload
-        window.location.reload();
+        setShowFavoritesPopup(true);
       } else {
         console.error("❌ Failed to add to favorites:", data);
       }
@@ -153,6 +157,20 @@ function ShelfOptions({ id, googleBooksId, title, coverURL, description, onClose
           onCancel={cancelDelete}
         />
       )}
+
+      <AnimatePresence>
+      {showFavoritesPopup && (
+        <Popup
+          text={`${title} added to your Favorites shelf!`}
+        />
+      )}
+      {showFinishedPopup && (
+        <Popup text={`${title} added to your Finished shelf!`} />
+      )}
+      {showDeletePopup && (
+        <Popup text={`${title} deleted from your shelf!`} />
+      )}
+      </AnimatePresence>
     </>
   );
 }
