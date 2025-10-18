@@ -1,0 +1,103 @@
+.shelf-page {
+    position: absolute;
+    top: 130px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 500px; /* Match the max-width of #root (temporary) */
+    display : flex;
+    flex-direction: column;
+    padding-bottom: 50px;
+}
+
+.shelf {
+    top: 0;
+    height: 135px;
+    background: linear-gradient(
+        to bottom,
+        rgba(209, 199, 183, 0) 0%,
+        rgb(209, 199, 183, 1) 90%
+    );
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-end;
+    border-radius: 5px;
+}
+
+.shelves-container {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 80px;
+    gap: 50px;
+    overflow-y: hidden; /* Add this for scrolling */
+}
+
+.shelf-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.shelf-label {
+    font-size: 12px;
+    opacity: 0.5;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 95%;
+    white-space: nowrap;
+    font-weight: 600;
+    
+}
+
+.shelf-label-line {
+    height: 1px;
+    background-color: #2c2c2c;
+    opacity: 0.5;
+}
+
+.shelf-controls {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.edit-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.finished-button {
+    color: green;
+}
+
+.delete-button {
+    color: red;
+}
+
+.select-button, .delete-button, .finished-button {
+    cursor: pointer;
+}
+
+.select-button {
+    margin-left: auto;
+    font-weight: 600;
+    color: #8B5E3C;
+}
+
+.items-selected-count {
+    color: #2c2c2c;
+    font-weight: 600;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+

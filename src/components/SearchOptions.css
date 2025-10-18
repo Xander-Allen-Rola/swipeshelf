@@ -1,0 +1,19 @@
+.search-options-container{
+    position: absolute;
+    top: 190px;
+    left: 55px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10; /* Ensure it appears above other elements */
+    white-space: nowrap; /* Prevent options from wrapping */
+    font-size: 14px;
+    padding: 8px;
+}
+
+.search-option-text {
+    cursor: pointer;
+    color: #2c2c2c;
+    text-align: left;
+}

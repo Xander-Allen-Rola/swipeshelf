@@ -1,20 +1,25 @@
 .navigation-pane {
-    position: relative;
+    position: fixed;
     bottom: 0;
     left: 0;
     width: 100%; /* Fill the page width */
     box-sizing: border-box; /* Ensures padding doesn't cause overflow */
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 10%;
-    padding: 35px 10px;
+    justify-content: space-between;
+    padding: 30px 60px;
     background-color: #D1C7B7;
     border-radius: 10px 10px 0 0;
-    z-index: 10;
+    z-index: 3;
 }
 
 .nav-icon {
     width: 40px;
     cursor: pointer;
+    opacity: 50%;
+    transition: opacity 0.2s ease;
+}
+
+.nav-icon.active {
+  opacity: 100%;
 }

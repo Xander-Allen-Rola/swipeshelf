@@ -9,3 +9,24 @@
     gap: 5px;
     overflow: hidden; /* prevent scrollbars when card flies out */
 }
+
+.prefetch-indicator {
+    position: relative;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.prefetch-indicator::after {
+    content: '';
+    animation: dots 1.5s steps(3, end) infinite;
+    margin-left: 4px; /* spacing between text and dots */
+}
+
+@keyframes dots {
+    0%   { content: ''; }
+    33%  { content: '.'; }
+    66%  { content: '..'; }
+    100% { content: '...'; }
+}

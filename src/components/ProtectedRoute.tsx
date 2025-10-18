@@ -8,7 +8,7 @@ function ProtectedRoute({ children }: { children: JSX.Element }) {
     return <div>Loading...</div>;
   }
 
-  return user ? children : <Navigate to="/signin" />;
+  return user ? children : <Navigate to="/" />;
 }
 
 export default ProtectedRoute;

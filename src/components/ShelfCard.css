@@ -1,0 +1,142 @@
+.shelf-flip-card {
+  width: 90%;
+  height: 70%;
+  perspective: 1000px;
+  cursor: pointer;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  z-index: 5;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.shelf-flip-card.visible {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.shelf-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  z-index: 4;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.shelf-backdrop.visible {
+  opacity: 1;
+}
+
+.shelf-flip-card-front,
+.shelf-flip-card-back {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  backface-visibility: hidden;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.20); /* Drop shadow */
+}
+
+.shelf-flip-card-front .shelf-card-content.regular {
+  background: white;
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* Add this line */
+  align-items: center; /* Center align text */
+}
+
+.shelf-flip-card-back .shelf-card-content.flipped {
+  background: #D1C7B7;
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shelf-flip-card-front {
+  z-index: 2;
+  transform: rotateY(0deg);
+  transition: transform 0.5s;
+}
+
+.shelf-flip-card-back {
+  z-index: 1;
+  transform: rotateY(180deg);
+  transition: transform 0.5s;
+}
+
+.shelf-flip-card.flipped .shelf-flip-card-front {
+  transform: rotateY(180deg);
+}
+
+.shelf-flip-card.flipped .shelf-flip-card-back {
+  transform: rotateY(360deg);
+}
+
+.shelf-book-title, .shelf-book-author, .shelf-book-release {
+  color: #F5E6D3;
+  z-index: 1;
+}
+
+.shelf-card-content.flipped {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 30px;
+    text-align: justify;
+    gap: 15px;
+}
+
+.shelf-book-description {
+    color: #2c2c2c;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.shelf-card-image {
+  position: absolute;  /* so the gradient can overlay it */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+  z-index: 0; /* behind content and gradient */
+  border-radius: 16px;
+}
+
+.option-line {
+  width: 20px;
+  height: 1px;
+  background-color: #8B5E3C;
+  border-radius: 50%;
+}
+
+.shelf-options {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 3; /* above the card content */
+  cursor: pointer;
+}
+
+

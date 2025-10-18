@@ -1,0 +1,95 @@
+.user-profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 70vh;
+}
+
+.user-profile-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.user-stats {
+    display: flex;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%
+}
+
+.stat-line {
+    height: 40px;
+    width: 2px;
+    background-color: #2C2C2C;
+    opacity: 25%;
+}
+
+.stat {
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.favorite-book-cover {
+    width: 70px;
+    height: 100px;
+    object-fit: cover;
+}
+
+/* ...existing code... */
+.favorite-books-entries {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    max-width: calc(5 * 70px + 4 * 15px); /* 5 items + 4 gaps */
+    gap: 15px;
+    background: #D1C7B7;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 0 auto; /* Center the grid */
+}
+
+.profile-picture {
+    border: #8b5e3c 5px solid;
+}
+
+.edit-input{
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.edit-textarea {
+    height: 40px;
+    width: 100%;
+    resize: none;
+    background-color: transparent;
+    color: #6B5E4A;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+.edit-info-container {
+    display: flex;
+    gap: 10px;
+}
+
+.favorite-book-cover {
+    cursor: pointer;
+}
+
+.signout-button {
+    position: absolute;
+    top: 25px;
+    right: 15px;
+    font-size: 24px;
+    color: #6B5E4A;
+    cursor: pointer;
+}
+/* ...existing code... */

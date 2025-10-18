@@ -1,0 +1,132 @@
+.search-container {
+    position: absolute;
+    top: 140px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 110px;
+}
+
+.search-input {
+    box-sizing: border-box;
+    border-radius: 99px;
+    background: #FFFFFF;
+    padding: 10px;
+    padding-right: 40px;
+}
+
+.search-book-cover {
+    width: 60px;
+    height: 85px;
+}
+
+.search-book-card {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.search-book-info {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.search-book-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2c2c2c;
+}
+
+.search-book-authors {
+    font-size: 12px;
+    color: #555555;
+}
+
+.search-results-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.divider {
+    height: 2px;
+    background-color: #2C2C2C;
+    opacity: 25%;
+    border-radius: 99px;
+    margin-left: 65px;
+}
+
+/* ✨ Skeleton Loading Styles */
+.skeleton-cover {
+  width: 60px;
+  height: 85px;
+  border-radius: 4px;
+  background-color: #e0e0e0;
+  flex-shrink: 0;
+}
+
+.skeleton-title {
+  width: 180px;
+  height: 16px;
+  border-radius: 4px;
+  background-color: #e0e0e0;
+  margin-bottom: 6px;
+}
+
+.skeleton-author {
+  width: 120px;
+  height: 12px;
+  border-radius: 4px;
+  background-color: #e0e0e0;
+}
+
+/* 🫧 Shimmer animation */
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150px;
+  width: 100px;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    transparent 100%
+  );
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(300px);
+  }
+}
+
+.clear-button {
+  position: absolute;
+  top: 11px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #555;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clear-button:hover {
+  color: #000;
+}

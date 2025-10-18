@@ -1,0 +1,359 @@
+import './ShelfPage.css';
+import Logo from "../components/Logo";
+import NavigationPane from '../components/NavigationPane';
+import ShelfBook from '../components/ShelfBook';
+import DeleteConfirmPopup from '../components/ConfirmPopup';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from "framer-motion";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+
+interface ShelfBook {
+  id: number;
+  googleBooksId: string;
+  title: string;
+  coverURL: string;
+  description: string;
+  status: string;
+  addedAt: string;
+}
+
+// ✅ helper: split into chunks of 4
+function chunkArray<T>(array: T[], size: number): T[][] {
+  const chunks: T[][] = [];
+  for (let i = 0; i < array.length; i += size) {
+    chunks.push(array.slice(i, i + size));
+  }
+  return chunks;
+}
+
+// ✅ animation variants
+const accordionVariants = {
+  hidden: { height: 0, opacity: 0 },
+  visible: { 
+    height: "auto",
+    opacity: 1,
+    transition: {
+      height: { duration: 0.4, ease: "easeOut" },
+      opacity: { duration: 0.3 }
+    }
+  },
+  exit: {
+    height: 0,
+    opacity: 0,
+    transition: {
+      height: { duration: 0.3, ease: "easeIn" },
+      opacity: { duration: 0.2 }
+    }
+  }
+};
+
+function ShelfPage() {
+  const [toReadShelfBooks, setToReadShelfBooks] = useState<ShelfBook[]>([]);
+  const [finishedShelfBooks, setFinishedShelfBooks] = useState<ShelfBook[]>([]);
+  const [isSelectMode, setIsSelectMode] = useState(false);
+  const [selectedBooks, setSelectedBooks] = useState<number[]>([]);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [toReadOpen, setToReadOpen] = useState(true);
+  const [finishedOpen, setFinishedOpen] = useState(true);
+
+  const userId = Number(localStorage.getItem("userId") || 0);
+
+   useEffect(() => {
+    const fetchToReadBooks = async () => {
+      try {
+        console.log('🔄 Fetching To Read books...');
+        const response = await fetch(`http://localhost:5000/api/shelves/to-read/${userId}`);
+        const data = await response.json();
+        console.log('✅ Fetched books:', data);
+        setToReadShelfBooks(data.books || []);
+      } catch (err) {
+        console.error('❌ Error fetching books:', err);
+        setToReadShelfBooks([]);
+      }
+    };
+
+    const fetchFinishedBooks = async () => {
+      try {
+        console.log('🔄 Fetching Finished books...');
+        const response = await fetch(`http://localhost:5000/api/shelves/finished/${userId}`);
+        const data = await response.json();
+        console.log('✅ Fetched books:', data);
+        setFinishedShelfBooks(data.books || []);
+      } catch (err) {
+        console.error('❌ Error fetching books:', err);
+        setFinishedShelfBooks([]);
+      }
+    };
+
+    fetchToReadBooks();
+    fetchFinishedBooks();
+  }, [userId]);
+
+  const toReadShelves = chunkArray(toReadShelfBooks, 4);
+  const finishedShelves = chunkArray(finishedShelfBooks, 4);
+
+  const handleSelectToggle = () => {
+    setIsSelectMode(!isSelectMode);
+    if (isSelectMode) {
+      // Clear selections when exiting select mode
+      setSelectedBooks([]);
+    }
+  };
+
+  const handleBookSelect = (bookId: number) => {
+    setSelectedBooks(prev => 
+      prev.includes(bookId) 
+        ? prev.filter(id => id !== bookId)
+        : [...prev, bookId]
+    );
+  };
+
+  const handleFinished = async () => {
+    if (selectedBooks.length === 0) return;
+
+    try {
+      console.log("📦 Moving books to Finished:", selectedBooks);
+
+      const movedBooks: ShelfBook[] = [];
+
+      for (const shelfBookId of selectedBooks) {
+        const response = await fetch("http://localhost:5000/api/shelves/move-book", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId,
+            shelfBookId,
+            targetShelfName: "Finished",
+          }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.shelfBook) {
+          console.log("✅ Move success:", data);
+          movedBooks.push(data.shelfBook);
+        } else {
+          console.error("❌ Move failed:", data);
+        }
+      }
+
+      // ✅ Update states once, after all moves are done
+      setToReadShelfBooks((prev) =>
+        prev.filter((book) => !selectedBooks.includes(book.id))
+      );
+      setFinishedShelfBooks((prev) => {
+        const existingIds = new Set(prev.map((b) => b.id));
+        const uniqueNew = movedBooks.filter((b) => !existingIds.has(b.id));
+        return [...prev, ...uniqueNew];
+      });
+
+
+    } catch (err) {
+      console.error("❌ Error moving books:", err);
+    } finally {
+      // Clear selection
+      setSelectedBooks([]);
+    }
+  };
+
+
+  const handleDelete = () => {
+    if (selectedBooks.length === 0) {
+      return;
+    }
+    setShowDeleteConfirm(true);
+  };
+
+  const confirmDelete = async () => {
+    try {
+      console.log('🗑️ Deleting books:', selectedBooks.join(', '), 'from User ID:', userId);
+      
+      const response = await fetch('http://localhost:5000/api/shelves/delete-books', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: userId,
+          bookIds: selectedBooks
+        })
+      });
+
+      const data = await response.json();
+      
+      if (response.ok) {
+        console.log('✅ Delete successful:', data);
+        // Refresh the whole page so frontend re-fetches state
+        setToReadShelfBooks(prev => prev.filter(book => !selectedBooks.includes(book.id)));
+        setFinishedShelfBooks(prev => prev.filter(book => !selectedBooks.includes(book.id)));
+      } else {
+        console.error('❌ Delete failed:', data);
+      }
+      
+    } catch (err) {
+      console.error('❌ Error deleting books:', err);
+    } finally {
+      setSelectedBooks([]);
+      setShowDeleteConfirm(false);
+    }
+  };
+
+  const cancelDelete = () => {
+    setShowDeleteConfirm(false);
+  };
+
+  return (
+    <>
+      <Logo position="top" />
+      <div className="shelf-page">
+        <div className="shelf-controls">
+          {isSelectMode && (
+            <div className="edit-buttons">
+              <div className="finished-button" onClick={handleFinished}>Finished</div>
+              <div className="delete-button" onClick={handleDelete}>Delete</div>
+            </div>
+          )}
+          <div className="items-selected-count">
+            {isSelectMode && `${selectedBooks.length} items selected`}
+          </div>
+          <div className="select-button" onClick={handleSelectToggle}>
+            {isSelectMode ? 'Done' : 'Select'}
+          </div>
+        </div>
+
+        {/* 🟡 TO READ SHELVES */}
+        <div className="shelf-container">
+          <div
+            className="shelf-label"
+            onClick={() => setToReadOpen(!toReadOpen)}
+            style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }}
+          >
+            <div className="shelf-label-line" style={{ width: "6%" }} />
+            To Read
+            <FontAwesomeIcon
+              icon={faChevronDown}
+              style={{
+                transition: "transform 0.2s",
+                transform: toReadOpen ? "rotate(0deg)" : "rotate(-90deg)",
+              }}
+            />
+            <div className="shelf-label-line" style={{ width: "100%" }} />
+          </div>
+
+          {/* 🟡 TO READ SHELVES */}
+          <AnimatePresence initial={true}>
+            {toReadOpen && (
+              <motion.div
+                className="shelves-container"
+                key="to-read-shelves"
+                variants={accordionVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+              >
+                {toReadShelves.map((shelf, index) => (
+                  <motion.div
+                    className="shelf"
+                    key={index}
+                    variants={accordionVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                  >
+                    {shelf.map((book) => (
+                      <ShelfBook
+                        key={book.id}
+                        id={book.id}
+                        googleBooksId={book.googleBooksId}
+                        title={book.title}
+                        coverURL={book.coverURL}
+                        description={book.description}
+                        status={book.status}
+                        isSelectMode={isSelectMode}
+                        isSelected={selectedBooks.includes(book.id)}
+                        onSelect={() => handleBookSelect(book.id)}
+                      />
+                    ))}
+                  </motion.div>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* 🟢 FINISHED SHELVES */}
+        <div className="shelf-container" style={{ paddingBottom: finishedOpen ? "0" : "100px" }}>
+          <div
+            className="shelf-label"
+            onClick={() => setFinishedOpen(!finishedOpen)}
+            style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }}
+          >
+            <div className="shelf-label-line" style={{ width: "6%" }} />
+            Finished
+            <FontAwesomeIcon
+              icon={faChevronDown}
+              style={{
+                transition: "transform 0.2s",
+                transform: finishedOpen ? "rotate(0deg)" : "rotate(-90deg)",
+              }}
+            />
+            <div className="shelf-label-line" style={{ width: "100%" }} />
+          </div>
+
+          <AnimatePresence initial={true}>
+            {finishedOpen && (
+              <motion.div
+                className="shelves-container"
+                key="finished-shelves"
+                variants={accordionVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+              >
+                {finishedShelves.map((shelf, index) => (
+                  <motion.div
+                    className="shelf"
+                    key={index}
+                    variants={accordionVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                  >
+                    {shelf.map((book) => (
+                      <ShelfBook
+                        key={book.id}
+                        id={book.id}
+                        googleBooksId={book.googleBooksId}
+                        title={book.title}
+                        coverURL={book.coverURL}
+                        description={book.description}
+                        status={book.status}
+                        isSelectMode={isSelectMode}
+                        isSelected={selectedBooks.includes(book.id)}
+                        onSelect={() => handleBookSelect(book.id)}
+                      />
+                    ))}
+                  </motion.div>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+
+      <DeleteConfirmPopup
+        isVisible={showDeleteConfirm}
+        title="Delete Books"
+        content={`Are you sure you want to delete ${selectedBooks.length === 1 ? 'this book' : `these ${selectedBooks.length} books`}?`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        onConfirm={confirmDelete}
+        onCancel={cancelDelete}
+      />
+      <NavigationPane />
+    </>
+  );
+}
+
+export default ShelfPage;
