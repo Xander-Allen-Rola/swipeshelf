@@ -65,7 +65,8 @@
 }
 
 .edit-textarea {
-    min-height: 80px;
+    height: 40px;
+    width: 100%;
     resize: none;
     background-color: transparent;
     color: #6B5E4A;
@@ -80,6 +81,15 @@
 }
 
 .favorite-book-cover {
+    cursor: pointer;
+}
+
+.signout-button {
+    position: absolute;
+    top: 25px;
+    right: 15px;
+    font-size: 24px;
+    color: #6B5E4A;
     cursor: pointer;
 }
 /* ...existing code... */

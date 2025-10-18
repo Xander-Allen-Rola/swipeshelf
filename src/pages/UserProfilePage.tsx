@@ -1,14 +1,14 @@
 import NavigationPane from "../components/NavigationPane";
 import Logo from "../components/Logo";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircleUser } from '@fortawesome/free-solid-svg-icons'
+import { faCircleUser, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 import './UserProfilePage.css';
 import Button from '../components/Button';
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import ConfirmPopup from "../components/ConfirmPopup";
 import ShelfCard from "../components/ShelfCard";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 function UserProfilePage() {
     const navigate = useNavigate();
@@ -70,12 +70,10 @@ function UserProfilePage() {
             .catch(err => console.error("❌ Error fetching profile data:", err));
     }, []);
 
-    // 👇 handle clicking the profile pic
     const handleIconClick = () => {
         if (isEditing) fileInputRef.current?.click();
     };
 
-    // 👇 handle file selection + preview
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = e.target.files?.[0];
         if (selectedFile) {
@@ -86,7 +84,6 @@ function UserProfilePage() {
         }
     };
 
-    // 👇 upload to Cloudinary & log URL only
     const uploadProfilePicture = async () => {
         if (!file) return null;
         const token = localStorage.getItem("token");
@@ -112,7 +109,6 @@ function UserProfilePage() {
         }
     };
 
-    // 👇 handle saving profile (including pic)
     const handleSaveProfile = async () => {
         const token = localStorage.getItem("token");
         if (!token) return;
@@ -157,12 +153,23 @@ function UserProfilePage() {
         setIsEditing(false);
     };
 
-    // 👇 gate rendering until data is fetched
-    if (!hydrated) return null;
-
     return (
         <>
             <Logo position="top" />
+            <motion.div
+                className="signout-button"
+                initial={{ opacity: 0, y: -10 }}        // 👈 start slightly above, invisible
+                animate={{ opacity: 1, y: 0 }}         // 👈 fade in and slide down
+                transition={{ duration: 0.4, ease: "easeOut" }} // 👈 control speed
+                onClick={() => setShowSignOutConfirm(true)}
+                >
+            <FontAwesomeIcon 
+                icon={faRightFromBracket}
+                className="signout-button"
+                onClick={() => setShowSignOutConfirm(true)}
+            />
+            </motion.div>
+            {hydrated ? (
             <motion.div
                 initial={{ opacity: 0, scale: 0 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -200,41 +207,55 @@ function UserProfilePage() {
                     onChange={handleFileChange}
                 />
 
-                {isEditing ? (
-                    <>
-                        <div className="edit-info-container">
-                            <input
-                                type="text"
-                                value={updatedUser.firstName}
-                                onChange={(e) => setUpdatedUser({ ...updatedUser, firstName: e.target.value })}
-                                className="edit-input"
-                                placeholder="First Name"
+                <AnimatePresence mode="wait">
+                    {isEditing ? (
+                        <motion.div
+                            key="edit-fields"
+                            initial={{ opacity: 0, y: -20, rotateX: 90 }}
+                            animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                            exit={{ opacity: 0, y: 20, rotateX: -90 }}
+                            transition={{ duration: 0.4 }}
+                        >
+                            <div className="edit-info-container">
+                                <input
+                                    type="text"
+                                    value={updatedUser.firstName}
+                                    onChange={(e) => setUpdatedUser({ ...updatedUser, firstName: e.target.value })}
+                                    className="edit-input"
+                                    placeholder="First Name"
+                                />
+                                <input
+                                    type="text"
+                                    value={updatedUser.lastName}
+                                    onChange={(e) => setUpdatedUser({ ...updatedUser, lastName: e.target.value })}
+                                    className="edit-input"
+                                    placeholder="Last Name"
+                                />
+                            </div>
+                            <textarea
+                                value={updatedUser.bio}
+                                onChange={(e) => setUpdatedUser({ ...updatedUser, bio: e.target.value })}
+                                className="edit-textarea"
+                                placeholder="Write your bio..."
                             />
-                            <input
-                                type="text"
-                                value={updatedUser.lastName}
-                                onChange={(e) => setUpdatedUser({ ...updatedUser, lastName: e.target.value })}
-                                className="edit-input"
-                                placeholder="Last Name"
-                            />
-                        </div>
-                        <textarea
-                            value={updatedUser.bio}
-                            onChange={(e) => setUpdatedUser({ ...updatedUser, bio: e.target.value })}
-                            className="edit-textarea"
-                            placeholder="Write your bio..."
-                        />
-                    </>
-                ) : (
-                    <>
-                        <h2 style={{ fontSize: '30px' }}>
-                            {user && `${user.firstName} ${user.lastName}`}
-                        </h2>
-                        <p style={{ fontSize: '15px' }}>
-                            {user?.bio ? user.bio : "Add your bio here"}
-                        </p>
-                    </>
-                )}
+                        </motion.div>
+                    ) : (
+                        <motion.div
+                            key="display-fields"
+                            initial={{ opacity: 0, y: -20, rotateX: 90 }}
+                            animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                            exit={{ opacity: 0, y: 20, rotateX: -90 }}
+                            transition={{ duration: 0.2 }}
+                        >
+                            <h2 style={{ fontSize: '30px' }}>
+                                {user && `${user.firstName} ${user.lastName}`}
+                            </h2>
+                            <p style={{ fontSize: '15px' }}>
+                                {user?.bio ? user.bio : "Add your bio here"}
+                            </p>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
 
                 <div className="user-profile-buttons">
                     <Button
@@ -246,13 +267,6 @@ function UserProfilePage() {
                             if (isEditing) handleSaveProfile();
                             else setIsEditing(true);
                         }}
-                    />
-                    <Button
-                        width="150px"
-                        height="40px"
-                        padding="0px"
-                        text="Sign Out"
-                        onClick={() => setShowSignOutConfirm(true)}
                     />
                 </div>
 
@@ -287,7 +301,8 @@ function UserProfilePage() {
                     </div>
                 </div>
             </motion.div>
-
+            ) : null}
+            
             {selectedBook && (
                 <ShelfCard
                     id={selectedBook.googleBooksId}
