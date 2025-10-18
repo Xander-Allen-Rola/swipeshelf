@@ -15,7 +15,7 @@ interface ShelfCardProps {
   coverURL: string;
   description: string;
   status?: string;
-  variation: "shelf" | "search";
+  variation: "shelf" | "search" | "none";
   onClose: () => void;
 }
 
@@ -115,13 +115,13 @@ const ShelfCard = ({ id, googleBooksId, title, coverURL, variation, description,
                 onClick={handleToggleFavorite}
                 className="favorites-star"
               />
-            ) : (
+            ) : variation === "search" ? (
               <div className="shelf-options" onClick={handleOptionsClick}>
                 <div className="option-line" />
                 <div className="option-line" />
                 <div className="option-line" />
               </div>
-            )}           
+            ) : null}           
             <h2
             style={{ textAlign: "center" }}>{title}</h2>
             <p className="shelf-book-description">{description}</p>

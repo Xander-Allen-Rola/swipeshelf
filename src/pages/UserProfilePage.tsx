@@ -310,7 +310,7 @@ function UserProfilePage() {
                     title={selectedBook.title}
                     coverURL={selectedBook.coverURL}
                     description={selectedBook.description}
-                    variation="search"
+                    variation="none"
                     onClose={() => setSelectedBook(null)}
                 />
             )}

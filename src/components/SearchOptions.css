@@ -1,7 +1,8 @@
 .search-options-container{
-    position: absolute;
+    position: fixed;
     top: 190px;
     left: 55px;
+    width: 120px;
     background-color: white;
     border: 1px solid #ccc;
     border-radius: 8px;
