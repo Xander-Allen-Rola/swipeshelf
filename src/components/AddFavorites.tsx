@@ -119,7 +119,7 @@ function AddFavoriteBookPopup({ isVisible = true, onClose, onFavoritesAdded }: P
             // 🧼 clear selection and remove added books from grid
             setSelectedBooks([]);
             setBooks((prev) => prev.filter((b) => !selectedBooks.includes(b.id)));
-
+            onFavoritesAdded?.(selected);
             // ✅ close popup
             onClose?.();
             } else {
@@ -136,9 +136,8 @@ function AddFavoriteBookPopup({ isVisible = true, onClose, onFavoritesAdded }: P
         }
     };
 
-
-
-  if (!isVisible) return null;
+    if (!isVisible) return null;
+    if (loading) return null; 
 
   return (
     <>
@@ -196,11 +195,6 @@ function AddFavoriteBookPopup({ isVisible = true, onClose, onFavoritesAdded }: P
         </div>
 
         {/* 📚 Book Grid */}
-        {loading ? (
-          <div className="loading-text">Loading...</div>
-        ) : error ? (
-          <div className="error-text">{error}</div>
-        ) : (
           <div className="favorites-grid">
             {books.map((b) => (
               <div
@@ -229,7 +223,6 @@ function AddFavoriteBookPopup({ isVisible = true, onClose, onFavoritesAdded }: P
               </div>
             ))}
           </div>
-        )}
       </motion.div>
         <AnimatePresence>
           {showPopup && 

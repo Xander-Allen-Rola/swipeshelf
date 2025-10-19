@@ -8,8 +8,6 @@
     display: flex;
     flex-direction: column;
     opacity: 0;
-    transform: scale(0.9);
-    transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
 .popup-background {
@@ -23,8 +21,6 @@
     -webkit-backdrop-filter: blur(8px);
     border: 1px solid rgba(255, 255, 255, 0.3);
     z-index: 3;
-    opacity: 0;
-    transition: opacity 0.4s ease;
 }
 
 .add-fav-header {
