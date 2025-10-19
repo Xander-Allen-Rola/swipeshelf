@@ -8,3 +8,7 @@
     z-index: 10;
     color: white;
 }
+
+.popup-error {
+    background-color: rgba(220, 53, 69, 0.85); /* 🔴 red background */
+}

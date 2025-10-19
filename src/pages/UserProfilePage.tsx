@@ -344,8 +344,11 @@ function UserProfilePage() {
             <AnimatePresence>
                 {showAddFavoritePopup && (
                     <AddFavoriteBookPopup
-                    isVisible={showAddFavoritePopup}
-                    onClose={() => setShowAddFavoritePopup(false)}
+                        isVisible={showAddFavoritePopup}
+                        onClose={() => setShowAddFavoritePopup(false)}
+                        onFavoritesAdded={(newBooks) => {
+                            setFavoriteBooks((prev) => [...prev, ...newBooks]);
+                        }}
                     />
                 )}
             </AnimatePresence>
