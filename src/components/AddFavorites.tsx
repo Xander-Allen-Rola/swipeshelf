@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './AddFavorites.css';
+import { motion } from 'framer-motion';
 
 type Props = {
     isVisible?: boolean;
@@ -66,12 +67,32 @@ function AddFavoriteBookPopup({ isVisible = true, onClose }: Props) {
 
     return (
         <>
-            <div className="popup-background" onClick={onClose} />
-            <div className="add-favorite-book-container">
-                <div className="add-fav-header">
-                    <h3 style={{ margin: 0 }}>Add your Favorite Book/s</h3>
-                    <button className="close-button" aria-label="Close add favorite" onClick={onClose}>×</button>
-                </div>
+            <motion.div
+                className="popup-background"
+                onClick={onClose}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }} // optional if you want it to fade out too
+                transition={{
+                    duration: 0.4,
+                    ease: "easeInOut",
+                }}
+            />
+                <motion.div 
+                    className="add-favorite-book-container"
+                    style={{ top: '50%', left: '50%', translateX: '-50%', translateY: '-50%', position: 'fixed' }}
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}   // 👈 fade & shrink when closing
+                    transition={{
+                        duration: 0.4,
+                        scale: { type: "spring", visualDuration: 0.4, bounce: 0 },
+                    }}
+                >
+                    <div className="add-fav-header">
+                        <h3 style={{ margin: 0 }}>Add your Favorite Book/s</h3>
+                        <button className="close-button" aria-label="Close add favorite" onClick={onClose}>×</button>
+                    </div>
                         <div className="favorites-grid">
                             {books.map((b) => (
                                 <img
@@ -81,8 +102,8 @@ function AddFavoriteBookPopup({ isVisible = true, onClose }: Props) {
                                     className="favorite-cover"
                                 />
                             ))}
-                    </div>
-            </div>
+                        </div>
+                </motion.div>
         </>
     );
 }

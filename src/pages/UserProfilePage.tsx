@@ -322,7 +322,7 @@ function UserProfilePage() {
                     description={selectedBook.description}
                     variation="none"
                     onClose={() => setSelectedBook(null)}
-                />
+                /> 
             )}
 
             <NavigationPane />
@@ -341,10 +341,14 @@ function UserProfilePage() {
                 onCancel={() => setShowSignOutConfirm(false)}
             />
 
-            <AddFavoriteBookPopup
-                isVisible={showAddFavoritePopup}
-                onClose={() => setShowAddFavoritePopup(false)}
-            />
+            <AnimatePresence>
+                {showAddFavoritePopup && (
+                    <AddFavoriteBookPopup
+                    isVisible={showAddFavoritePopup}
+                    onClose={() => setShowAddFavoritePopup(false)}
+                    />
+                )}
+            </AnimatePresence>
         </>
     );
 }
