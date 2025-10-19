@@ -155,6 +155,24 @@ function UserProfilePage() {
         setIsEditing(false);
     };
 
+    const handleFavoriteChange = (status: "added" | "removed") => {
+        if (!selectedBook) return;
+
+        if (status === "added") {
+            console.log(`⭐ Book favorited: ${selectedBook.title}`);
+            setFavoriteBooks((prev) => {
+                const exists = prev.some(book => book.googleBooksId === selectedBook.googleBooksId);
+                return exists ? prev : [...prev, selectedBook];
+            });
+        } else if (status === "removed") {
+            console.log(`❌ Book unfavorited: ${selectedBook.title}`);
+            setFavoriteBooks((prev) =>
+                prev.filter(book => book.googleBooksId !== selectedBook.googleBooksId)
+            );
+        }
+    };
+
+
     return (
         <>
             <Logo position="top" />
@@ -320,8 +338,9 @@ function UserProfilePage() {
                     title={selectedBook.title}
                     coverURL={selectedBook.coverURL}
                     description={selectedBook.description}
-                    variation="none"
+                    variation="shelf"
                     onClose={() => setSelectedBook(null)}
+                    onFavoriteChange={handleFavoriteChange}
                 /> 
             )}
 

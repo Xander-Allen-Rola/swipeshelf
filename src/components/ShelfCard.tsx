@@ -17,14 +17,24 @@ interface ShelfCardProps {
   status?: string;
   variation: "shelf" | "search" | "none";
   onClose: () => void;
+  onFavoriteChange?: (status: "added" | "removed") => void; // 👈 now includes status
 }
 
-const ShelfCard = ({ id, googleBooksId, title, coverURL, variation, description, onClose }: ShelfCardProps) => {
+const ShelfCard = ({ id, googleBooksId, title, coverURL, variation, description, onClose, onFavoriteChange }: ShelfCardProps) => {
   const [flipped, setFlipped] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isFavorited, setIsFavorited] = useState(false);
   const [showFavoritesPopup, setShowFavoritesPopup] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
+
+  useEffect(() => {
+    if (showFavoritesPopup) {
+      const timer = setTimeout(() => {
+        setShowFavoritesPopup(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showFavoritesPopup]);
 
   useEffect(() => {
     setIsVisible(true);
@@ -67,6 +77,9 @@ const ShelfCard = ({ id, googleBooksId, title, coverURL, variation, description,
         if (response.ok) {
           setIsFavorited(false);
           setShowFavoritesPopup(true);
+          if (window.location.pathname === "/profile") {
+            onFavoriteChange?.("removed"); // 👈 notify parent
+          }
         }
       } else {
         const response = await fetch("http://localhost:5000/api/shelves/add-to-favorites", {
@@ -80,6 +93,9 @@ const ShelfCard = ({ id, googleBooksId, title, coverURL, variation, description,
         if (response.ok) {
           setIsFavorited(true);
           setShowFavoritesPopup(true);
+          if (window.location.pathname === "/profile") {
+            onFavoriteChange?.("added"); // 👈 notify parent
+          }
         }
       }
     } catch (err) {
