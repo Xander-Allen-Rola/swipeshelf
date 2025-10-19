@@ -92,4 +92,9 @@
     color: #6B5E4A;
     cursor: pointer;
 }
-/* ...existing code... */
+.favorite-books-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}

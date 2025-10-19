@@ -9,6 +9,7 @@ import { useEffect, useState, useRef } from "react";
 import ConfirmPopup from "../components/ConfirmPopup";
 import ShelfCard from "../components/ShelfCard";
 import { motion, AnimatePresence } from "framer-motion";
+import AddFavoriteBookPopup from "../components/AddFavorites";
 
 function UserProfilePage() {
     const navigate = useNavigate();
@@ -20,6 +21,7 @@ function UserProfilePage() {
     const [isEditing, setIsEditing] = useState(false);
     const [favoriteBooks, setFavoriteBooks] = useState<any[]>([]);
     const [selectedBook, setSelectedBook] = useState<any | null>(null);
+    const [showAddFavoritePopup, setShowAddFavoritePopup] = useState(false);
     const [hydrated, setHydrated] = useState(false); // 👈 for gating render until data is ready
 
     // 👇 profile picture upload
@@ -283,7 +285,15 @@ function UserProfilePage() {
                 </div>
 
                 <div className="favorite-books">
-                    <h3 style={{ margin: '5px' }}>Favorite Books</h3>
+                    <div className="favorite-books-header">
+                        <h3 style={{ margin: '5px' }}>Favorite Books </h3>
+                        <Button 
+                            text="+"
+                            width="25px"
+                            height="25px"
+                            padding="0px"
+                            onClick={() => setShowAddFavoritePopup(true)} />
+                    </div>
                     <div className="favorite-books-entries">
                         {favoriteBooks.length === 0 ? (
                             <p style={{ opacity: 0.7 }}>No favorites yet</p>
@@ -329,6 +339,11 @@ function UserProfilePage() {
                     navigate('/');
                 }}
                 onCancel={() => setShowSignOutConfirm(false)}
+            />
+
+            <AddFavoriteBookPopup
+                isVisible={showAddFavoritePopup}
+                onClose={() => setShowAddFavoritePopup(false)}
             />
         </>
     );
