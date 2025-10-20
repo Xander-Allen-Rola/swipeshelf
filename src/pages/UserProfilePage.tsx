@@ -35,13 +35,33 @@ function UserProfilePage() {
         const token = localStorage.getItem('token');
         if (!userId || !token) return;
 
+        // ✅ Load from cache first
+        const cachedUser = sessionStorage.getItem('userProfile');
+        const cachedFinished = sessionStorage.getItem('finishedCount');
+        const cachedToRead = sessionStorage.getItem('toReadCount');
+        const cachedFavorites = sessionStorage.getItem('favoriteBooks');
+
+        if (cachedUser) setUser(JSON.parse(cachedUser));
+        if (cachedUser) {
+            const userData = JSON.parse(cachedUser);
+            setUpdatedUser({
+                firstName: userData.firstName || '',
+                lastName: userData.lastName || '',
+                bio: userData.bio || '',
+            });
+            setImage(userData.profilePicture || null);
+        }
+        if (cachedFinished) setFinishedCount(Number(cachedFinished));
+        if (cachedToRead) setToReadCount(Number(cachedToRead));
+        if (cachedFavorites) setFavoriteBooks(JSON.parse(cachedFavorites));
+
+        setHydrated(true); // render immediately from cache
+
+        // ✅ Fetch from server to update cache
         const fetchUser = fetch(`http://localhost:5000/api/users/${userId}`, {
             headers: { 'Authorization': `Bearer ${token}` },
         })
-            .then(res => {
-                if (!res.ok) throw new Error('Failed to fetch user');
-                return res.json();
-            })
+            .then(res => res.json())
             .then(data => {
                 setUser(data.user);
                 setUpdatedUser({
@@ -50,27 +70,35 @@ function UserProfilePage() {
                     bio: data.user.bio || '',
                 });
                 setImage(data.user.profilePicture || null);
+                sessionStorage.setItem('userProfile', JSON.stringify(data.user));
             });
 
         const fetchFinishedCount = fetch(`http://localhost:5000/api/users/${userId}/finished-count`)
             .then(res => res.json())
-            .then(data => setFinishedCount(data.count));
+            .then(data => {
+                setFinishedCount(data.count);
+                sessionStorage.setItem('finishedCount', data.count.toString());
+            });
 
         const fetchToReadCount = fetch(`http://localhost:5000/api/users/${userId}/to-read-count`)
             .then(res => res.json())
-            .then(data => setToReadCount(data.count));
+            .then(data => {
+                setToReadCount(data.count);
+                sessionStorage.setItem('toReadCount', data.count.toString());
+            });
 
         const fetchFavorites = fetch(`http://localhost:5000/api/shelves/favorites/${userId}`)
             .then(res => res.json())
             .then(data => {
-                console.log("⭐ Favorite books fetched:", data.books);
                 setFavoriteBooks(data.books || []);
+                sessionStorage.setItem('favoriteBooks', JSON.stringify(data.books || []));
             });
 
         Promise.all([fetchUser, fetchFinishedCount, fetchToReadCount, fetchFavorites])
-            .then(() => setHydrated(true))
             .catch(err => console.error("❌ Error fetching profile data:", err));
+
     }, []);
+
 
     const handleIconClick = () => {
         if (isEditing) fileInputRef.current?.click();
