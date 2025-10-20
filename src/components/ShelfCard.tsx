@@ -105,7 +105,7 @@ const ShelfCard = ({ id, googleBooksId, title, coverURL, variation, description,
 
   const handleOptionsClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setShowOptions(true);
+    setShowOptions(prev => !prev);
   };
 
   return (
