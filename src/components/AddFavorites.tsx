@@ -182,7 +182,7 @@ function AddFavoriteBookPopup({ isVisible = true, onClose, onFavoritesAdded }: P
                 Cancel
             </button>
             <div className="selected-count">
-                {selectedBooks.length > 0 && `${selectedBooks.length} selected`}
+                {`${selectedBooks.length} selected`}
             </div>
             <button
                 className="confirm-button"
