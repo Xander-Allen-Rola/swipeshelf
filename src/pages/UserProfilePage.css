@@ -33,21 +33,21 @@
 }
 
 .favorite-book-cover {
-    width: 70px;
-    height: 100px;
+    width: 100%;
+    aspect-ratio: 2/3;
     object-fit: cover;
 }
 
 /* ...existing code... */
 .favorite-books-entries {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
-    max-width: calc(5 * 70px + 4 * 15px); /* 5 items + 4 gaps */
-    gap: 15px;
+    grid-template-columns: repeat(5, 1fr); /* 5 equal-width columns */
+    gap: 10px;
     background: #D1C7B7;
     padding: 15px;
     border-radius: 10px;
     margin: 0 auto; /* Center the grid */
+    max-width: 90%;
 }
 
 .profile-picture {
@@ -97,4 +97,13 @@
     align-items: center;
     justify-content: center;
     gap: 5px;
+}
+
+.favorite-books {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding-bottom: 120px;
+    justify-content: center;
 }
