@@ -94,13 +94,14 @@ function AddFavoriteBookPopup({ isVisible = true, onClose, onFavoritesAdded }: P
         if (selectedBooks.length === 0) return;
 
         const userId = Number(localStorage.getItem('userId') || 0);
+        const token = localStorage.getItem('token'); // ✅ get JWT token
         const selected = books.filter((b) => selectedBooks.includes(b.id));
 
         try {
             setSubmitting(true);
             const response = await fetch('http://localhost:5000/api/shelves/add-to-favorites', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
             body: JSON.stringify({
                 userId,
                 books: selected.map((b) => ({

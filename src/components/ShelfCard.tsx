@@ -66,12 +66,18 @@ const ShelfCard = ({ id, googleBooksId, title, coverURL, variation, description,
   const handleToggleFavorite = async (e: React.MouseEvent) => {
     e.stopPropagation();
     const userId = Number(localStorage.getItem("userId") || 0);
+    const token = localStorage.getItem("token"); // ✅ get JWT token
+
+    if (!token) {
+      console.error("❌ No auth token found");
+      return;
+    }
 
     try {
       if (isFavorited) {
         const response = await fetch("http://localhost:5000/api/shelves/remove-from-favorites", {
           method: "DELETE",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
           body: JSON.stringify({ userId, googleBooksId }),
         });
         if (response.ok) {
@@ -84,7 +90,7 @@ const ShelfCard = ({ id, googleBooksId, title, coverURL, variation, description,
       } else {
         const response = await fetch("http://localhost:5000/api/shelves/add-to-favorites", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
           body: JSON.stringify({
             userId,
             book: { googleBooksId, title, coverUrl: coverURL ?? null, description: description ?? null }

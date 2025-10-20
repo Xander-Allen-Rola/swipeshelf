@@ -58,6 +58,7 @@ function ShelfPage() {
   const [finishedOpen, setFinishedOpen] = useState(true);
 
   const userId = Number(localStorage.getItem("userId") || 0);
+  const token = localStorage.getItem("token"); // ✅ get JWT token
 
    useEffect(() => {
     const fetchToReadBooks = async () => {
@@ -120,7 +121,7 @@ function ShelfPage() {
       for (const shelfBookId of selectedBooks) {
         const response = await fetch("http://localhost:5000/api/shelves/move-book", {
           method: "PUT",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
           body: JSON.stringify({
             userId,
             shelfBookId,
@@ -173,6 +174,7 @@ function ShelfPage() {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}` // ✅ include JWT token
         },
         body: JSON.stringify({
           userId: userId,

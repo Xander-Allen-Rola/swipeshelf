@@ -13,50 +13,75 @@ interface SearchOptionsProps {
 
 function SearchOptions({ googleBooksId, title, coverURL, description }: SearchOptionsProps) {
   const userId = Number(localStorage.getItem("userId") || 0);
+  const token = localStorage.getItem("token"); // ✅ get JWT token
   const [showShelfPopup, setShowShelfPopup] = useState(false);
   const [showFinishedPopup, setShowFinishedPopup] = useState(false);
 
   const handleAddToShelf = async () => {
+    if (!token) {
+      console.error("❌ No auth token found");
+      return;
+    }
+
     try {
-        await axios.post("http://localhost:5000/api/shelves/add-to-to-read", {
+      await axios.post(
+        "http://localhost:5000/api/shelves/add-to-to-read",
+        {
           userId,
           book: {
-            googleBooksId: googleBooksId,
-            title: title,
+            googleBooksId,
+            title,
             coverUrl: coverURL,
-            description: description,
+            description,
           },
-        });
-        console.log(`✅ Book ${googleBooksId} ${title} added to To Read shelf`);
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-        setShowShelfPopup(true);
-        
-        // Hide popup after 3 seconds
-        setTimeout(() => {
-          setShowShelfPopup(false);
-        }, 3000);
+      console.log(`✅ Book ${googleBooksId} ${title} added to To Read shelf`);
+      setShowShelfPopup(true);
+      setTimeout(() => setShowShelfPopup(false), 3000);
 
-      } catch (err) {
-        console.error("❌ Failed to add book to To Read shelf:", err);
-      }
+    } catch (err) {
+      console.error("❌ Failed to add book to To Read shelf:", err);
+    }
   };
 
   const handleMarkAsFinished = async () => {
+    if (!token) {
+      console.error("❌ No auth token found");
+      return;
+    }
+
     try {
-      await axios.post("http://localhost:5000/api/shelves/add-to-finished", {
-        userId,
-        book: {
-          googleBooksId,
-          title,
-          coverUrl: coverURL,
-          description,
+      await axios.post(
+        "http://localhost:5000/api/shelves/add-to-finished",
+        {
+          userId,
+          book: {
+            googleBooksId,
+            title,
+            coverUrl: coverURL,
+            description,
+          },
         },
-      });
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       console.log(`✅ Book ${googleBooksId} (${title}) added to Finished shelf`);
       setShowFinishedPopup(true);
-
       setTimeout(() => setShowFinishedPopup(false), 3000);
+
     } catch (err) {
       console.error("❌ Failed to add book to Finished shelf:", err);
     }

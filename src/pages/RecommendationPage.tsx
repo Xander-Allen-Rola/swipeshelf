@@ -21,6 +21,7 @@ interface Book {
 
 function RecommendationPage() {
   const userId = Number(localStorage.getItem("userId") || 0);
+  const token = localStorage.getItem("token"); // ✅ get JWT token
 
   const CACHE_KEY = `recommendation_cache_${userId}`;
   const INDEX_KEY = `recommendation_index_${userId}`;
@@ -137,6 +138,12 @@ function RecommendationPage() {
             title: book.title,
             coverUrl: book.coverUrl,
             description: book.description,
+          },
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         });
         console.log(`✅ Book ${book.title} added to To Read shelf`);
