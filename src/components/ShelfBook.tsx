@@ -2,6 +2,9 @@ import './ShelfBook.css';
 import ShelfCard from '../components/ShelfCard';
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { AnimatePresence, motion } from 'framer-motion';
 
 interface ShelfBookProps {
   id: number;
@@ -21,7 +24,7 @@ function ShelfBook({ id, googleBooksId, title, coverURL, description, status, is
     if (isSelectMode && onSelect) {
       onSelect();
     } else {
-      setShowCard(true); // Changed from setModalOpen to setShowCard
+      setShowCard(true);
     }
   };
 
@@ -31,26 +34,37 @@ function ShelfBook({ id, googleBooksId, title, coverURL, description, status, is
         className={`shelf-book ${isSelectMode ? 'select-mode' : ''} ${isSelected ? 'selected' : ''}`}
         onClick={handleClick}>
         {isSelectMode && (
-          <div className="selection-indicator">
-            {isSelected ? '✓' : ''}
-          </div>
+          <AnimatePresence>
+            {isSelected && (
+              <motion.div
+                key="check"
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0, opacity: 0 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                className="selection-indicator"
+              >
+                <FontAwesomeIcon icon={faCheck} />
+              </motion.div>
+            )}
+          </AnimatePresence>
         )}
         <img src={coverURL} alt={title} className="cover" />
       </div>
 
-        {showCard && createPortal(
-          <ShelfCard
-            id={id}
-            title={title}
-            coverURL={coverURL}
-            description={description}
-            status={status}
-            googleBooksId={googleBooksId}
-            variation="shelf" // 👈 shows ShelfOptions
-            onClose={() => setShowCard(false)}
-          />,
-          document.body
-        )}
+      {showCard && createPortal(
+        <ShelfCard
+          id={id}
+          title={title}
+          coverURL={coverURL}
+          description={description}
+          status={status}
+          googleBooksId={googleBooksId}
+          variation="shelf" 
+          onClose={() => setShowCard(false)}
+        />,
+        document.body
+      )}
     </>
   );
 }

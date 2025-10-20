@@ -208,22 +208,55 @@ function ShelfPage() {
       <Logo position="top" />
       <div className="shelf-page">
         <div className="shelf-controls">
-          {isSelectMode && (
-            <div className="edit-buttons">
-              <div className="finished-button" onClick={handleFinished}>Finished</div>
-              <div className="delete-button" onClick={handleDelete}>Delete</div>
-            </div>
-          )}
-          <div className="items-selected-count">
-            {isSelectMode && `${selectedBooks.length} items selected`}
-          </div>
-          <div className="select-button" onClick={handleSelectToggle}>
+          <AnimatePresence>
+            {isSelectMode && (
+              <div className="edit-buttons">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    transition={{
+                      duration: 0.4,
+                      scale: { type: 'spring', visualDuration: 0.4, bounce: 0 },
+                    }}
+                  className="finished-button" 
+                  onClick={handleFinished}>Finished</motion.div>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{
+                    duration: 0.4,
+                    scale: { type: 'spring', visualDuration: 0.4, bounce: 0 },
+                  }}
+                className="delete-button" onClick={handleDelete}>Delete</motion.div>
+              </div>
+            )}
+          </AnimatePresence>
+          <AnimatePresence>
+            {isSelectMode && (
+              <motion.div
+                key="selected-count"
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{
+                  duration: 0.4,
+                  scale: { type: 'spring', visualDuration: 0.4, bounce: 0 },
+                }}
+                className="items-selected-count"
+              >
+                {`${selectedBooks.length} items selected`}
+              </motion.div>
+            )}
+          </AnimatePresence>
+                    <div className="select-button" onClick={handleSelectToggle}>
             {isSelectMode ? 'Done' : 'Select'}
           </div>
         </div>
 
         {/* 🟡 TO READ SHELVES */}
-        <div className="shelf-container">
+        <div className="shelf-container" style={{ paddingBottom: toReadOpen ? "0" : "50px" }}>
           <div
             className="shelf-label"
             onClick={() => setToReadOpen(!toReadOpen)}

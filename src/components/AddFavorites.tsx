@@ -209,17 +209,19 @@ function AddFavoriteBookPopup({ isVisible = true, onClose, onFavoritesAdded }: P
                   alt={b.title}
                   className="favorite-cover"
                 />
-                {selectedBooks.includes(b.id) && (
-                  <motion.div
-                    className="check-overlay"
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    exit={{ scale: 0, opacity: 0 }}
-                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                  >
-                    <FontAwesomeIcon icon={faCheck} />
-                  </motion.div>
-                )}
+                <AnimatePresence>
+                  {selectedBooks.includes(b.id) && (
+                    <motion.div
+                      className="check-overlay"
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      exit={{ scale: 0, opacity: 0 }}
+                      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                    >
+                      <FontAwesomeIcon icon={faCheck} />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             ))}
           </div>
