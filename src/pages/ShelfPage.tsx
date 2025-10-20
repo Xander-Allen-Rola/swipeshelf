@@ -213,12 +213,12 @@ function ShelfPage() {
               <div className="edit-buttons">
                 <motion.div
                   initial={{ opacity: 0, scale: 0 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.8 }}
-                    transition={{
-                      duration: 0.4,
-                      scale: { type: 'spring', visualDuration: 0.4, bounce: 0 },
-                    }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{
+                    duration: 0.4,
+                    scale: { type: 'spring', visualDuration: 0.4, bounce: 0 },
+                  }}
                   className="finished-button" 
                   onClick={handleFinished}>Finished</motion.div>
                 <motion.div
