@@ -4,9 +4,9 @@ import Genre from '../components/Genre';
 import Button from '../components/Button';   
 import Logo from '../components/Logo';
 import BackArrow from '../components/BackArrow';
-import { useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import LoadingOverlay from '../components/LoadingOverlay';
+import { useAuth } from "../contexts/AuthContext"; // 👈 import auth context
 
 type GenreType = {
   id: number;
@@ -15,12 +15,13 @@ type GenreType = {
 
 function GenresPage() {
   const location = useLocation();
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate(); // ✅ init navigate
+  const navigate = useNavigate();
+  const { setUser } = useAuth(); // 👈 grab setUser from context
   const token = location.state?.token || localStorage.getItem("token");
 
   const [genres, setGenres] = useState<GenreType[]>([]);
   const [selectedGenres, setSelectedGenres] = useState<number[]>([]);
+  const [loading, setLoading] = useState(false);
 
   // Fetch genres from backend
   useEffect(() => {
@@ -49,7 +50,7 @@ function GenresPage() {
   };
 
   const handleContinue = async () => {
-    const userId = localStorage.getItem("userId"); // 👈 store this during login/signup
+    const userId = localStorage.getItem("userId");
     if (!userId) {
       console.error("❌ No userId found.");
       return;
@@ -70,10 +71,18 @@ function GenresPage() {
       }
 
       console.log("✅ Genres saved successfully");
-      navigate("/signin"); // Navigate to sign-in page
+
+      // 🔑 Force logout after registration
+      localStorage.removeItem("token");
+      localStorage.removeItem("userId");
+      setUser(null); // update context
+
+      // Redirect to sign-in
+      navigate("/signin", { replace: true });
     } catch (err) {
       console.error("❌ Error saving genres:", err);
     }
+
     console.log("📚 Selected:", selectedGenres);
   };
 
