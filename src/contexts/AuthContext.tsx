@@ -17,12 +17,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // Load user from localStorage on mount only
   useEffect(() => {
-    // Load token + userId from localStorage if available
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
     if (token && userId) {
       setUser({ id: userId, token });
+    } else {
+      setUser(null);
     }
     setLoading(false);
   }, []);
