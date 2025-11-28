@@ -16,8 +16,8 @@ function LandingPage() {
         {/* Navigate to Register page */}
         <Button text="REGISTER" variant="secondary" onClick={() => navigate("/registration")} />
 
-        {/* Navigate to Guest flow */}
-        <Button text="CONTINUE AS GUEST" variant="secondary" onClick={() => navigate("/recommendations")} />
+        {/* Navigate to Guest flow
+        <Button text="CONTINUE AS GUEST" variant="secondary" onClick={() => navigate("/recommendations")} />*/}
       </div>
     </div>
   )
