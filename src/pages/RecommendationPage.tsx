@@ -69,7 +69,7 @@ function RecommendationPage() {
       if (Array.isArray(res.data)) {
         setBooks(prev => {
           const seen = new Set(prev.map(b => b.googleBooksId));
-          const uniqueNew = res.data.filter(b => !seen.has(b.googleBooksId));
+          const uniqueNew = res.data.filter((b: Book) => !seen.has(b.googleBooksId));
           const updated = append ? [...prev, ...uniqueNew] : res.data;
           saveCache(updated, append ? currentIndex : 0);
           return updated;
@@ -165,7 +165,7 @@ function RecommendationPage() {
 
   const handleUndo = () => {
     if (swipedStack.length === 0) return;
-    const [lastSwiped, ...rest] = swipedStack;
+    const [, ...rest] = swipedStack;
     setSwipedStack(rest);
     setCurrentIndex(prev => prev - 1);
   };
@@ -190,8 +190,8 @@ function RecommendationPage() {
             release={books[currentIndex].publishedDate ?? 'Unknown'}
             description={books[currentIndex].description}
             image={loadedImage ?? '/images/placeholder-cover.png'} // show placeholder while loading
-            genres={books[currentIndex].categories}
-            onSwipe={(dir) => handleSwipe(dir, books[currentIndex])}
+            genres={books[currentIndex].categories as string[]}
+            onSwipe={(dir: string) => handleSwipe(dir, books[currentIndex])}
             onSwipedComplete={() => setCurrentIndex(prev => prev + 1)}
             onUndo={handleUndo}
             style={{ zIndex: books.length - currentIndex }}

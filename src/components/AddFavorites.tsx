@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './AddFavorites.css';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -25,7 +25,7 @@ type Book = {
 function AddFavoriteBookPopup({ isVisible = true, onClose, onFavoritesAdded }: Props) {
     const [books, setBooks] = useState<Book[]>([]);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    // ...existing code...
     const [selectedBooks, setSelectedBooks] = useState<number[]>([]);
     const [submitting, setSubmitting] = useState(false);
     const [popupMessage, setPopupMessage] = useState<string | null>(null);
@@ -47,7 +47,7 @@ function AddFavoriteBookPopup({ isVisible = true, onClose, onFavoritesAdded }: P
 
         const userId = localStorage.getItem('userId');
         if (!userId) {
-        setError('User not signed in');
+        // ...existing code...
         return;
         }
 
@@ -55,7 +55,7 @@ function AddFavoriteBookPopup({ isVisible = true, onClose, onFavoritesAdded }: P
         const token = localStorage.getItem('token');
 
         setLoading(true);
-        setError(null);
+        // ...existing code...
 
         fetch(`http://localhost:5000/api/shelves/non-favorites/${userId}`, {
         headers: token ? { Authorization: `Bearer ${token}` } : undefined,
@@ -75,7 +75,7 @@ function AddFavoriteBookPopup({ isVisible = true, onClose, onFavoritesAdded }: P
         .catch((err) => {
             if (err.name === 'AbortError') return;
             console.error('Error fetching non-favorite books:', err);
-            setError(err.message || 'Failed to fetch books');
+            // ...existing code...
             setLoading(false);
         });
 
@@ -128,9 +128,9 @@ function AddFavoriteBookPopup({ isVisible = true, onClose, onFavoritesAdded }: P
             setPopupMessage(data.error || 'Failed to add favorites');
             setShowPopup(true);
             }
-        } catch (err: any) {
+        } catch (err) {
             console.error('❌ Error adding favorites:', err);
-            setPopupMessage(err.message || 'An unexpected error occurred');
+            setPopupMessage(typeof err === 'object' && err && 'message' in err ? (err as { message?: string }).message ?? 'An unexpected error occurred' : 'An unexpected error occurred');
             setShowPopup(true);
         } finally {
             setSubmitting(false);
@@ -219,7 +219,7 @@ function AddFavoriteBookPopup({ isVisible = true, onClose, onFavoritesAdded }: P
                       exit={{ scale: 0, opacity: 0 }}
                       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                     >
-                      <FontAwesomeIcon icon={faCheck} />
+                      <FontAwesomeIcon icon={faCheck as import('@fortawesome/fontawesome-svg-core').IconProp} />
                     </motion.div>
                   )}
                 </AnimatePresence>

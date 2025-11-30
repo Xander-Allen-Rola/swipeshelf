@@ -76,7 +76,7 @@ function SignIn() {
         </div>
         {error && <p style={{ color: "red" }}>{error}</p>}
         <div className="forgot-password">Forgot password?</div>
-        <Button text="SIGN IN" variant="primary" onClick={handleSignIn} />
+        <Button text="SIGN IN" variant="primary" onClick={handleSignIn} width="100%" height="48px" padding="12px" />
       </div>
     </>
   );

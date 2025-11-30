@@ -13,7 +13,7 @@ interface ShelfOptionsProps {
   onClose?: () => void;
 }
 
-function ShelfOptions({ id, googleBooksId, title, coverURL, description, onClose }: ShelfOptionsProps) {
+function ShelfOptions({ id, googleBooksId, title, coverURL, description }: ShelfOptionsProps) {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [showFavoritesPopup, setShowFavoritesPopup] = useState(false);
   const [showFinishedPopup, setShowFinishedPopup] = useState(false);

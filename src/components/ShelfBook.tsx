@@ -44,7 +44,7 @@ function ShelfBook({ id, googleBooksId, title, coverURL, description, status, is
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                 className="selection-indicator"
               >
-                <FontAwesomeIcon icon={faCheck} />
+                <FontAwesomeIcon icon={faCheck as import('@fortawesome/fontawesome-svg-core').IconProp} />
               </motion.div>
             )}
           </AnimatePresence>

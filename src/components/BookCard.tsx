@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import './BookCard.css';
 import releaseDate from '../assets/release_date.png';
 import bookAuthor from '../assets/author.png';
@@ -6,7 +6,20 @@ import likeIcon from '../assets/like.png';
 import dislikeIcon from '../assets/dislike.png';
 import undoIcon from '../assets/undo.png';
 
-const BookCard = ({ title, author, release, description, genres = [], image, onSwipe, onSwipedComplete, onUndo, style = {} }) => {
+interface BookCardProps {
+  title: string;
+  author: string;
+  release: string;
+  description: string;
+  genres?: string[];
+  image?: string;
+  onSwipe?: (dir: string, title: string) => void;
+  onSwipedComplete?: () => void;
+  onUndo?: () => void;
+  style?: React.CSSProperties;
+}
+
+const BookCard = ({ title, author, release, description, image, onSwipe, onSwipedComplete, onUndo, style = {} }: BookCardProps) => {
   const [flipped, setFlipped] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
@@ -33,13 +46,13 @@ const BookCard = ({ title, author, release, description, genres = [], image, onS
     setDislikeOpacity(0);
   }, [title]); // or use `key` as dependency
 
-  const handleMouseDown = (e) => {
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     setIsDragging(true);
     startX.current = e.clientX;
     startY.current = e.clientY;
   };
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!isDragging) return;
     const dx = e.clientX - startX.current;
     const dy = e.clientY - startY.current;
@@ -77,7 +90,7 @@ const BookCard = ({ title, author, release, description, genres = [], image, onS
     }
   };
 
-  const handleTouchMove = (e) => {
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
     if (!isDragging) return;
     const dx = e.touches[0].clientX - startX.current;
     const dy = e.touches[0].clientY - startY.current;

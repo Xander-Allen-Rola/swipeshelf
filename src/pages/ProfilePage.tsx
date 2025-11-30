@@ -122,7 +122,7 @@ function ProfilePage() {
             <img src={image} alt="Profile" className="profile-picture-img" />
           ) : (
             <FontAwesomeIcon
-              icon={faCircleUser}
+              icon={faCircleUser as import('@fortawesome/fontawesome-svg-core').IconProp}
               size="2xl"
               style={{ color: "#8b5e3c", width: '300px', height: '300px' }}
             />
@@ -139,6 +139,9 @@ function ProfilePage() {
           text="CONTINUE"
           variant="primary"
           onClick={handleContinue}
+          width="100%"
+          height="48px"
+          padding="12px"
         />
       </div>
     </>

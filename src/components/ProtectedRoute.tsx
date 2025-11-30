@@ -1,3 +1,4 @@
+// ...existing code...
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { useEffect } from "react";
@@ -8,7 +9,7 @@ interface DecodedToken { // ✅ NEW: define the decoded token interface
   [key: string]: any;
 }
 
-function ProtectedRoute({ children }: { children: JSX.Element }) {
+function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, setUser, loading } = useAuth();
   const location = useLocation();
 

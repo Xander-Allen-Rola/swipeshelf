@@ -191,7 +191,7 @@ function RegistrationPage() {
 
         <p>We will send an email with a verification code.</p>
 
-        <Button text="CONTINUE" variant="primary" onClick={handleRegister} />
+        <Button text="CONTINUE" variant="primary" onClick={handleRegister} width="100%" height="48px" padding="12px" />
       </div>
     </>
   );

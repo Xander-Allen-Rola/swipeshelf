@@ -1,6 +1,12 @@
 import './Genre.css';
 
-function Genre({ name, selected, onClick }) {
+interface GenreProps {
+  name: string;
+  selected: boolean;
+  onClick: () => void;
+}
+
+function Genre({ name, selected, onClick }: GenreProps) {
   return (
     <span
       className={`genre-name${selected ? ' selected' : ''}`}

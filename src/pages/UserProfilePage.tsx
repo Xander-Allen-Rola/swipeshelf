@@ -143,12 +143,12 @@ function UserProfilePage() {
         const token = localStorage.getItem("token");
         if (!token) return;
 
-        let profilePicUrl = image;
+        // ...existing code...
 
         if (file) {
             const newUrl = await uploadProfilePicture();
             if (newUrl) {
-                profilePicUrl = newUrl;
+                // ...existing code...
                 await fetch("http://localhost:5000/api/users/profile-picture", {
                     method: "PUT",
                     headers: {
@@ -212,7 +212,7 @@ function UserProfilePage() {
                 onClick={() => setShowSignOutConfirm(true)}
                 >
             <FontAwesomeIcon 
-                icon={faRightFromBracket}
+                icon={faRightFromBracket as import('@fortawesome/fontawesome-svg-core').IconProp}
                 className="signout-button"
                 onClick={() => setShowSignOutConfirm(true)}
             />
@@ -240,7 +240,7 @@ function UserProfilePage() {
                         />
                     ) : (
                         <FontAwesomeIcon
-                            icon={faCircleUser}
+                            icon={faCircleUser as import('@fortawesome/fontawesome-svg-core').IconProp}
                             size="xl"
                             style={{ color: "#8b5e3c", width: '125px', height: '125px' }}
                         />

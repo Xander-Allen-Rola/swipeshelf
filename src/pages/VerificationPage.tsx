@@ -42,13 +42,13 @@ function VerificationPage() {
               value={digit}
               onChange={e => handleChange(e.target.value, idx)}
               onKeyDown={e => handleKeyDown(e, idx)}
-              ref={el => (inputsRef.current[idx] = el)}
+              ref={(el: HTMLInputElement | null) => { inputsRef.current[idx] = el; }}
               autoFocus={idx === 0}
             />
           ))}
         </div>
         <p>Please check your email for the verification code we sent.</p>
-        <Button text="CONTINUE" variant="primary" />
+        <Button text="CONTINUE" variant="primary" width="100%" height="48px" padding="12px" />
       </div>
     </>
   )

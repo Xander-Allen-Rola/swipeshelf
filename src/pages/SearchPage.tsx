@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 
 interface Book {
+  id: number;
   title: string;
   authors: string;
   publishedDate: string | null;
@@ -91,7 +92,7 @@ function SearchPage() {
               onClick={() => setQuery("")}
               aria-label="Clear search"
             >
-              <FontAwesomeIcon icon={faX} />
+              <FontAwesomeIcon icon={faX as import('@fortawesome/fontawesome-svg-core').IconProp} />
             </button>
           )}
         </motion.div>
@@ -152,6 +153,7 @@ function SearchPage() {
 
       {selectedBook && (
         <ShelfCard
+          id={selectedBook.id}
           googleBooksId={selectedBook.googleBooksId}
           title={selectedBook.title}
           coverURL={selectedBook.coverUrl ?? ""}

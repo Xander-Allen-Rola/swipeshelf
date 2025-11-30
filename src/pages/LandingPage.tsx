@@ -11,10 +11,10 @@ function LandingPage() {
       <img src={swipeShelfLogo} className="landing-page-logo" alt="SwipeShelf logo" />
       <div className="landing-page-buttons">
         {/* Navigate to SignIn page */}
-        <Button text="SIGN IN" variant="secondary" onClick={() => navigate("/signin")} />
+        <Button text="SIGN IN" variant="secondary" onClick={() => navigate("/signin")} width="100%" height="48px" padding="12px" />
 
         {/* Navigate to Register page */}
-        <Button text="REGISTER" variant="secondary" onClick={() => navigate("/registration")} />
+        <Button text="REGISTER" variant="secondary" onClick={() => navigate("/registration")} width="100%" height="48px" padding="12px" />
 
         {/* Navigate to Guest flow
         <Button text="CONTINUE AS GUEST" variant="secondary" onClick={() => navigate("/recommendations")} />*/}

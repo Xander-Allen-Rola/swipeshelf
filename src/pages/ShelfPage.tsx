@@ -31,10 +31,8 @@ function chunkArray<T>(array: T[], size: number): T[][] {
 const accordionVariants = {
   hidden: { height: 0, opacity: 0 },
   visible: { 
-    height: "auto",
     opacity: 1,
     transition: {
-      height: { duration: 0.4, ease: "easeOut" },
       opacity: { duration: 0.3 }
     }
   },
@@ -42,7 +40,7 @@ const accordionVariants = {
     height: 0,
     opacity: 0,
     transition: {
-      height: { duration: 0.3, ease: "easeIn" },
+      height: { duration: 0.3 },
       opacity: { duration: 0.2 }
     }
   }
@@ -267,7 +265,7 @@ function ShelfPage() {
             <div className="shelf-label-line" style={{ width: "6%" }} />
             To Read
             <FontAwesomeIcon
-              icon={faChevronDown}
+              icon={faChevronDown as import('@fortawesome/fontawesome-svg-core').IconProp}
               style={{
                 transition: "transform 0.2s",
                 transform: toReadOpen ? "rotate(0deg)" : "rotate(-90deg)",
@@ -327,7 +325,7 @@ function ShelfPage() {
             <div className="shelf-label-line" style={{ width: "6%" }} />
             Finished
             <FontAwesomeIcon
-              icon={faChevronDown}
+              icon={faChevronDown as import('@fortawesome/fontawesome-svg-core').IconProp}
               style={{
                 transition: "transform 0.2s",
                 transform: finishedOpen ? "rotate(0deg)" : "rotate(-90deg)",

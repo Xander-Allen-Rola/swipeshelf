@@ -2,7 +2,7 @@ import './NavigationPane.css';
 import personalShelf from '../assets/navigation_personal_shelf.png';
 import searchBook from '../assets/navigation_search_book.png';
 import recommendation from '../assets/navigation_recommendations.png';
-import friends from '../assets/navigation_friends.png';
+// ...existing code...
 import profile from '../assets/navigation_profile.png';
 import { Link, useLocation } from "react-router-dom"; // ✅ import Link from react-router
 

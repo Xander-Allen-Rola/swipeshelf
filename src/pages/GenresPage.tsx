@@ -4,7 +4,7 @@ import Genre from '../components/Genre';
 import Button from '../components/Button';   
 import Logo from '../components/Logo';
 import BackArrow from '../components/BackArrow';
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import LoadingOverlay from '../components/LoadingOverlay';
 import { useAuth } from "../contexts/AuthContext"; // 👈 import auth context
 
@@ -14,10 +14,10 @@ type GenreType = {
 };
 
 function GenresPage() {
-  const location = useLocation();
+  // ...existing code...
   const navigate = useNavigate();
   const { setUser } = useAuth(); // 👈 grab setUser from context
-  const token = location.state?.token || localStorage.getItem("token");
+  // ...existing code...
 
   const [genres, setGenres] = useState<GenreType[]>([]);
   const [selectedGenres, setSelectedGenres] = useState<number[]>([]);
@@ -108,6 +108,9 @@ function GenresPage() {
           text="CONTINUE"
           variant={selectedGenres.length > 0 ? "primary" : "invalid-primary"}
           onClick={handleContinue}
+          width="100%"
+          height="48px"
+          padding="12px"
         />
       </div>
     </>
