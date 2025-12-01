@@ -99,7 +99,7 @@ function AddFavoriteBookPopup({ isVisible = true, onClose, onFavoritesAdded }: P
 
         try {
             setSubmitting(true);
-            const response = await fetch('${import.meta.env.VITE_BACKEND_URL}/api/shelves/add-to-favorites', {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/shelves/add-to-favorites`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
             body: JSON.stringify({
