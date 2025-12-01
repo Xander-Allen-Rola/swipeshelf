@@ -168,7 +168,7 @@ function ShelfPage() {
     try {
       console.log('🗑️ Deleting books:', selectedBooks.join(', '), 'from User ID:', userId);
       
-      const response = await fetch('${import.meta.env.VITE_BACKEND_URL}/api/shelves/delete-books', {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/shelves/delete-books`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
