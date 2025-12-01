@@ -28,7 +28,7 @@ function GenresPage() {
     const fetchGenres = async () => {
       try {
         setLoading(true);
-        const res = await fetch('http://localhost:5000/api/genres');
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/genres`);
         const data = await res.json();
         setGenres(data); // API should return [{ id: 1, name: "Fiction" }, ...]
       } catch (err) {
@@ -57,7 +57,7 @@ function GenresPage() {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/user-genres", {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user-genres`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -63,7 +63,7 @@ function RecommendationPage() {
       else setIsPrefetching(true);
 
       const res = await axios.get(
-        `http://localhost:5000/api/recommendations/fetch/${userId}`
+        `${import.meta.env.VITE_BACKEND_URL}/api/recommendations/fetch/${userId}`
       );
 
       if (Array.isArray(res.data)) {
@@ -131,7 +131,7 @@ function RecommendationPage() {
     setSwipedStack(prev => [book, ...prev]);
     if (dir === 'right') {
       try {
-        await axios.post("http://localhost:5000/api/shelves/add-to-to-read", {
+        await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/shelves/add-to-to-read`, {
           userId,
           book: {
             googleBooksId: book.googleBooksId,
@@ -153,7 +153,7 @@ function RecommendationPage() {
     }
 
     try {
-      await axios.post("http://localhost:5000/api/markSeen", {
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/markSeen`, {
         userId,
         googleBooksId: book.googleBooksId,
       });

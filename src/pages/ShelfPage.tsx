@@ -62,7 +62,7 @@ function ShelfPage() {
     const fetchToReadBooks = async () => {
       try {
         console.log('🔄 Fetching To Read books...');
-        const response = await fetch(`http://localhost:5000/api/shelves/to-read/${userId}`);
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/shelves/to-read/${userId}`);
         const data = await response.json();
         console.log('✅ Fetched books:', data);
         setToReadShelfBooks(data.books || []);
@@ -75,7 +75,7 @@ function ShelfPage() {
     const fetchFinishedBooks = async () => {
       try {
         console.log('🔄 Fetching Finished books...');
-        const response = await fetch(`http://localhost:5000/api/shelves/finished/${userId}`);
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/shelves/finished/${userId}`);
         const data = await response.json();
         console.log('✅ Fetched books:', data);
         setFinishedShelfBooks(data.books || []);
@@ -117,7 +117,7 @@ function ShelfPage() {
       const movedBooks: ShelfBook[] = [];
 
       for (const shelfBookId of selectedBooks) {
-        const response = await fetch("http://localhost:5000/api/shelves/move-book", {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/shelves/move-book`, {
           method: "PUT",
           headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
           body: JSON.stringify({
@@ -168,7 +168,7 @@ function ShelfPage() {
     try {
       console.log('🗑️ Deleting books:', selectedBooks.join(', '), 'from User ID:', userId);
       
-      const response = await fetch('http://localhost:5000/api/shelves/delete-books', {
+      const response = await fetch('${import.meta.env.VITE_BACKEND_URL}/api/shelves/delete-books', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

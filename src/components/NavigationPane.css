@@ -1,8 +1,10 @@
 .navigation-pane {
     position: fixed;
     bottom: 0;
-    left: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: 100%; /* Fill the page width */
+    max-width: 500px;
     box-sizing: border-box; /* Ensures padding doesn't cause overflow */
     display: flex;
     align-items: center;

@@ -47,7 +47,7 @@ const ShelfCard = ({ id, googleBooksId, title, coverURL, variation, description,
           userId: String(localStorage.getItem("userId") || 0),
           googleBooksId
         });
-        const response = await fetch(`http://localhost:5000/api/shelves/is-favorited?${params.toString()}`);
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/shelves/is-favorited?${params.toString()}`);
         const data = await response.json();
         if (response.ok) setIsFavorited(data.isFavorited);
       } catch (err) {
@@ -75,7 +75,7 @@ const ShelfCard = ({ id, googleBooksId, title, coverURL, variation, description,
 
     try {
       if (isFavorited) {
-        const response = await fetch("http://localhost:5000/api/shelves/remove-from-favorites", {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/shelves/remove-from-favorites`, {
           method: "DELETE",
           headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
           body: JSON.stringify({ userId, googleBooksId }),
@@ -88,7 +88,7 @@ const ShelfCard = ({ id, googleBooksId, title, coverURL, variation, description,
           }
         }
       } else {
-        const response = await fetch("http://localhost:5000/api/shelves/add-to-favorites", {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/shelves/add-to-favorites`, {
           method: "POST",
           headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
           body: JSON.stringify({

@@ -1,6 +1,7 @@
 .shelf-flip-card {
   width: 90%;
   height: 70%;
+  max-width: 490px;
   perspective: 1000px;
   cursor: pointer;
   position: fixed;

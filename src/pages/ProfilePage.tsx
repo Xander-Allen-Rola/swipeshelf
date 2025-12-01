@@ -54,7 +54,7 @@ function ProfilePage() {
     try {
       console.log("⬆️ Uploading image to backend/Cloudinary...")
       setLoading(true);
-      const uploadRes = await fetch("http://localhost:5000/api/upload", {
+      const uploadRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/upload`, {
         method: "POST",
         body: formData,
       })
@@ -69,7 +69,7 @@ function ProfilePage() {
       console.log("✅ Uploaded image URL from Cloudinary:", cloudinaryUrl)
 
       console.log("⬆️ Sending URL to backend to update user profile...")
-      const updateRes = await fetch("http://localhost:5000/api/users/profile-picture", {
+      const updateRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/profile-picture`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

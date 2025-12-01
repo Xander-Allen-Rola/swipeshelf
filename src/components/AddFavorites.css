@@ -2,6 +2,7 @@
     position: fixed;
     width: 90%;
     max-height: 80%;
+    max-width: 490px;;
     background-color: #D1C7B7;
     border-radius: 15px;
     z-index: 4;

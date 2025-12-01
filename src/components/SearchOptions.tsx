@@ -25,7 +25,7 @@ function SearchOptions({ googleBooksId, title, coverURL, description }: SearchOp
 
     try {
       await axios.post(
-        "http://localhost:5000/api/shelves/add-to-to-read",
+        `${import.meta.env.VITE_BACKEND_URL}/api/shelves/add-to-to-read`,
         {
           userId,
           book: {
@@ -60,7 +60,7 @@ function SearchOptions({ googleBooksId, title, coverURL, description }: SearchOp
 
     try {
       await axios.post(
-        "http://localhost:5000/api/shelves/add-to-finished",
+        `${import.meta.env.VITE_BACKEND_URL}/api/shelves/add-to-finished`,
         {
           userId,
           book: {

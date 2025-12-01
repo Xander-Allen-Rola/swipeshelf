@@ -58,7 +58,7 @@ function UserProfilePage() {
         setHydrated(true); // render immediately from cache
 
         // ✅ Fetch from server to update cache
-        const fetchUser = fetch(`http://localhost:5000/api/users/${userId}`, {
+        const fetchUser = fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/${userId}`, {
             headers: { 'Authorization': `Bearer ${token}` },
         })
             .then(res => res.json())
@@ -73,21 +73,21 @@ function UserProfilePage() {
                 sessionStorage.setItem('userProfile', JSON.stringify(data.user));
             });
 
-        const fetchFinishedCount = fetch(`http://localhost:5000/api/users/${userId}/finished-count`)
+        const fetchFinishedCount = fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/${userId}/finished-count`)
             .then(res => res.json())
             .then(data => {
                 setFinishedCount(data.count);
                 sessionStorage.setItem('finishedCount', data.count.toString());
             });
 
-        const fetchToReadCount = fetch(`http://localhost:5000/api/users/${userId}/to-read-count`)
+        const fetchToReadCount = fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/${userId}/to-read-count`)
             .then(res => res.json())
             .then(data => {
                 setToReadCount(data.count);
                 sessionStorage.setItem('toReadCount', data.count.toString());
             });
 
-        const fetchFavorites = fetch(`http://localhost:5000/api/shelves/favorites/${userId}`)
+        const fetchFavorites = fetch(`${import.meta.env.VITE_BACKEND_URL}/api/shelves/favorites/${userId}`)
             .then(res => res.json())
             .then(data => {
                 setFavoriteBooks(data.books || []);
@@ -124,7 +124,7 @@ function UserProfilePage() {
 
         try {
             setLoading(true);
-            const uploadRes = await fetch("http://localhost:5000/api/upload", {
+            const uploadRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/upload`, {
                 method: "POST",
                 body: formData,
             });
@@ -149,7 +149,7 @@ function UserProfilePage() {
             const newUrl = await uploadProfilePicture();
             if (newUrl) {
                 // ...existing code...
-                await fetch("http://localhost:5000/api/users/profile-picture", {
+                await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/profile-picture`, {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -160,7 +160,7 @@ function UserProfilePage() {
             }
         }
 
-        const response = await fetch("http://localhost:5000/api/users/update", {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/update`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

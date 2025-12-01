@@ -24,7 +24,7 @@ function ShelfOptions({ id, googleBooksId, title, coverURL, description }: Shelf
     try {
       console.log("📦 Moving to Finished...");
 
-      const response = await fetch("http://localhost:5000/api/shelves/move-book", {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/shelves/move-book`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -58,7 +58,7 @@ function ShelfOptions({ id, googleBooksId, title, coverURL, description }: Shelf
       const userId = Number(localStorage.getItem("userId") || 0);
       console.log("🗑️ Deleting book:", id, "from User ID:", userId);
 
-      const response = await fetch("http://localhost:5000/api/shelves/delete-books", {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/shelves/delete-books`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -91,7 +91,7 @@ function ShelfOptions({ id, googleBooksId, title, coverURL, description }: Shelf
     try {
       console.log("⭐ Adding to favorites...");
 
-      const response = await fetch("http://localhost:5000/api/shelves/add-to-favorites", {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/shelves/add-to-favorites`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

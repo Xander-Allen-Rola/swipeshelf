@@ -4,6 +4,7 @@
     left: 50%;
     transform: translateX(-50%);
     width: 90%;
+    max-width: 490px;
     gap: 10px;
     display: flex;
     flex-direction: column;

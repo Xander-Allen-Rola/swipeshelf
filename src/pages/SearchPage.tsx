@@ -43,7 +43,7 @@ function SearchPage() {
       setLoading(true);
       try {
         const res = await fetch(
-          `http://localhost:5000/api/search/search?query=${encodeURIComponent(query)}`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/search/search?query=${encodeURIComponent(query)}`,
           { signal }
         );
         const data = await res.json();

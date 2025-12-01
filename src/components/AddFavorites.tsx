@@ -57,7 +57,7 @@ function AddFavoriteBookPopup({ isVisible = true, onClose, onFavoritesAdded }: P
         setLoading(true);
         // ...existing code...
 
-        fetch(`http://localhost:5000/api/shelves/non-favorites/${userId}`, {
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/shelves/non-favorites/${userId}`, {
         headers: token ? { Authorization: `Bearer ${token}` } : undefined,
         signal: controller.signal,
         })
@@ -99,7 +99,7 @@ function AddFavoriteBookPopup({ isVisible = true, onClose, onFavoritesAdded }: P
 
         try {
             setSubmitting(true);
-            const response = await fetch('http://localhost:5000/api/shelves/add-to-favorites', {
+            const response = await fetch('${import.meta.env.VITE_BACKEND_URL}/api/shelves/add-to-favorites', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
             body: JSON.stringify({
