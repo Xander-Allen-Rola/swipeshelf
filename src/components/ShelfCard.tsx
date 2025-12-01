@@ -133,7 +133,7 @@ const ShelfCard = ({ id, googleBooksId, title, coverURL, variation, description,
             {variation === "shelf" ? (
               <FontAwesomeIcon 
                 icon={(isFavorited ? solidStar : regularStar) as import('@fortawesome/fontawesome-svg-core').IconProp}
-                style={{ color: "#556B2F", cursor: "pointer", marginBottom: "10px" }}
+                style={{ color: "#556B2F", marginBottom: "10px" }}
                 onClick={handleToggleFavorite}
                 className="favorites-star"
               />

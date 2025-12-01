@@ -243,7 +243,7 @@ function ShelfPage() {
           <div
             className="shelf-label"
             onClick={() => setToReadOpen(!toReadOpen)}
-            style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }}
+            style={{ display: "flex", alignItems: "center", gap: "8px" }}
           >
             <div className="shelf-label-line" style={{ width: "6%" }} />
             To Read

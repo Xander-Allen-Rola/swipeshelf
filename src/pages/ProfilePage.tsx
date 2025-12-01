@@ -105,7 +105,6 @@ function ProfilePage() {
           fontWeight: 'bold',
           fontSize: '18px',
           color: '#2c2c2c',
-          cursor: 'pointer'
         }}
         onClick={() => navigate("/registration/pfp/genres", { state: { token } })}
       >
@@ -116,7 +115,6 @@ function ProfilePage() {
         <div
           className="profile-picture-placeholder"
           onClick={handleIconClick}
-          style={{ cursor: 'pointer' }}
         >
           {image ? (
             <img src={image} alt="Profile" className="profile-picture-img" />
