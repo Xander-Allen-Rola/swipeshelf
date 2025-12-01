@@ -4,7 +4,7 @@
     border-radius: 99px;
     color: #D1C7B7;
     font-weight: 600;
-    cursor: pointer;
+    
     transition: border 0.2s, color 0.2s;
 }
 

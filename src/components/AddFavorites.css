@@ -36,7 +36,7 @@
     background: transparent;
     border: none;
     font-size: 15px;
-    cursor: pointer;
+    
     color: red;
     transition: color 0.2s ease;
     font-weight: 600;
@@ -59,7 +59,7 @@
 
 .favorite-book-wrapper {
     position: relative;
-    cursor: pointer;
+    
 }
 
 .favorite-cover {
@@ -110,7 +110,7 @@
     color: green;
     border: none;
     font-size: 15px;
-    cursor: pointer;
+    
     transition: color 0.2s ease;
     font-weight: 600;
 }
