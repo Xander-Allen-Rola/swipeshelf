@@ -94,6 +94,7 @@ function GenresPage() {
       <div className="genres-page">
         <h1>Genres</h1>
         <p>What genres of books are you interested in?</p>
+        <p>Please select at least 5 genres.</p>
         <div className="genres-list">
           {genres.map((genre) => (
             <Genre
@@ -106,7 +107,7 @@ function GenresPage() {
         </div>
         <Button
           text="CONTINUE"
-          variant={selectedGenres.length > 0 ? "primary" : "invalid-primary"}
+          variant={selectedGenres.length > 4 ? "primary" : "invalid-primary"}
           onClick={handleContinue}
           width="100%"
           height="48px"
