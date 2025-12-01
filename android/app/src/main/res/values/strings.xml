@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">SwipeShelf</string>
+    <string name="title_activity_main">SwipeShelf</string>
+    <string name="package_name">com.xander.swipeshelf</string>
+    <string name="custom_url_scheme">com.xander.swipeshelf</string>
+</resources>
