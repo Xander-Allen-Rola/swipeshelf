@@ -27,24 +27,7 @@ function chunkArray<T>(array: T[], size: number): T[][] {
   return chunks;
 }
 
-// ✅ animation variants
-const accordionVariants = {
-  hidden: { height: 0, opacity: 0 },
-  visible: { 
-    opacity: 1,
-    transition: {
-      opacity: { duration: 0.3 }
-    }
-  },
-  exit: {
-    height: 0,
-    opacity: 0,
-    transition: {
-      height: { duration: 0.3 },
-      opacity: { duration: 0.2 }
-    }
-  }
-};
+// (Accordion animation removed)
 
 function ShelfPage() {
   const [toReadShelfBooks, setToReadShelfBooks] = useState<ShelfBook[]>([]);
@@ -274,26 +257,18 @@ function ShelfPage() {
             <div className="shelf-label-line" style={{ width: "100%" }} />
           </div>
 
-          {/* 🟡 TO READ SHELVES */}
-          <AnimatePresence initial={true}>
+          <AnimatePresence>
             {toReadOpen && (
               <motion.div
-                className="shelves-container"
                 key="to-read-shelves"
-                variants={accordionVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
+                className="shelves-container"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
               >
                 {toReadShelves.map((shelf, index) => (
-                  <motion.div
-                    className="shelf"
-                    key={index}
-                    variants={accordionVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                  >
+                  <div className="shelf" key={index}>
                     {shelf.map((book) => (
                       <ShelfBook
                         key={book.id}
@@ -308,7 +283,7 @@ function ShelfPage() {
                         onSelect={() => handleBookSelect(book.id)}
                       />
                     ))}
-                  </motion.div>
+                  </div>
                 ))}
               </motion.div>
             )}
@@ -334,25 +309,18 @@ function ShelfPage() {
             <div className="shelf-label-line" style={{ width: "100%" }} />
           </div>
 
-          <AnimatePresence initial={true}>
+          <AnimatePresence>
             {finishedOpen && (
               <motion.div
-                className="shelves-container"
                 key="finished-shelves"
-                variants={accordionVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
+                className="shelves-container"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
               >
                 {finishedShelves.map((shelf, index) => (
-                  <motion.div
-                    className="shelf"
-                    key={index}
-                    variants={accordionVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                  >
+                  <div className="shelf" key={index}>
                     {shelf.map((book) => (
                       <ShelfBook
                         key={book.id}
@@ -367,7 +335,7 @@ function ShelfPage() {
                         onSelect={() => handleBookSelect(book.id)}
                       />
                     ))}
-                  </motion.div>
+                  </div>
                 ))}
               </motion.div>
             )}
