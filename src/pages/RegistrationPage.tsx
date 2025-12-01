@@ -97,7 +97,7 @@ function RegistrationPage() {
 
   return (
     <>
-      <LoadingOverlay show={loading} text="Registering..." />
+      <LoadingOverlay show={loading} text="Registering..." overlay />
       <BackArrow className="back-arrow" />
       <Logo position="top" />
       <div className="registration-container">
@@ -189,7 +189,7 @@ function RegistrationPage() {
         {error && <p style={{ color: "red" }}>{error}</p>}
         {success && <p style={{ color: "green" }}>{success}</p>}
 
-        <p>We will send an email with a verification code.</p>
+        {/*<p>We will send an email with a verification code.</p>*/}
 
         <Button text="CONTINUE" variant="primary" onClick={handleRegister} width="100%" height="48px" padding="12px" />
       </div>

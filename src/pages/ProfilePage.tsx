@@ -94,7 +94,7 @@ function ProfilePage() {
 
   return (
     <>
-      <LoadingOverlay show={loading} text="Uploading..." />
+      <LoadingOverlay show={loading} text="Uploading..." overlay />
       <BackArrow />
       <Logo position="top" />
       <div
