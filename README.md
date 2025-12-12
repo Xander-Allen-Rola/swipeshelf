@@ -65,4 +65,4 @@ An [APK](https://drive.google.com/file/d/1H_1uUO3TgDew6VjI5RacTKxotA-17-DX/view?
 ## Project Status
 
 This project is an MVP and is still under active development.
-This repository is part of a two-repository setup (frontend and backend).
+This repository is part of a two-repository setup (frontend and [backend](https://github.com/Xander-Allen-Rola/swipeshelf-backend.git)).
