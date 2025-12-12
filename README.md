@@ -1,69 +1,68 @@
-# React + TypeScript + Vite
+# SwipeShelf Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This repository contains the React + TypeScript mobile frontend for SwipeShelf.
+It provides the user interface for browsing, swiping, searching, and organizing books, with support for authentication, user profiles, and book shelves.
 
-Currently, two official plugins are available:
+The application is built with Vite and packaged for mobile using Capacitor.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- Swipe-based recommendation interface
+  - Swipe right to add a book to the To Read shelf
+  - Swipe left to skip
+  - Tap to flip the card and view the description
+- Search page for finding books by title or author
+- Shelf page displaying To Read and Finished books
+- Profile page showing name, bio, profile photo, and favorite books
+- Authentication (register and login)
+- Session caching for books and user profile data
+- Mobile-only, packaged via Capacitor for Android
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Tech Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- React + TypeScript
+- Vite with @vitejs/plugin-react
+- React Router
+- Axios for API requests
+- Framer Motion for animations
+- Font Awesome for icons
+- jwt-decode for token handling in ProtectedRoute
+- Capacitor for Android packaging
+- ESLint with TypeScript support
+- Plain CSS for styling (no UI frameworks)
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Installation
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Environment Variables
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Create a .env file in the project root
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+VITE_BACKEND_URL=<your-backend-url>
 ```
+
+## Building for Mobile
+
+The frontend can be built and synced using standard Capacitor commands
+
+```bash
+npx cap add android
+npx cap sync
+npx cap open android
+```
+
+An Android project is included in the repository.
+
+## APK
+
+An [APK](https://drive.google.com/file/d/1H_1uUO3TgDew6VjI5RacTKxotA-17-DX/view?usp=drive_link) build is available for installation and testing
+
+## Project Status
+
+This project is an MVP and is still under active development.
+This repository is part of a two-repository setup (frontend and [backend](https://github.com/Xander-Allen-Rola/swipeshelf-backend.git)).
