@@ -16,7 +16,7 @@ interface Book {
   googleBooksId: string;
   description: string;
   averageRating: number;
-  categories: string[];
+  sourceGenreName: string;
 }
 
 function RecommendationPage() {
@@ -190,7 +190,7 @@ function RecommendationPage() {
             release={books[currentIndex].publishedDate ?? 'Unknown'}
             description={books[currentIndex].description}
             image={loadedImage ?? '/images/placeholder-cover.png'} // show placeholder while loading
-            genres={books[currentIndex].categories as string[]}
+            genres={books[currentIndex].sourceGenreName}
             onSwipe={(dir: string) => handleSwipe(dir, books[currentIndex])}
             onSwipedComplete={() => setCurrentIndex(prev => prev + 1)}
             onUndo={handleUndo}

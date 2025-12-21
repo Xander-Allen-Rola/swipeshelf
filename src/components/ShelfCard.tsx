@@ -14,18 +14,21 @@ interface ShelfCardProps {
   title: string;
   coverURL: string;
   description: string;
+  genres?: string;
   status?: string;
   variation: "shelf" | "search" | "none";
   onClose: () => void;
   onFavoriteChange?: (status: "added" | "removed") => void; // 👈 now includes status
 }
 
-const ShelfCard = ({ id, googleBooksId, title, coverURL, variation, description, onClose, onFavoriteChange }: ShelfCardProps) => {
+const ShelfCard = ({ id, googleBooksId, title, coverURL, variation, description, genres, onClose, onFavoriteChange }: ShelfCardProps) => {
   const [flipped, setFlipped] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isFavorited, setIsFavorited] = useState(false);
   const [showFavoritesPopup, setShowFavoritesPopup] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
+
+  const hasGenres = genres != null && genres.trim() !== "";
 
   useEffect(() => {
     if (showFavoritesPopup) {
@@ -146,6 +149,11 @@ const ShelfCard = ({ id, googleBooksId, title, coverURL, variation, description,
             ) : null}           
             <h2
             style={{ textAlign: "center" }}>{title}</h2>
+            {hasGenres && (
+              <div className="book-genres">
+                <div className="book-genre">{genres}</div>
+              </div>
+            )}
             <p className="shelf-book-description">{description}</p>
           </div>
         </div>

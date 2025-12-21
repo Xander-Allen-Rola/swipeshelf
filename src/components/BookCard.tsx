@@ -11,7 +11,7 @@ interface BookCardProps {
   author: string;
   release: string;
   description: string;
-  genres?: string[];
+  genres?: string;
   image?: string;
   onSwipe?: (dir: string, title: string) => void;
   onSwipedComplete?: () => void;
@@ -19,7 +19,7 @@ interface BookCardProps {
   style?: React.CSSProperties;
 }
 
-const BookCard = ({ title, author, release, description, image, onSwipe, onSwipedComplete, onUndo, style = {} }: BookCardProps) => {
+const BookCard = ({ title, author, release, description, image, genres, onSwipe, onSwipedComplete, onUndo, style = {} }: BookCardProps) => {
   const [flipped, setFlipped] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
@@ -180,11 +180,9 @@ const BookCard = ({ title, author, release, description, image, onSwipe, onSwipe
       <div className="flip-card-back">
         <div className="card-content flipped">
           <h2 style={{textAlign: "center"}}>{title}</h2>
-          {/*<div className="book-genres">
-            {genres.map((genre, idx) => (
-              <span className="book-genre" key={idx}>{genre}</span>
-            ))}
-          </div>*/}
+          <div className="book-genres">
+            <div className="book-genre">{genres}</div>
+          </div>
           <p className="book-description">{description}</p>
           {/*<div className="book-review">
             <div className="horizontal-line" style={{ width: '10%' }} />Review<div className="horizontal-line" style={{ width: '100%' }} />
