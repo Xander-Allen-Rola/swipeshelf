@@ -13,12 +13,13 @@ interface ShelfBookProps {
   coverURL: string;
   description: string;
   status?: string;
+  genres?: string;
   isSelectMode?: boolean;
   isSelected?: boolean;
   onSelect?: () => void;
 }
 
-function ShelfBook({ id, googleBooksId, title, coverURL, description, status, isSelectMode = false, isSelected = false, onSelect }: ShelfBookProps) {
+function ShelfBook({ id, googleBooksId, title, coverURL, description, genres, status, isSelectMode = false, isSelected = false, onSelect }: ShelfBookProps) {
   const [showCard, setShowCard] = useState(false);
   const handleClick = () => {
     if (isSelectMode && onSelect) {
@@ -60,6 +61,7 @@ function ShelfBook({ id, googleBooksId, title, coverURL, description, status, is
           description={description}
           status={status}
           googleBooksId={googleBooksId}
+          genres={genres}
           variation="shelf" 
           onClose={() => setShowCard(false)}
         />,

@@ -366,6 +366,7 @@ function UserProfilePage() {
                     title={selectedBook.title}
                     coverURL={selectedBook.coverURL}
                     description={selectedBook.description}
+                    genres={selectedBook.genreName}
                     variation="shelf"
                     onClose={() => setSelectedBook(null)}
                     onFavoriteChange={handleFavoriteChange}

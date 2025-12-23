@@ -16,6 +16,7 @@ interface ShelfBook {
   description: string;
   status: string;
   addedAt: string;
+  genreName: string;
 }
 
 // ✅ helper: split into chunks of 4
@@ -278,6 +279,7 @@ function ShelfPage() {
                         coverURL={book.coverURL}
                         description={book.description}
                         status={book.status}
+                        genres={book.genreName}
                         isSelectMode={isSelectMode}
                         isSelected={selectedBooks.includes(book.id)}
                         onSelect={() => handleBookSelect(book.id)}
@@ -330,6 +332,7 @@ function ShelfPage() {
                         coverURL={book.coverURL}
                         description={book.description}
                         status={book.status}
+                        genres={book.genreName}
                         isSelectMode={isSelectMode}
                         isSelected={selectedBooks.includes(book.id)}
                         onSelect={() => handleBookSelect(book.id)}
