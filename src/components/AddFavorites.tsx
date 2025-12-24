@@ -20,6 +20,8 @@ type Book = {
   status?: string;
   shelfName?: string;
   addedAt?: string;
+  genreId?: number | null;
+  genreName?: string | null;
 };
 
 function AddFavoriteBookPopup({ isVisible = true, onClose, onFavoritesAdded }: Props) {
@@ -118,9 +120,12 @@ function AddFavoriteBookPopup({ isVisible = true, onClose, onFavoritesAdded }: P
             console.log('✅ Favorites added:', data);
 
             // 🧼 clear selection and remove added books from grid
+            const addedBooks = (data.addedBooks || []) as Book[];
+
             setSelectedBooks([]);
             setBooks((prev) => prev.filter((b) => !selectedBooks.includes(b.id)));
-            onFavoritesAdded?.(selected);
+            // Use server-returned books so genreName/genreId are present
+            onFavoritesAdded?.(addedBooks.length ? addedBooks : selected);
             // ✅ close popup
             onClose?.();
             } else {
