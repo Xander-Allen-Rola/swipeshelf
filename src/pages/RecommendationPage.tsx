@@ -16,7 +16,7 @@ interface Book {
   googleBooksId: string;
   description: string;
   averageRating: number;
-  sourceGenreName: string;
+  sourceGenreNames: string[];
 }
 
 function RecommendationPage() {
@@ -75,6 +75,7 @@ function RecommendationPage() {
           return updated;
         });
       }
+      console.log(res.data)
     } catch (err) {
       console.error('❌ Failed to fetch recommendations:', err);
     } finally {
@@ -190,7 +191,7 @@ function RecommendationPage() {
             release={books[currentIndex].publishedDate ?? 'Unknown'}
             description={books[currentIndex].description}
             image={loadedImage ?? '/images/placeholder-cover.png'} // show placeholder while loading
-            genres={books[currentIndex].sourceGenreName}
+            genres={books[currentIndex].sourceGenreNames}
             onSwipe={(dir: string) => handleSwipe(dir, books[currentIndex])}
             onSwipedComplete={() => setCurrentIndex(prev => prev + 1)}
             onUndo={handleUndo}

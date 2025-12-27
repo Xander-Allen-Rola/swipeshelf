@@ -11,7 +11,7 @@ interface BookCardProps {
   author: string;
   release: string;
   description: string;
-  genres?: string;
+  genres?: string[];
   image?: string;
   onSwipe?: (dir: string, title: string) => void;
   onSwipedComplete?: () => void;
@@ -181,7 +181,9 @@ const BookCard = ({ title, author, release, description, image, genres, onSwipe,
         <div className="card-content flipped">
           <h2 style={{textAlign: "center"}}>{title}</h2>
           <div className="book-genres">
-            <div className="book-genre">{genres}</div>
+            {(genres ?? []).map((g) => (
+              <div key={g} className="book-genre">{g}</div>
+            ))}
           </div>
           <p className="book-description">{description}</p>
           {/*<div className="book-review">
