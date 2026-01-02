@@ -15,7 +15,8 @@ interface Book {
   coverUrl: string | null;
   googleBooksId: string;
   description: string;
-  sourceGenreName: string;
+  sourceGenreIds: number[];
+  sourceGenreNames: string[];
 }
 
 const accordionVariants = {
@@ -158,7 +159,7 @@ function SearchPage() {
           title={selectedBook.title}
           coverURL={selectedBook.coverUrl ?? ""}
           description={selectedBook.description}
-          genres={selectedBook.sourceGenreName}
+          genres={selectedBook.sourceGenreNames}
           status="reading"
           variation="search"
           onClose={() => setSelectedBook(null)}
