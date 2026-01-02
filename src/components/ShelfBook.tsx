@@ -13,7 +13,7 @@ interface ShelfBookProps {
   coverURL: string;
   description: string;
   status?: string;
-  genres?: string;
+  genres?: string | string[];
   isSelectMode?: boolean;
   isSelected?: boolean;
   onSelect?: () => void;
