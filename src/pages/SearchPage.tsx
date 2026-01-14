@@ -6,6 +6,8 @@ import "./SearchPage.css";
 import { motion, AnimatePresence } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
+import { useLocation, useNavigate } from "react-router-dom";
+import Popup from "../components/Popup";
 
 interface Book {
   id: number;
@@ -26,10 +28,28 @@ const accordionVariants = {
 };
 
 function SearchPage() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Book[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
+  const [showPostGenresPopup, setShowPostGenresPopup] = useState(false);
+
+  useEffect(() => {
+    const state = location.state as { fromGenres?: boolean } | null;
+    if (!state?.fromGenres) return;
+
+    setShowPostGenresPopup(true);
+    const timeoutId = window.setTimeout(() => {
+      setShowPostGenresPopup(false);
+      // Clear the navigation state so the popup only shows once.
+      navigate(location.pathname, { replace: true, state: null });
+    }, 3000);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [location.pathname, location.state, navigate]);
 
   useEffect(() => {
     if (!query.trim()) {
@@ -69,6 +89,12 @@ function SearchPage() {
   return (
     <>
       <Logo position="top" />
+
+      <AnimatePresence>
+        {showPostGenresPopup && (
+          <Popup text="Add the books you've finished and plan to read" />
+        )}
+      </AnimatePresence>
 
       <div className="search-container">
         <motion.div

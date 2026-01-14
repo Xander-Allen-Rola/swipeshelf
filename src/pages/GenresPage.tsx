@@ -72,13 +72,13 @@ function GenresPage() {
 
       console.log("✅ Genres saved successfully");
 
-      // 🔑 Force logout after registration
-      localStorage.removeItem("token");
-      localStorage.removeItem("userId");
-      setUser(null); // update context
+      // Keep the user logged in so protected routes (like /search) work.
+      const token = localStorage.getItem("token");
+      if (token) {
+        setUser({ id: userId, token });
+      }
 
-      // Redirect to sign-in
-      navigate("/signin", { replace: true });
+      navigate("/search", { replace: true, state: { fromGenres: true } });
     } catch (err) {
       console.error("❌ Error saving genres:", err);
     }
