@@ -5,6 +5,7 @@ import BackArrow from '../components/BackArrow';
 import Logo from '../components/Logo';
 import { useNavigate } from "react-router-dom";
 import LoadingOverlay from "../components/LoadingOverlay"; // ✅ import reusable overlay
+import { useAuth } from "../contexts/AuthContext";
 
 function RegistrationPage() {
   // Form state
@@ -21,6 +22,7 @@ function RegistrationPage() {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+  const { setUser } = useAuth();
 
   const handleRegister = async () => {
     setError("");
@@ -31,6 +33,13 @@ function RegistrationPage() {
     if (!firstName || !lastName || !email || !password) {
       setError("First name, last name, email, and password are required.");
       setLoading(false); // ✅ stop overlay on validation error
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address.");
+      setLoading(false);
       return;
     }
 
@@ -72,6 +81,11 @@ function RegistrationPage() {
         if (data.user?.id) { 
           localStorage.setItem("userId", data.user.id.toString()); 
           console.log("Stored userId in localStorage:", data.user.id);
+        }
+
+        // Update auth context immediately
+        if (data.token && data.user?.id) {
+          setUser({ id: data.user.id.toString(), token: data.token });
         }
 
         // Navigate to ProfilePage and pass token via state

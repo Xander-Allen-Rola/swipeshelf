@@ -108,6 +108,7 @@ function GenresPage() {
         <Button
           text="CONTINUE"
           variant={selectedGenres.length > 4 ? "primary" : "invalid-primary"}
+          disabled={selectedGenres.length <= 4}
           onClick={handleContinue}
           width="100%"
           height="48px"

@@ -7,11 +7,17 @@ interface ButtonProps {
   padding: string;
   variant?: "primary" | "secondary" | "invalid-primary";
   onClick?: () => void; // allow click handler
+  disabled?: boolean;
 }
 
-function Button({ text, width, height, padding, variant = "primary", onClick }: ButtonProps) {
+function Button({ text, width, height, padding, variant = "primary", onClick, disabled }: ButtonProps) {
   return (
-    <button className={`custom-button ${variant}`} onClick={onClick} style={{ width, height, padding }}>
+    <button
+      className={`custom-button ${variant}`}
+      onClick={onClick}
+      style={{ width, height, padding }}
+      disabled={disabled}
+    >
       {text}
     </button>
   );

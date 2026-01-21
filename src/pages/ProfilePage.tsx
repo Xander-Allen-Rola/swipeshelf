@@ -7,10 +7,12 @@ import BackArrow from '../components/BackArrow'
 import Logo from '../components/Logo'
 import { useNavigate, useLocation } from "react-router-dom";
 import LoadingOverlay from "../components/LoadingOverlay"; // ✅ import reusable overlay
+import { useAuth } from "../contexts/AuthContext";
 
 function ProfilePage() {
   const navigate = useNavigate();
   const location = useLocation()
+  const { setUser } = useAuth();
   const token = location.state?.token || localStorage.getItem("token") // fallback if you stored it
   const [image, setImage] = useState<string | null>(null)
   const [file, setFile] = useState<File | null>(null) // store selected file
@@ -39,6 +41,11 @@ function ProfilePage() {
   const handleContinue = async () => {
     if (!file) {
       console.log("⚠️ No file selected, skipping profile picture upload")
+      // Ensure user is set in context before navigating (in case of skip)
+      const userId = localStorage.getItem("userId");
+      if (token && userId) setUser({ id: userId, token });
+      
+      navigate("/registration/pfp/genres", { state: { token } }); // Pass token even if skipped
       return
     }
 
