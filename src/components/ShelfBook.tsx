@@ -61,7 +61,7 @@ function ShelfBook({ id, googleBooksId, title, coverURL, description, genres, st
           description={description}
           status={status}
           googleBooksId={googleBooksId}
-          genres={genres}
+          genres={typeof genres === 'string' ? [genres] : genres}
           variation="shelf" 
           onClose={() => setShowCard(false)}
         />,
